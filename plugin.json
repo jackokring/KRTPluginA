@@ -1,0 +1,23 @@
+{
+  "slug": "KRTPluginA",
+  "name": "KRTPluginA",
+  "version": "1.0.0",
+  "license": "MIT",
+  "brand": "KRT",
+  "author": "Jacko",
+  "authorEmail": "jackokring@gmail.com",
+  "authorUrl": "https://kring.co.uk",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "https://github.com/jackokring/VCV",
+  "donateUrl": "https://github.com/jackokring",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "A",
+      "name": "A",
+      "description": "Plate 18 dB filter. (Band pass phased ring mod.)",
+      "tags": [ "Effect", "Filter", "Polyphonic" ]
+    }
+  ]
+}
