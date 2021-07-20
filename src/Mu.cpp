@@ -38,6 +38,12 @@ struct Mu : Module {
 
 	Mu() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(DB, -4.f, 4.f, 0.f, "Exponential Gain", " V/6dB");
+		configParam(HZ, -4.f, 4.f, 0.f, "Slew", " Oct");
+		configParam(LAM, -4.f, 4.f, 0.f, "Halflife", " V/e^(Sample)");
+		configParam(G1, -2.f, 2.f, 0.f, "Gain");
+		configParam(G2, -2.f, 2.f, 0.f, "Gain");
+		configParam(G3, -2.f, 2.f, 0.f, "Gain");
 	}
 
 	void process(const ProcessArgs& args) override {
