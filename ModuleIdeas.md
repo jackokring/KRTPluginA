@@ -11,4 +11,5 @@ Focus Areas
 * Delay Line Effects
 * Global Subgroup TX/RX Addition Bus
 * Sync to Returned Trigger plus Trigger Count
+* CV seed trig->CV rand
 * ... the list goes on
