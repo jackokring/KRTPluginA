@@ -53,9 +53,9 @@ Parameters
 Ins
 ---
 * 1V/6dB `CVdB`
-* 1V/Oct (Polyphonic master) `CVHz`
+* 1V/Oct `CVHz`
 * 1V/halflife  `CVλ`
-* In 1 `IN1`
+* In 1 (Polyphonic master) `IN1`
 * In 2 `IN2`
 * In 3 `IN3`
 
