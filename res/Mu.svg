@@ -464,16 +464,14 @@
          id="path231"
          inkscape:connector-curvature="0" />
     </g>
-    <text
-       xml:space="preserve"
+    <g
+       aria-label="μ"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="11.906252"
-       y="-20.637543"
-       id="text107"><tspan
-         sodipodi:role="line"
-         id="tspan105"
-         x="11.906252"
-         y="-20.637543"
-         style="stroke-width:0.26458332">μ</tspan></text>
+       id="text107">
+      <path
+         d="m 12.870879,-20.637543 h -0.659736 v -0.144694 q -0.111966,0.187758 -0.282498,0.187758 -0.208428,0 -0.292833,-0.173977 v 0.821655 h -0.701077 v -2.518365 h 0.701077 v 0.918118 q 0,0.124024 0.01378,0.201538 0.0155,0.07752 0.07407,0.139527 0.06029,0.06029 0.184312,0.06029 0.129192,0 0.194648,-0.08096 0.06718,-0.08096 0.06718,-0.339342 v -0.89917 h 0.701077 z"
+         style="stroke-width:0.26458332"
+         id="path109" />
+    </g>
   </g>
 </svg>
