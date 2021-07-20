@@ -78,4 +78,4 @@ The integrals are further processed by 3 point series accelerations (a tiny effe
 
 As the future sample prediction method is used, essentially there is zero delay when an output is fedback into an input. This is potentially interesting for making a `ΔΔ` to `IN1` with negative `G1` forced oscillator using `IN2` or other inputs for forcing. The module can be setup to "solve" various integra-differential equations, some of which maybe chaotic in nature. A bounding 20V clamp for range errors is useful given the DC coupling of exponetial growth.
 
-I mean why a 9th order FIR, and the number 27 of the sporadic simple groups connection?
+I mean why a 9th order FIR, and the number 27 of the sporadic simple groups connection? From 2 comes 2 to the power of all N. From 3 comes all odd numbers?
