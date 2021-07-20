@@ -45,7 +45,7 @@ Parameters
 ---
 * Master Gain `dB`
 * Slew Limit `FRQ`
-* Time Decay `DCY`
+* Halflife `λ`
 * Gain 1 `G1`
 * Gain 2 `G2`
 * Gain 3 `G3`
@@ -61,11 +61,11 @@ Ins
 
 Outs
 ---
-* -6 dB LP Out `LP1`
-* Tracking Out `CV`
-* -12/-18 dB Out `LP12`
-* -6 dB HP Out `HP1`
-* Plate Out `AM`
-* -12/-18 dB Inverse Extended Filter Out `XP12`
+* Differential `Δ`
+* Second Differential `ΔΔ`
+* Third Differential `ΔΔΔ`
+* Integral Linear `Σ`
+* Integral Pole `1/Σ`
+* Integral Log `LNΣ`
 
 Some weird calculus module. It really depends what it can be made to do. 
