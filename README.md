@@ -77,3 +77,5 @@ So the inputs `IN1`, `IN3` and `IN3` are controlled by the attenuverters for gai
 The integrals are further processed by 3 point series accelerations (a tiny effect but interesting) to occur at a sample in the future. `λ` applies an effective modulation of this integral time step from a fraction of a sample to multiple samples. The halflife then is measured in exponetial samples.
 
 As the future sample prediction method is used, essentially there is zero delay when an output is fedback into an input. This is potentially interesting for making a `ΔΔ` to `IN1` with negative `G1` forced oscillator using `IN2` or other inputs for forcing. The module can be setup to "solve" various integra-differential equations, some of which maybe chaotic in nature. A bounding 20V clamp for range errors is useful given the DC coupling of exponetial growth.
+
+I mean why a 9th order FIR, and the number 27 of the sporadic simple groups connection?
