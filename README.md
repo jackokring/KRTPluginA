@@ -44,7 +44,7 @@ If some controls appear not to operate use `IN1` and `LP12` out, with `CV` for t
 Parameters
 ---
 * Master Gain `dB`
-* Slew Limit `FRQ`
+* Slew Limit `Hz`
 * Halflife `λ`
 * Gain 1 `G1`
 * Gain 2 `G2`
@@ -68,4 +68,4 @@ Outs
 * Integral Pole `1/Σ`
 * Integral Log `LNΣ`
 
-Some weird calculus module. It really depends what it can be made to do. 
+Some weird calculus module. It really depends what it can be made to do. It might become unstable if you feedback connections. It might not as well.
