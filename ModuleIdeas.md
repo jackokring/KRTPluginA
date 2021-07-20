@@ -1,12 +1,9 @@
 Ideas and Progress
 ===
 
-Mu
-===
-A suitable front layout and internal function have been decided.
-
 Focus Areas
-===
+---
+
 * Sync/Trigger/Patterns/PLL
 * VCO and Envelope
 * LFO with Constant Cycles CV Conservation
