@@ -17,7 +17,17 @@
       "slug": "A",
       "name": "A",
       "description": "Plate 18 dB filter. (Band pass phased ring mod.)",
-      "tags": [ "Effect", "Filter", "Polyphonic" ]
+      "tags": [
+        "Effect",
+        "Filter",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "Mu",
+      "name": "Mu",
+      "description": "",
+      "tags": []
     }
   ]
 }
