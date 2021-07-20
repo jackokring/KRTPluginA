@@ -6,12 +6,30 @@
 
 struct Mu : Module {
 	enum ParamIds {
+		DB,
+		HZ,
+		LAM,
+		G1,
+		G2,
+		G3,
 		NUM_PARAMS
 	};
 	enum InputIds {
+		CVDB,
+		CVHZ,
+		CVLAM,
+		IN1,
+		IN2,
+		IN3,
 		NUM_INPUTS
 	};
 	enum OutputIds {
+		D1,
+		D2,
+		D3,
+		I1,
+		I2,
+		I3,
 		NUM_OUTPUTS
 	};
 	enum LightIds {
@@ -26,6 +44,23 @@ struct Mu : Module {
 	}
 };
 
+//geometry edit
+#define HP 7
+#define LANES 3
+#define RUNGS 6
+
+//ok
+#define HP_UNIT 5.08
+#define WIDTH (HP*HP_UNIT)
+#define X_SPLIT (WIDTH / 2.f / LANES)
+
+#define HEIGHT 128.5
+#define Y_MARGIN 0.05f
+#define R_HEIGHT (HEIGHT*(1-2*Y_MARGIN))
+#define Y_SPLIT (R_HEIGHT / 2.f / RUNGS)
+
+//placement macro
+#define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
 
 struct MuWidget : ModuleWidget {
 	MuWidget(Mu* module) {
@@ -36,6 +71,27 @@ struct MuWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 1), module, Mu::DB));
+		addParam(createParamCentered<RoundBlackKnob>(loc(2, 1), module, Mu::HZ));
+		addParam(createParamCentered<RoundBlackKnob>(loc(3, 1), module, Mu::DB));
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, Mu::G1));
+		addParam(createParamCentered<RoundBlackKnob>(loc(2, 2), module, Mu::G2));
+		addParam(createParamCentered<RoundBlackKnob>(loc(3, 2), module, Mu::G3));
+
+		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, Mu::CVDB));
+		addInput(createInputCentered<PJ301MPort>(loc(2, 3), module, Mu::CVHZ));
+		addInput(createInputCentered<PJ301MPort>(loc(3, 3), module, Mu::CVLAM));
+		addInput(createInputCentered<PJ301MPort>(loc(1, 4), module, Mu::IN1));
+		addInput(createInputCentered<PJ301MPort>(loc(2, 4), module, Mu::IN2));
+		addInput(createInputCentered<PJ301MPort>(loc(3, 4), module, Mu::IN3));
+
+		addOutput(createOutputCentered<PJ301MPort>(loc(1, 5), module, Mu::D1));
+		addOutput(createOutputCentered<PJ301MPort>(loc(2, 5), module, Mu::D2));
+		addOutput(createOutputCentered<PJ301MPort>(loc(3, 5), module, Mu::D3));
+		addOutput(createOutputCentered<PJ301MPort>(loc(1, 6), module, Mu::I1));
+		addOutput(createOutputCentered<PJ301MPort>(loc(2, 6), module, Mu::I2));
+		addOutput(createOutputCentered<PJ301MPort>(loc(3, 6), module, Mu::I3));
 	}
 };
 
