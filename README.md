@@ -41,4 +41,31 @@ If some controls appear not to operate use `IN1` and `LP12` out, with `CV` for t
 μ (The Gold One)
 ===
 
-Some wierd calculus providing stabilized processing.
+Parameters
+---
+* Master Gain `dB`
+* Slew Limit `FRQ`
+* Time Decay `DCY`
+* Gain 1 `G1`
+* Gain 2 `G2`
+* Gain 3 `G3`
+
+Ins
+---
+* 1V/6dB `CVdB`
+* 1V/Oct (Polyphonic master) `CVHz`
+* 1V/halflife  `CVλ`
+* In 1 `IN1`
+* In 2 `IN2`
+* In 3 `IN3`
+
+Outs
+---
+* -6 dB LP Out `LP1`
+* Tracking Out `CV`
+* -12/-18 dB Out `LP12`
+* -6 dB HP Out `HP1`
+* Plate Out `AM`
+* -12/-18 dB Inverse Extended Filter Out `XP12`
+
+Some weird calculus module. It really depends what it can be made to do. 
