@@ -118,7 +118,7 @@ struct Mu : Module {
 		b *= x*in/6.f;
 		c *= x*x/24.f;
 		in *= l;
-		return accel((in, a, b)+accel(a+in, b, c))*0.5f;
+		return (accel(in, a, b)+accel(a+in, b, c))*0.5f;
 	}
 
 	float accel(float a, float b, float c) {
