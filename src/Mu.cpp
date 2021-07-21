@@ -147,7 +147,7 @@ struct Mu : Module {
 
 	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
-	float pre[2*PORT_MAX_CHANNELS][9];// pre buffer
+	float pre[3*PORT_MAX_CHANNELS][9];// pre buffer
 	int idx = 0;// buffer current
 
 	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
@@ -219,10 +219,16 @@ struct Mu : Module {
 			float out2p = dif2(pre[p+PORT_MAX_CHANNELS])*h*si;//h^2
 			float out3p = dif3(pre[p+PORT_MAX_CHANNELS])*f*si;//h^3
 
+			float inl = in*cvlam;
+			pre[p+2*PORT_MAX_CHANNELS][idx] = inl;//just in case?
+			float out1l = dif1(pre[p+2*PORT_MAX_CHANNELS])*si;//h
+			float out2l = dif2(pre[p+2*PORT_MAX_CHANNELS])*h*si;//h^2
+			float out3l = dif3(pre[p+2*PORT_MAX_CHANNELS])*f*si;//h^3
+
 			//process endpoint integrals @ cvlam
 			float i1 = int1(in, out1, out2, out3, cvlam);
 			float i2 = int2(inp, out1p, out2p, out3p, cvlam);
-			float i3 = int3(in, out1, out2, out3, cvlam, cheat);
+			float i3 = int3(inl, out1l, out2l, out3l, cvlam, cheat);
 
 			// OUTS
 			outputs[D1].setVoltage(clamp(out1, -20.f, 20.f), p);
