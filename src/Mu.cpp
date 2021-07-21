@@ -155,32 +155,37 @@ struct Mu : Module {
 			float in2 = inputs[IN2].getPolyVoltage(p);
 			float in3 = inputs[IN3].getPolyVoltage(p);
 
+			float in = in1 + in2 + in3;//add
+
 			cvdb = log(cvdb + db, 1.f);
 			cvhz = log(cvhz + hz, dsp::FREQ_C4);
 			cvlam = log(cvlam + lam, 1.f);
 			
-			cvhz = clamp(cvhz, 0.f, fs * 0.5f);
+			cvhz = clamp(cvhz, 0.f, fs * 0.5f);//limit max filter
 
-			pre[p][idx] = inputs[ILP1].getPolyVoltage(p);
+			in *= cvdb;//gain
+			setFK1(cvhz, fs);
+			in = process1(in);//LPF
 
-			// Process filters 1, 2, 3 with common freq 1 and 3
-			setFK1(fo, fs);
-			float postL = process1(in18 + fut, p);//add future for low pass
+			pre[p][idx] = in;//buffer
 			
-			inbp += in18;
-			float postH = process3(inbp, p);//fixed to allow inverse filter
-			float qPlate = postL * postH * plate;//plate signal
-			setFK2(ff, res, fs);
-			float mainOut = process2(postL + in12, p) + qPlate;//6% with indirect postL
+			float out1 = dif1(pre[p]);
+			float out2 = dif2(pre[p]);//gain F corner??
+			float out3 = dif3(pre[p]);
+
+			//process endpoint integrals @ cvlam
+			float i1 = 0;
+			float i2 = 0;
+			float i3 = 0;
 
 			// OUTS
-			outputs[LP1].setVoltage(postL, p);
-			outputs[OCV].setVoltage(ff, p);
-			outputs[LP12].setVoltage(mainOut, p);
+			outputs[D1].setVoltage(out1, p);
+			outputs[D2].setVoltage(out2, p);
+			outputs[D3].setVoltage(out3, p);
 
-			outputs[HP1].setVoltage(postH, p);
-			outputs[AM1].setVoltage(qPlate, p);
-			outputs[XP12].setVoltage(in18 - mainOut, p);//inverse HP?
+			outputs[I1].setVoltage(i1, p);
+			outputs[I2].setVoltage(i2, p);
+			outputs[I3].setVoltage(i3, p);
 		}
 		idx = mod9[idx + 1];//buffer modulo
 	}
