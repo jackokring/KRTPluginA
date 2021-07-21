@@ -39,14 +39,154 @@ struct Mu : Module {
 	Mu() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(DB, -4.f, 4.f, 0.f, "Exponential Gain", " V/6dB");
-		configParam(HZ, -4.f, 4.f, 0.f, "Slew", " Oct");
+		configParam(HZ, -4.f, 4.f, 0.f, "Slew LPF", " Oct");
 		configParam(LAM, -4.f, 4.f, 0.f, "Halflife", " V/e^(Sample)");
 		configParam(G1, -2.f, 2.f, 0.f, "Gain");
 		configParam(G2, -2.f, 2.f, 0.f, "Gain");
 		configParam(G3, -2.f, 2.f, 0.f, "Gain");
 	}
 
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
+    /* 1P H(s) = 1 / (s + fb) */
+    //ONE POLE FILTER
+	float f1, f2, b[PORT_MAX_CHANNELS];
+
+	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
+		f1   = tanf(M_PI * fc / fs);
+		f2   = 1 / (1 + f1);
+	}
+
+	float process1(float in, int p) {
+		float out = (f1 * in + b[p]) * f2;
+		b[p] = f1 * (in - out) + out;
+		return out;//lpf default
+	}
+
+	float dif1(float* input) {
+		float co1[] = {
+			1.5265105587276737e+48f,
+			-1.3668387579017067e+49f,
+			+5.431248343252391e+49f,
+			-1.2560580881508727e+50f,
+			+1.8604974291269024e+50f,
+			-1.825112874436707e+50f,
+			+1.1774257443584765e+50f,
+			-4.70911457297244e+49f,
+			+9.245318227649387e+48f
+		};
+		return sum(co1, input, idx + 1)/5.61659602207866e+47f;
+	}
+
+	float dif2(float* input) {
+		float co1[] = {
+			8.145411592862319e+40f,
+			-7.24075814611475e+41f,
+			+2.8505272093785156e+42f,
+			-6.511132716988107e+42f,
+			+9.479167232763678e+42f,
+			-9.062466169644141e+42f,
+			+5.604592622540067e+42f,
+			-2.0690575636637124e+42f,
+			+3.50991084293707e+41f
+		};
+		return sum(co1, input, idx + 1)/1.3901620164136395e+40f;
+	}
+
+	float dif3(float* input) {
+		float co1[] = {
+			4.768402943555988e+41f,
+			-4.198496441152479e+42f,
+			+1.6329646901392421e+43f,
+			-3.6714916748050246e+43f,
+			+5.231749630181975e+43f,
+			-4.851706129693572e+43f,
+			+2.866756706165198e+43f,
+			-9.882480374551996e+42f,
+			+1.5214043014568113e+42f
+		};
+		return sum(co1, input, idx + 1)/4.762449890092781e+40;
+	}
+
+	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+
+	float pre[PORT_MAX_CHANNELS][9];// pre buffer
+	int idx = 0;// buffer current
+
+	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
+		float add = 0.f;
+#pragma GCC ivdep		
+		for(int co = 0; co < cycle; co ++) {//right is most recent
+			int idx = mod9[begin + co];
+			add += c[co] * input[idx];
+		}
+		return add;
+	}
+
 	void process(const ProcessArgs& args) override {
+		// For inputs intended to be used solely for audio, sum the voltages of all channels
+		// (e.g. with Port::getVoltageSum())
+		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
+		// voltage (e.g. with Port::getVoltage())
+		// POLY: Port::getPolyVoltage(c)
+		float fs = args.sampleRate;
+		int maxPort = inputs[HZ].getChannels();
+		if(maxPort == 0) maxPort = 1;
+
+		float db = params[DB].getValue();
+		float hz = params[HZ].getValue();
+		float lam = params[LAM].getValue();
+
+		float g1 = params[G1].getValue();
+		float g2 = params[G2].getValue();
+		float g3 = params[G3].getValue();
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float cv = inputs[CV].getPolyVoltage(p);
+
+			float fo = log(params[OFF].getValue() + cv
+				+ inputs[IMOD].getPolyVoltage(p) * modo,	//offset
+				dsp::FREQ_C4);
+			
+			float ff = log(params[FRQ].getValue() + cv
+				+ inputs[IMOD].getPolyVoltage(p) * modf,	//freq
+				dsp::FREQ_C4);
+
+			ff = clamp(ff, 0.f, fs * 0.5f);
+			fo = clamp(fo, 0.f, fs * 0.5f);
+
+			// INS (NOT IMPLICIT)
+			float in18 = inputs[IN1].getPolyVoltage(p);
+			pre[p][idx] = inputs[ILP1].getPolyVoltage(p);
+			float fut = future(pre[p]);
+			float in12 = inputs[IN2].getPolyVoltage(p);
+			float inbp = inputs[IHP1].getPolyVoltage(p);
+
+			// Process filters 1, 2, 3 with common freq 1 and 3
+			setFK1(fo, fs);
+			float postL = process1(in18 + fut, p);//add future for low pass
+			
+			inbp += in18;
+			float postH = process3(inbp, p);//fixed to allow inverse filter
+			float qPlate = postL * postH * plate;//plate signal
+			setFK2(ff, res, fs);
+			float mainOut = process2(postL + in12, p) + qPlate;//6% with indirect postL
+
+			// OUTS
+			outputs[LP1].setVoltage(postL, p);
+			outputs[OCV].setVoltage(ff, p);
+			outputs[LP12].setVoltage(mainOut, p);
+
+			outputs[HP1].setVoltage(postH, p);
+			outputs[AM1].setVoltage(qPlate, p);
+			outputs[XP12].setVoltage(in18 - mainOut, p);//inverse HP?
+		}
+		idx = mod9[idx + 1];//buffer modulo
 	}
 };
 
@@ -80,7 +220,7 @@ struct MuWidget : ModuleWidget {
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 1), module, Mu::DB));
 		addParam(createParamCentered<RoundBlackKnob>(loc(2, 1), module, Mu::HZ));
-		addParam(createParamCentered<RoundBlackKnob>(loc(3, 1), module, Mu::DB));
+		addParam(createParamCentered<RoundBlackKnob>(loc(3, 1), module, Mu::LAM));
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, Mu::G1));
 		addParam(createParamCentered<RoundBlackKnob>(loc(2, 2), module, Mu::G2));
 		addParam(createParamCentered<RoundBlackKnob>(loc(3, 2), module, Mu::G3));
