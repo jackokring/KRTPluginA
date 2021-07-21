@@ -146,9 +146,13 @@ struct Mu : Module {
 		//so simplification on the multiply defers complexity
 		//to the integral of the division in a integral(x*f(x)/x, x)
 		float out = l*in*ll;//the first part
-		float secMul = l-ll;//the second part multiplier
+		float secMul = (l-ll);//the second part multiplier
+		//second part
+		float x = accel(a, -l*b*0.5f, l*l*c*6.f);
+		out -= secMul*x;
+		//third part nested series
 
-		//return accel(a, b, c);
+		return out;
 	}
 
 	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
