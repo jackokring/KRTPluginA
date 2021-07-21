@@ -170,11 +170,12 @@ struct Mu : Module {
 			pre[p][idx] = in;//buffer
 			
 			float h = dsp::FREQ_C4/cvhz;//inverse of central rate nyquist
-			//scale?
+			//scale? - V/sample -> normalization of sample rate change
+			float si = fs/dsp::FREQ_C4;//doubling rate should double gain
 			float f = h * h;
-			float out1 = dif1(pre[p]);//h
-			float out2 = dif2(pre[p])*h;//h^2
-			float out3 = dif3(pre[p])*f;//h^3
+			float out1 = dif1(pre[p])*si;//h
+			float out2 = dif2(pre[p])*h*si;//h^2
+			float out3 = dif3(pre[p])*f*si;//h^3
 
 			//process endpoint integrals @ cvlam
 			float i1 = 0;
