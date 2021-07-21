@@ -141,11 +141,11 @@ struct Mu : Module {
 		return (accel(in, a, b)+accel(a+in, b, c))*0.5f;
 	}
 
-	float terms2(float k, float b, float c, float l) {//float predicate
+	float terms2(float k, float k2, float b, float c, float l, float kin) {//float predicate
 		//float out = (k+1)!.in^(2+k)*b/(k+2)!;
 		//out -= (k+1)!.in^(3+k)*c/(k+3)!;
-		float out = 0;//TODO: ...
-		return out;
+		float x = l*l;
+		return b*k*x*kin-c*x*l*kin*k2;
 	}
 
 	float int3(float in, float a, float b, float c, float l, float ll) {
@@ -159,9 +159,9 @@ struct Mu : Module {
 		out -= secMul*x;
 		//third part nested series
 		//inner 2 significat terms
-		float x = terms2(0.f, b, c, l)*0.5f;
-		float y = -terms2(1.f, b, c, l)/6.f;
-		float z = terms2(2.f, b, c, l)/24.f;
+		float x = terms2(1.f/2.f, 1.f/6.f, b, c, l, 1.f)*0.5f;//0
+		float y = -terms2(1.f/3.f, 2.f/24.f, b, c, l, l)/6.f;//1
+		float z = terms2(6.f/24.f, 24.f/120.f, b, c, l, l*l)/24.f;//2
 		out += accel(x, y, z);
 		return out;
 	}
