@@ -111,9 +111,14 @@ struct Mu : Module {
 		return sum(co1, input, idx + 1)/4.762449890092781e+40;
 	}
 
-	float int1(float a, float b, float c, float l) {
+	float int1(float in, float a, float b, float c, float l) {
 		//preprocess
-		return accel(a, b, c);
+		float x = in*in;
+		a *= x*0.5f;
+		b *= x*in/6.f;
+		c *= x*x/24.f;
+		in *= l;
+		return accel((in, a, b)+accel(a+in, b, c))*0.5f;
 	}
 
 	float accel(float a, float b, float c) {
@@ -126,11 +131,11 @@ struct Mu : Module {
 		return cba == 0.f ? c : c - (cb * cb) / cba;
 	}
 
-	float int2(float a, float b, float c, float l) {
+	float int2(float in, float a, float b, float c, float l) {
 		return accel(a, b, c);
 	}
 
-	float int3(float a, float b, float c, float l, float ll) {
+	float int3(float in, float a, float b, float c, float l, float ll) {
 		return accel(a, b, c);
 	}
 
@@ -203,9 +208,9 @@ struct Mu : Module {
 			float out3 = dif3(pre[p])*f*si;//h^3
 
 			//process endpoint integrals @ cvlam
-			float i1 = int1(out1, out2, out3, cvlam);
-			float i2 = int1(out1, out2, out3, cvlam);
-			float i3 = int1(out1, out2, out3, cvlam, cheat);
+			float i1 = int1(in, out1, out2, out3, cvlam);
+			float i2 = int1(in, out1, out2, out3, cvlam);
+			float i3 = int1(in, out1, out2, out3, cvlam, cheat);
 
 			// OUTS
 			outputs[D1].setVoltage(clamp(out1, -20.f, 20.f), p);
