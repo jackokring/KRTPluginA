@@ -147,25 +147,21 @@ struct Mu : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float cv = inputs[CV].getPolyVoltage(p);
+			float cvdb = inputs[CVDB].getPolyVoltage(p);
+			float cvhz = inputs[CVHZ].getPolyVoltage(p);
+			float cvlam = inputs[CVLAM].getPolyVoltage(p);
 
-			float fo = log(params[OFF].getValue() + cv
-				+ inputs[IMOD].getPolyVoltage(p) * modo,	//offset
-				dsp::FREQ_C4);
+			float in1 = inputs[IN1].getPolyVoltage(p);
+			float in2 = inputs[IN2].getPolyVoltage(p);
+			float in3 = inputs[IN3].getPolyVoltage(p);
+
+			cvdb = log(cvdb + db, 1.f);
+			cvhz = log(cvhz + hz, dsp::FREQ_C4);
+			cvlam = log(cvlam + lam, 1.f);
 			
-			float ff = log(params[FRQ].getValue() + cv
-				+ inputs[IMOD].getPolyVoltage(p) * modf,	//freq
-				dsp::FREQ_C4);
+			cvhz = clamp(cvhz, 0.f, fs * 0.5f);
 
-			ff = clamp(ff, 0.f, fs * 0.5f);
-			fo = clamp(fo, 0.f, fs * 0.5f);
-
-			// INS (NOT IMPLICIT)
-			float in18 = inputs[IN1].getPolyVoltage(p);
 			pre[p][idx] = inputs[ILP1].getPolyVoltage(p);
-			float fut = future(pre[p]);
-			float in12 = inputs[IN2].getPolyVoltage(p);
-			float inbp = inputs[IHP1].getPolyVoltage(p);
 
 			// Process filters 1, 2, 3 with common freq 1 and 3
 			setFK1(fo, fs);
