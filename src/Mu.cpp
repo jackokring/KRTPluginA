@@ -123,7 +123,6 @@ struct Mu : Module {
 		//Accel 3 point
 		float cb = c - b;
 		float cba = cb - (b - a);
-		float lim = ;
 		return cba == 0.f ? c : c - (cb * cb) / cba;
 	}
 
