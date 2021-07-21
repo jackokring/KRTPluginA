@@ -141,7 +141,7 @@ struct Mu : Module {
 
 	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
-	float pre[PORT_MAX_CHANNELS][9];// pre buffer
+	float pre[2*PORT_MAX_CHANNELS][9];// pre buffer
 	int idx = 0;// buffer current
 
 	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
@@ -198,6 +198,7 @@ struct Mu : Module {
 			in = process1(in);//LPF
 
 			pre[p][idx] = in;//buffer
+			pre[p+PORT_MAX_CHANNELS][idx] = cvlam;//just in case?
 			
 			float h = dsp::FREQ_C4/cvhz;//inverse of central rate nyquist
 			//scale? - V/sample -> normalization of sample rate change
