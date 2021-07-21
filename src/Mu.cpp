@@ -113,10 +113,10 @@ struct Mu : Module {
 
 	float int1(float in, float a, float b, float c, float l) {
 		//preprocess
-		float x = in*in;
-		a *= x*0.5f;
-		b *= x*in/6.f;
-		c *= x*x/24.f;
+		float x = l*l;
+		a *= -x*0.5f;
+		b *= x*l/6.f;
+		c *= -x*x/24.f;
 		in *= l;
 		return (accel(in, a, b)+accel(a+in, b, c))*0.5f;
 	}
@@ -132,7 +132,13 @@ struct Mu : Module {
 	}
 
 	float int2(float in, float a, float b, float c, float l) {
-		return accel(a, b, c);
+		//preprocess
+		float x = l*l;
+		a *= -l*x;
+		b *= x*x;
+		c *= -x*x*l;
+		in *= x;
+		return (accel(in, a, b)+accel(a+in, b, c))*0.5f;
 	}
 
 	float int3(float in, float a, float b, float c, float l, float ll) {
