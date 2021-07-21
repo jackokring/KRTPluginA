@@ -141,6 +141,13 @@ struct Mu : Module {
 		return (accel(in, a, b)+accel(a+in, b, c))*0.5f;
 	}
 
+	float terms2(float k, float b, float c, float l) {//float predicate
+		//float out = (k+1)!.in^(2+k)*b/(k+2)!;
+		//out -= (k+1)!.in^(3+k)*c/(k+3)!;
+		float out = 0;//TODO: ...
+		return out;
+	}
+
 	float int3(float in, float a, float b, float c, float l, float ll) {
 		//quite complicated as the 1/X has to be integrated to a log
 		//so simplification on the multiply defers complexity
@@ -148,10 +155,14 @@ struct Mu : Module {
 		float out = l*in*ll;//the first part
 		float secMul = (l-ll);//the second part multiplier
 		//second part
-		float x = accel(a, -l*b*0.5f, l*l*c*6.f);
+		float x = accel(a, -l*b*0.5f, l*l*c/6.f);
 		out -= secMul*x;
 		//third part nested series
-
+		//inner 2 significat terms
+		float x = terms2(0.f, b, c, l)*0.5f;
+		float y = -terms2(1.f, b, c, l)/6.f;
+		float z = terms2(2.f, b, c, l)/24.f;
+		out += accel(x, y, z);
 		return out;
 	}
 
