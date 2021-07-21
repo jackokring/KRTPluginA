@@ -198,7 +198,6 @@ struct Mu : Module {
 			in = process1(in);//LPF
 
 			pre[p][idx] = in;//buffer
-			pre[p+PORT_MAX_CHANNELS][idx] = cvlam;//just in case?
 			
 			float h = dsp::FREQ_C4/cvhz;//inverse of central rate nyquist
 			//scale? - V/sample -> normalization of sample rate change
@@ -208,10 +207,16 @@ struct Mu : Module {
 			float out2 = dif2(pre[p])*h*si;//h^2
 			float out3 = dif3(pre[p])*f*si;//h^3
 
+			float inp = in/cvlam;
+			pre[p+PORT_MAX_CHANNELS][idx] = inp;//just in case?
+			float out1p = dif1(pre[p+PORT_MAX_CHANNELS])*si;//h
+			float out2p = dif2(pre[p+PORT_MAX_CHANNELS])*h*si;//h^2
+			float out3p = dif3(pre[p+PORT_MAX_CHANNELS])*f*si;//h^3
+
 			//process endpoint integrals @ cvlam
 			float i1 = int1(in, out1, out2, out3, cvlam);
-			float i2 = int1(in, out1, out2, out3, cvlam);
-			float i3 = int1(in, out1, out2, out3, cvlam, cheat);
+			float i2 = int2(inp, out1p, out2p, out3p, cvlam);
+			float i3 = int3(in, out1, out2, out3, cvlam, cheat);
 
 			// OUTS
 			outputs[D1].setVoltage(clamp(out1, -20.f, 20.f), p);
