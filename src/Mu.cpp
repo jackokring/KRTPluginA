@@ -38,9 +38,9 @@ struct Mu : Module {
 
 	Mu() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(DB, -4.f, 4.f, 0.f, "Exponential Gain", " V/6dB");
+		configParam(DB, -4.f, 4.f, 0.f, "Exponential Gain", " 6dB");
 		configParam(HZ, -4.f, 4.f, 0.f, "Slew LPF", " Oct");
-		configParam(LAM, -4.f, 4.f, 0.f, "Halflife", " V/e^(Sample)");
+		configParam(LAM, -4.f, 4.f, 0.f, "Halflife", " per Oct");
 		configParam(G1, -2.f, 2.f, 0.f, "Gain");
 		configParam(G2, -2.f, 2.f, 0.f, "Gain");
 		configParam(G3, -2.f, 2.f, 0.f, "Gain");
@@ -130,7 +130,7 @@ struct Mu : Module {
 		return accel(a, b, c);
 	}
 
-	float int3(float a, float b, float c, float l) {
+	float int3(float a, float b, float c, float l, float ll) {
 		return accel(a, b, c);
 	}
 
@@ -182,7 +182,9 @@ struct Mu : Module {
 
 			cvdb = log(cvdb + db, 1.f);
 			cvhz = log(cvhz + hz, dsp::FREQ_C4);
-			cvlam = log(cvlam + lam, 1.f);
+			float cheat = cvlam + lam;
+			cvlam = log(cheat, 1.f);
+			cheat *= 0.69314718056f;//base e log cheat
 			
 			cvhz = clamp(cvhz, 0.f, fs * 0.5f);//limit max filter
 
@@ -203,7 +205,7 @@ struct Mu : Module {
 			//process endpoint integrals @ cvlam
 			float i1 = int1(out1, out2, out3, cvlam);
 			float i2 = int1(out1, out2, out3, cvlam);
-			float i3 = int1(out1, out2, out3, cvlam);
+			float i3 = int1(out1, out2, out3, cvlam, cheat);
 
 			// OUTS
 			outputs[D1].setVoltage(clamp(out1, -20.f, 20.f), p);
