@@ -184,7 +184,7 @@ struct Mu : Module {
 
 			// OUTS
 			outputs[D1].setVoltage(out1, p);
-			outputs[D2].setVoltage(out2, p);
+			outputs[D2].setVoltage(clamp(out2, -20.f, 20.f), p);
 			//slew LPF implicated in tweeter distruction!!!
 			outputs[D3].setVoltage(clamp(out3, -20.f, 20.f), p);
 
