@@ -111,6 +111,30 @@ struct Mu : Module {
 		return sum(co1, input, idx + 1)/4.762449890092781e+40;
 	}
 
+	float int1(float a, float b, float c, float l) {
+		//preprocess
+		return accel(a, b, c);
+	}
+
+	float accel(float a, float b, float c) {
+		//cumulate sum
+		b += a;
+		c += b;
+		//Accel 3 point
+		float cb = c - b;
+		float cba = cb - (b - a);
+		float lim = ;
+		return cba == 0.f ? c : c - (cb * cb) / cba;
+	}
+
+	float int2(float a, float b, float c, float l) {
+		return accel(a, b, c);
+	}
+
+	float int3(float a, float b, float c, float l) {
+		return accel(a, b, c);
+	}
+
 	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
 	float pre[PORT_MAX_CHANNELS][9];// pre buffer
@@ -178,9 +202,9 @@ struct Mu : Module {
 			float out3 = dif3(pre[p])*f*si;//h^3
 
 			//process endpoint integrals @ cvlam
-			float i1 = 0;
-			float i2 = 0;
-			float i3 = 0;
+			float i1 = int1(out1, out2, out3, cvlam);
+			float i2 = int1(out1, out2, out3, cvlam);
+			float i3 = int1(out1, out2, out3, cvlam);
 
 			// OUTS
 			outputs[D1].setVoltage(clamp(out1, -20.f, 20.f), p);
