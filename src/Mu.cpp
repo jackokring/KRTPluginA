@@ -169,9 +169,12 @@ struct Mu : Module {
 
 			pre[p][idx] = in;//buffer
 			
-			float out1 = dif1(pre[p]);
-			float out2 = dif2(pre[p]);//gain F corner??
-			float out3 = dif3(pre[p]);
+			float h = dsp::FREQ_C4/cvhz;//inverse of central rate nyquist
+			//scale?
+			float f = h * h;
+			float out1 = dif1(pre[p]);//h
+			float out2 = dif2(pre[p])*h;//h^2
+			float out3 = dif3(pre[p])*f;//h^3
 
 			//process endpoint integrals @ cvlam
 			float i1 = 0;
