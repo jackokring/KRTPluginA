@@ -142,7 +142,13 @@ struct Mu : Module {
 	}
 
 	float int3(float in, float a, float b, float c, float l, float ll) {
-		return accel(a, b, c);
+		//quite complicated as the 1/X has to be integrated to a log
+		//so simplification on the multiply defers complexity
+		//to the integral of the division in a integral(x*f(x)/x, x)
+		float out = l*in*ll;//the first part
+		float secMul = l-ll;//the second part multiplier
+
+		//return accel(a, b, c);
 	}
 
 	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
