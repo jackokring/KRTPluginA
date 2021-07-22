@@ -1,7 +1,7 @@
 KRTPluginA
 ===
 
-A (Tranparent Module - made with sexspex plastique)
+A (49% Tranparent Module - Made with sexspex plastique)
 ===
 
 Parameters
@@ -38,7 +38,7 @@ ninth order estimate one sample into the future. This has the effect of a bit of
 
 If some controls appear not to operate use `IN1` and `LP12` out, with `CV` for tracking, and then all the controls work. Some specific inserts are pre or post certain controls. The plate AM tracking stacks on the filter corner tracking.
 
-μ (The Gold One)
+μ (The Gold One - Summation generatve additive sythesis)
 ===
 
 Parameters
@@ -82,4 +82,4 @@ I mean why a 9th order FIR, and the number 27 of the sporadic simple groups conn
 
 He's irisponsible :D https://en.wikipedia.org/wiki/Jacques_Tits ... roll on (Monster Moonshine)[https://en.wikipedia.org/wiki/Monstrous_moonshine] and let's not confuse maths with physics "speculated" on maths. Hope I got all the integration by parts and collection of approximants in limited terms right? (Some 2's, some 3's, some hopeful sporadics on the elliptic). Did I mention the congruants div 3 and the determinats (count 44 (18n+26 (Groupies)[https://en.wikipedia.org/wiki/Sporadic_group])) with Z(p) and alternating groups to a 42 which the circle and ellipse are the alternating or not on the major minor radius?
 
-Initialize the big bang with differential estimates of the future captain, so obivating the definitional requirements at the singularity Captain. Well Gamma Bob, well gamma.
+Initialize the big bang with differential estimates of the future captain, so obivating the definitional requirements at the singularity Captain. Well Gamma Bob, well gamma. A form of precision series truncation crusher, nice! None of that chucking away an abstract precision and getting right in there with truncation of summation generatve additive sythesis, for that timbral union.
