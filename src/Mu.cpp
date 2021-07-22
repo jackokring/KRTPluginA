@@ -157,7 +157,7 @@ struct Mu : Module {
 		//quite complicated as the 1/X has to be integrated to a log
 		//so simplification on the multiply defers complexity
 		//to the integral of the division in a integral(x*f(x)/x, x)
-		float out = l*in*ll;//the first part
+		float out = in*ll;//the first part (bug fix)
 		float secMul = (l-ll);//the second part multiplier
 		//second part
 		float x = accel(a, -l*b*0.5f, l*l*c/6.f);
