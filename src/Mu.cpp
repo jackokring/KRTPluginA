@@ -41,9 +41,9 @@ struct Mu : Module {
 		configParam(DB, -4.f, 4.f, 0.f, "Exponential Gain", " 6dB");
 		configParam(HZ, -4.f, 4.f, 0.f, "Slew LPF", " Oct");
 		configParam(LAM, -4.f, 4.f, 0.f, "Halflife", " per Oct");
-		configParam(G1, -2.f, 2.f, 0.f, "Gain");
-		configParam(G2, -2.f, 2.f, 0.f, "Gain");
-		configParam(G3, -2.f, 2.f, 0.f, "Gain");
+		configParam(G1, 0.f, 2.f, 0.f, "Gain");
+		configParam(G2, 0.f, 2.f, 0.f, "Gain");
+		configParam(G3, 0.f, 2.f, 0.f, "Gain");
 	}
 
 	//obtain mapped control value
@@ -260,10 +260,10 @@ struct Mu : Module {
 			float i3 = int3(inl, out1l, out2l, out3l, cvlam, cheat);
 
 			// OUTS
-			outputs[D1].setVoltage(clamp(out1, -20.f, 20.f), p);
-			outputs[D2].setVoltage(clamp(out2, -20.f, 20.f), p);
+			outputs[D1].setVoltage(out1, p);
+			outputs[D2].setVoltage(out2, p);
 			//slew LPF implicated in tweeter distruction!!!
-			outputs[D3].setVoltage(clamp(out3, -20.f, 20.f), p);
+			outputs[D3].setVoltage(out3, p);
 
 			outputs[I1].setVoltage(i1, p);
 			outputs[I2].setVoltage(i2, p);
