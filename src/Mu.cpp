@@ -66,49 +66,54 @@ struct Mu : Module {
 		return out;//lpf default
 	}
 
+	float future(float* input) {
+		float co1[] = {1, -9, 36, -84, 126, -126, 84, -36, 9};//0th differential in the future
+		return sum(co1, input, idx + 1);
+	}
+
 	float dif1(float* input) {
 		float co1[] = {
-			1.5265105587276737e+48f,
-			-1.3668387579017067e+49f,
-			+5.431248343252391e+49f,
-			-1.2560580881508727e+50f,
-			+1.8604974291269024e+50f,
-			-1.825112874436707e+50f,
-			+1.1774257443584765e+50f,
-			-4.70911457297244e+49f,
-			+9.245318227649387e+48f
+			1.5265105587276737e+1f,
+			-1.3668387579017067e+2f,
+			+5.431248343252391e+2f,
+			-1.2560580881508727e+3f,
+			+1.8604974291269024e+3f,
+			-1.825112874436707e+3f,
+			+1.1774257443584765e+3f,
+			-4.70911457297244e+2f,
+			+9.245318227649387e+1f
 		};
-		return sum(co1, input, idx + 1)/5.61659602207866e+47f;
+		return sum(co1, input, idx + 1)/5.61659602207866f;
 	}
 
 	float dif2(float* input) {
 		float co1[] = {
-			8.145411592862319e+40f,
-			-7.24075814611475e+41f,
-			+2.8505272093785156e+42f,
-			-6.511132716988107e+42f,
-			+9.479167232763678e+42f,
-			-9.062466169644141e+42f,
-			+5.604592622540067e+42f,
-			-2.0690575636637124e+42f,
-			+3.50991084293707e+41f
+			8.145411592862319f,
+			-7.24075814611475e+1f,
+			+2.8505272093785156e+2f,
+			-6.511132716988107e+2f,
+			+9.479167232763678e+2f,
+			-9.062466169644141e+2f,
+			+5.604592622540067e+2f,
+			-2.0690575636637124e+2f,
+			+3.50991084293707e+1f
 		};
-		return sum(co1, input, idx + 1)/1.3901620164136395e+40f;
+		return sum(co1, input, idx + 1)/1.3901620164136395f;
 	}
 
 	float dif3(float* input) {
 		float co1[] = {
-			4.768402943555988e+41f,
-			-4.198496441152479e+42f,
-			+1.6329646901392421e+43f,
-			-3.6714916748050246e+43f,
-			+5.231749630181975e+43f,
-			-4.851706129693572e+43f,
-			+2.866756706165198e+43f,
-			-9.882480374551996e+42f,
-			+1.5214043014568113e+42f
+			4.768402943555988e+1f,
+			-4.198496441152479e+2f,
+			+1.6329646901392421e+3f,
+			-3.6714916748050246e+3f,
+			+5.231749630181975e+3f,
+			-4.851706129693572e+3f,
+			+2.866756706165198e+3f,
+			-9.882480374551996e+2f,
+			+1.5214043014568113e+2f
 		};
-		return sum(co1, input, idx + 1)/4.762449890092781e+40;
+		return sum(co1, input, idx + 1)/4.762449890092781f;
 	}
 
 	float int1(float in, float a, float b, float c, float l) {
@@ -159,7 +164,7 @@ struct Mu : Module {
 		out -= secMul*x;
 		//third part nested series
 		//inner 2 significat terms
-		float x = terms2(1.f/2.f, 1.f/6.f, b, c, l, 1.f)*0.5f;//0
+		x = terms2(1.f/2.f, 1.f/6.f, b, c, l, 1.f)*0.5f;//0
 		float y = -terms2(1.f/3.f, 2.f/24.f, b, c, l, l)/6.f;//1
 		float z = terms2(6.f/24.f, 24.f/120.f, b, c, l, l*l)/24.f;//2
 		out += accel(x, y, z);
@@ -210,7 +215,7 @@ struct Mu : Module {
 			float in2 = inputs[IN2].getPolyVoltage(p);
 			float in3 = inputs[IN3].getPolyVoltage(p);
 
-			float in = in1 + in2 + in3;//add
+			float in = in1*g1 + in2*g2 + in3*g3;//add
 
 			cvdb = log(cvdb + db, 1.f);
 			cvhz = log(cvhz + hz, dsp::FREQ_C4);
@@ -222,9 +227,10 @@ struct Mu : Module {
 
 			in *= cvdb;//gain
 			setFK1(cvhz, fs);
-			in = process1(in);//LPF
+			in = process1(in, p);//LPF
 
 			pre[p][idx] = in;//buffer
+			in = future(pre[p]);
 			
 			float h = dsp::FREQ_C4/cvhz;//inverse of central rate nyquist
 			//scale? - V/sample -> normalization of sample rate change
@@ -236,12 +242,14 @@ struct Mu : Module {
 
 			float inp = in/cvlam;
 			pre[p+PORT_MAX_CHANNELS][idx] = inp;//just in case?
+			inp = future(pre[p+PORT_MAX_CHANNELS]);
 			float out1p = dif1(pre[p+PORT_MAX_CHANNELS])*si;//h
 			float out2p = dif2(pre[p+PORT_MAX_CHANNELS])*h*si;//h^2
 			float out3p = dif3(pre[p+PORT_MAX_CHANNELS])*f*si;//h^3
 
 			float inl = in*cvlam;
 			pre[p+2*PORT_MAX_CHANNELS][idx] = inl;//just in case?
+			inl = future(pre[p+2*PORT_MAX_CHANNELS]);
 			float out1l = dif1(pre[p+2*PORT_MAX_CHANNELS])*si;//h
 			float out2l = dif2(pre[p+2*PORT_MAX_CHANNELS])*h*si;//h^2
 			float out3l = dif3(pre[p+2*PORT_MAX_CHANNELS])*f*si;//h^3
