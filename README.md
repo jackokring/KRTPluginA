@@ -1,4 +1,4 @@
-KRTPluginA
+KRTPluginA `RACK_VERSION.MACHINE_VERSION.FIX_INCREMENT`
 ===
 
 A (49% Tranparent Module - Made with sexspex plastique)
