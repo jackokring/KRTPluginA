@@ -173,7 +173,7 @@ struct Mu : Module {
 
 	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
-	float pre[3*PORT_MAX_CHANNELS][9];// pre buffer
+	float pre[5*PORT_MAX_CHANNELS][9];// pre buffer
 	int idx = 0;// buffer current
 
 	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
@@ -221,7 +221,11 @@ struct Mu : Module {
 			cvhz = log(cvhz + hz, dsp::FREQ_C4);
 			float cheat = cvlam + lam;
 			cvlam = log(cheat, 1.f);
+			pre[p+3*PORT_MAX_CHANNELS][idx] = cvlam;
+			cvlam = future(pre[p+3*PORT_MAX_CHANNELS]);
 			cheat *= 0.69314718056f;//base e log cheat
+			pre[p+4*PORT_MAX_CHANNELS][idx] = cheat;
+			cheat = future(pre[p+4*PORT_MAX_CHANNELS]);
 			
 			cvhz = clamp(cvhz, 0.f, fs * 0.5f);//limit max filter
 
