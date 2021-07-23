@@ -101,6 +101,8 @@ But isn't it about the singularity context of integration in a set of limits x, 
 
 But shouldn't a sine converge to sin(x)? And and truncation of terms provide a controlled deviation from sin(x) for Fauxrier harminics? Exactly Boz, the sweet low power law alias summands.
 
+"Proxy off a dirty hole of unknown gain? How dare you? Must fix the incomming to be at least plesant." -- Captain of the Exponential.
+
 T
 ===
 
