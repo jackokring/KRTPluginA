@@ -1,5 +1,7 @@
-KRTPluginA `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT`
+KRTPluginA 
 ===
+
+Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work.
 
 A (49% Tranparent Module - Made with sexspex plastique)
 ===
