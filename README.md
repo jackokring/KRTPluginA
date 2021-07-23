@@ -3,6 +3,13 @@ KRTPluginA
 
 Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work.
 
+Index
+===
+
+* [A](#a)
+* [u](#μ)
+* [T](#t)
+
 A
 ===
 
