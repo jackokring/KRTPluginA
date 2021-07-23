@@ -38,18 +38,22 @@ struct Mu : Module {
 
 	Mu() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(DB, -4.f, 4.f, 0.f, "Exponential Gain", " 6dB");
+		configParam(DB, -24.f, 24.f, 0.f, "Exponential Gain", " dB");
 		configParam(HZ, -4.f, 4.f, 0.f, "Slew LPF", " Oct");
 		configParam(LAM, -4.f, 4.f, 0.f, "Halflife", " per Oct");
-		configParam(G1, 0.f, 2.f, 0.f, "Gain");
-		configParam(G2, 0.f, 2.f, 0.f, "Gain");
-		configParam(G3, 0.f, 2.f, 0.f, "Gain");
+		configParam(G1, -6.f, 6.f, 0.f, "Gain", " dB");
+		configParam(G2, -6.f, 6.f, 0.f, "Gain", " dB");
+		configParam(G3, -6.f, 6.f, 0.f, "Gain", " dB");
 	}
 
 	//obtain mapped control value
     float log(float val, float centre) {
         return powf(2.f, val) * centre;
     }
+
+	float dbMid(float val) {
+		return powf(2.f, val)-powf(2.f, -val);
+	}
 
     /* 1P H(s) = 1 / (s + fb) */
     //ONE POLE FILTER
@@ -196,13 +200,13 @@ struct Mu : Module {
 		int maxPort = inputs[HZ].getChannels();
 		if(maxPort == 0) maxPort = 1;
 
-		float db = params[DB].getValue();
+		float db = params[DB].getValue()/6.f;
 		float hz = params[HZ].getValue();
 		float lam = params[LAM].getValue();
 
-		float g1 = params[G1].getValue();
-		float g2 = params[G2].getValue();
-		float g3 = params[G3].getValue();
+		float g1 = dBMid(params[G1].getValue()/6.f);
+		float g2 = dBMid(params[G2].getValue()/6.f);
+		float g3 = dBMid(params[G3].getValue()/6.f);
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
