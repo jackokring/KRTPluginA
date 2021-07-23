@@ -97,6 +97,8 @@ He's irisponsible :D https://en.wikipedia.org/wiki/Jacques_Tits ... roll on (Mon
 
 Initialize the big bang with differential estimates of the future captain, so obivating the definitional requirements at the singularity Captain. Well Gamma Bob, well gamma. A form of precision series truncation crusher, nice! None of that chucking away an abstract precision and getting right in there with truncation of summation generatve additive sythesis, for that timbral union.
 
+But isn't it about the singularity context of integration in a set of limits x, x+y where x is unkown but gestimated in a relative context Captain? Yes Bob all error in the calculus should be reported as this module is not about error, and others maybe built.
+
 T
 ===
 
