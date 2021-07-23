@@ -3,10 +3,10 @@ KRTPluginA
 
 Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work.
 
-#A
+A
 ===
 
-(49% Tranparent Module - Made with sexspex plastique)
+*49% Tranparent Module - Made with sexspex plastique*
 
 Parameters
 ---
@@ -42,8 +42,10 @@ ninth order estimate one sample into the future. This has the effect of a bit of
 
 If some controls appear not to operate use `IN1` and `LP12` out, with `CV` for tracking, and then all the controls work. Some specific inserts are pre or post certain controls. The plate AM tracking stacks on the filter corner tracking.
 
-μ (The Gold One - Summation generatve additive sythesis)
+μ
 ===
+
+*The Gold One - Summation generatve additive sythesis*
 
 Parameters
 ---
@@ -88,8 +90,10 @@ He's irisponsible :D https://en.wikipedia.org/wiki/Jacques_Tits ... roll on (Mon
 
 Initialize the big bang with differential estimates of the future captain, so obivating the definitional requirements at the singularity Captain. Well Gamma Bob, well gamma. A form of precision series truncation crusher, nice! None of that chucking away an abstract precision and getting right in there with truncation of summation generatve additive sythesis, for that timbral union.
 
-T (The White One - A harmonic pitch down and up delay)
+T
 ===
+
+*The White One - A harmonic pitch down and up delay*
 
 Parameters
 ---
