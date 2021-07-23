@@ -41,9 +41,10 @@ struct Mu : Module {
 		configParam(DB, -24.f, 24.f, 0.f, "Exponential Gain", " dB");
 		configParam(HZ, -4.f, 4.f, 0.f, "Slew LPF", " Oct");
 		configParam(LAM, -4.f, 4.f, 0.f, "Halflife", " per Oct");
-		configParam(G1, -6.f, 6.f, 0.f, "Gain", " dB");
-		configParam(G2, -6.f, 6.f, 0.f, "Gain", " dB");
-		configParam(G3, -6.f, 6.f, 0.f, "Gain", " dB");
+		//-infinty centre
+		configParam(G1, -6.f, 6.f, 0.f, "Gain", " Center dB");
+		configParam(G2, -6.f, 6.f, 0.f, "Gain", " Center dB");
+		configParam(G3, -6.f, 6.f, 0.f, "Gain", " Center dB");
 	}
 
 	//obtain mapped control value
