@@ -51,7 +51,7 @@ struct Mu : Module {
         return powf(2.f, val) * centre;
     }
 
-	float dbMid(float val) {
+	float dBMid(float val) {
 		return powf(2.f, val)-powf(2.f, -val);
 	}
 
