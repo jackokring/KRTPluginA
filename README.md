@@ -1,4 +1,4 @@
-KRTPluginA `RACK_VERSION.MACHINE_VERSION.FIX_INCREMENT`
+KRTPluginA `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT`
 ===
 
 A (49% Tranparent Module - Made with sexspex plastique)
@@ -89,8 +89,8 @@ T (The White One - A harmonic pitch down and up delay)
 
 Parameters
 ---
-* Course Tune `Note`
-* Fine Tune `Fine`
+* Course Tune `NOTE`
+* Fine Tune `FINE`
 
 Ins
 ---
