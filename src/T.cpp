@@ -33,8 +33,12 @@ struct T : Module {
 		}
 	}
 
+	const float rate = 44100.f;
+	const float chans = 16.f;
+	const float time = 32.f;
+
 	//buffer length
-	const float MAX_BUFFER = 4096.f;//rounding?
+	const float MAX_BUFFER = rate * chans * time;
 	const float initPos = 0.f;
 	float head[PORT_MAX_CHANNELS];
 	float tail[PORT_MAX_CHANNELS];
@@ -61,7 +65,7 @@ struct T : Module {
 		head[chan] += 1.f;
 		where /= maxLen;//modulo
 		long w = (long) where;//get an integer index
-		float where2 = buffStart[chan] + tail[chan];
+		float where2 = buffStart[chan] + tail[chan] - 1.f;//trailing tail overview
 		where2 /= maxLen;//modulo
 		long w2 = (long) where2;//get an integer index
 		if(w == w2) return true;//overflow

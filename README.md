@@ -123,7 +123,7 @@ Outs
 * High Trigger `HI`
 * Out `OUT`
 
-The trigger `TRIG` resets the delay and produces a down shifted `OUT` until the up shift starts causing `HI` to output a rising edge and the delay switches an octave up until the expected retrigger point. The delay plays regular speed until a retrigger. The delay will put itself in the up shift if the delay buffer becomes full.
+The trigger `TRIG` resets the delay and produces a down shifted `OUT` until the up shift starts causing `HI` to output a rising edge and the delay switches an octave up until the expected retrigger point. The delay plays regular speed until a retrigger. The delay will reset itself if the delay buffer becomes full.
 
 Going down is always a prerequisite before rising to the top! And normal is very overdue. The maximal delay length is divided by polyphony. What's the cache flush GB/s on this thing? I'm thinking 4 bars and a bit or so?
 
