@@ -69,13 +69,28 @@ struct T : Module {
 		return false;// no reset
 	}
 
+	float interpolate(float a, float b, float ta, float tab) {
+		float lena = 1.f - ta;
+		if(tab > 1.f || lena <= tab) {
+			float lenb = tab - lena;
+			return (a * lena + b * lenb) / tab;//normalized
+		} else {
+			return a;
+		}
+	}
+
 	float getBuffer(float stepRelative, int chan) {
 		float where = buffStart[chan] + tail[chan];
 		tail[chan] += stepRelative;
 		where /= maxLen;//modulo
 		long w = (long) where;//get an integer index
+		float fp = where - (float) w;//fractional part
 		float out = buff[w];
-		return out;//TODO
+		where = where + stepRelative;
+		where /= maxLen;//modulo
+		w = (long) where;//get an integer index
+		float out2 = buff[w];
+		return interpolate(out, out2, fp, stepRelative);
 	}
 
 	void resetBuffer(float first, int chan) {
