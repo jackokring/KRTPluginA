@@ -26,10 +26,10 @@ struct T : Module {
 		configParam(NOTE, 0.f, 11.f, 0.f, "Tune", " Semitones");
 		configParam(FINE, 0.f, 100.f, 0.f, "Fine Tune", " Cents");
 		for(int p = 0; p < PORT_MAX_CHANNELS; p++) {
-			len[p] = lenL[p] = head[p] = tail[p] = 0.f;
+			head[p] = tail[p] = 0.f;
 			lastTrig[p] = hi[p] = false;
-			wait[p] = true; 
 			buff.resize(MAX_BUFFER);
+			len[p] = 4096.f;//an initial test
 		}
 	}
 
@@ -143,19 +143,15 @@ struct T : Module {
 				len[p] = head[p];//get written length since trigger
 				resetBuffer(in, p);
 				lenL[p] = (2.f * low - 1.f) * len[p] / low;
-				wait[p] = false;
 				hi[p] = false;
 			}
 			lastTrig[p] = st[p].isHigh();
 
 			float out;
-			if(wait[p]) {
-				out = getBuffer(1.f, p);//pass
-			} else if(hi[p]) {
+			if(hi[p]) {
 				if(tail[p] + note > len[p]) {
 					out = getBuffer(1.f, p);//pass
 					hi[p] = false;
-					wait[p] = true;//reset
 				} else {
 					out = getBuffer(note, p);//high
 				}
