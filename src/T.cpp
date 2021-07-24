@@ -50,7 +50,7 @@ struct T : Module {
         return powf(2.f, val) * centre;
     }
 
-	dsp::SchmittTrigger st;
+	dsp::SchmittTrigger st[PORT_MAX_CHANNELS];
 
 	bool putBuffer(float in, int chan) {
 		return false;//reset
@@ -88,14 +88,14 @@ struct T : Module {
 			float trig = inputs[TRIG].getPolyVoltage(p);
 			st.process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
 
-			if((!lastTrig[p] && st.isHigh()) || putBuffer(in, p)) { 
+			if((!lastTrig[p] && st[p].isHigh()) || putBuffer(in, p)) { 
 				len[p] = head[p];//get written length since trigger
 				resetBuffer(in, p);
 				lenL[p] = (2.f * low - 1.f) * len[p] / low;
 				wait[p] = false;
 				hi[p] = false;
 			}
-			lastTrig[p] = st.isHigh();
+			lastTrig[p] = st[p].isHigh();
 
 			float out;
 			if(wait[p]) {
