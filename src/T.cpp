@@ -60,14 +60,21 @@ struct T : Module {
 	dsp::SchmittTrigger st[PORT_MAX_CHANNELS];
 	std::vector<float> buff;
 
+	float modulo(float x, float m) {
+		float div = x / m;
+		long d = (long) div;
+		float rem = x - d * m;
+		return rem;
+	}
+
 	bool putBuffer(float in, int chan) {
 		float where = head[chan];
 		head[chan] += 1.f;
-		where /= maxLen;//modulo
+		where = modulo(where, maxLen);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float where2 = tail[chan] + maxLen - 1.f;//trailing tail overview
-		where2 /= maxLen;//modulo
+		where2 = modulo(where2, maxLen);//modulo
 		where2 += buffStart[chan];
 		long w2 = (long) where2;//get an integer index
 		if(w == w2) return true;//overflow
@@ -88,13 +95,13 @@ struct T : Module {
 	float getBuffer(float stepRelative, int chan) {
 		float where = tail[chan];
 		tail[chan] += stepRelative;
-		where /= maxLen;//modulo
+		where = modulo(where, maxLen);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float fp = where - (float) w;//fractional part
 		float out = buff[w];
 		float where2 = tail[chan];
-		where2 /= maxLen;//modulo
+		where2 = modulo(where2, maxLen);//modulo
 		where2 += buffStart[chan];
 		w = (long) where;//get an integer index
 		float out2 = buff[w];
