@@ -61,12 +61,14 @@ struct T : Module {
 	std::vector<float> buff;
 
 	bool putBuffer(float in, int chan) {
-		float where = buffStart[chan] + head[chan];
+		float where = head[chan];
 		head[chan] += 1.f;
 		where /= maxLen;//modulo
+		where += buffStart[chan];
 		long w = (long) where;//get an integer index
-		float where2 = buffStart[chan] + tail[chan] - 1.f;//trailing tail overview
+		float where2 = tail[chan] + maxLen - 1.f;//trailing tail overview
 		where2 /= maxLen;//modulo
+		where2 += buffStart[chan];
 		long w2 = (long) where2;//get an integer index
 		if(w == w2) return true;//overflow
 		buff[w] = in;
@@ -84,14 +86,16 @@ struct T : Module {
 	}
 
 	float getBuffer(float stepRelative, int chan) {
-		float where = buffStart[chan] + tail[chan];
+		float where = tail[chan];
 		tail[chan] += stepRelative;
 		where /= maxLen;//modulo
+		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float fp = where - (float) w;//fractional part
 		float out = buff[w];
-		where = where + stepRelative;
-		where /= maxLen;//modulo
+		float where2 = tail[chan];
+		where2 /= maxLen;//modulo
+		where2 += buffStart[chan];
 		w = (long) where;//get an integer index
 		float out2 = buff[w];
 		return interpolate(out, out2, fp, stepRelative);
@@ -132,7 +136,7 @@ struct T : Module {
 				len[p] = head[p];//get written length since trigger
 				resetBuffer(in, p);
 				lenL[p] = (2.f * low - 1.f) * len[p] / low;
-				wait[p] = false;
+				//wait[p] = false;
 				hi[p] = false;
 			}
 			lastTrig[p] = st[p].isHigh();
@@ -158,6 +162,8 @@ struct T : Module {
 			}
 
 			// OUTS
+			//outputs[HI].setVoltage(lenL[p]/1000.f, p);//trigger out sort of
+			//outputs[OUT].setVoltage(len[p]/1000.f, p);
 			outputs[HI].setVoltage(hi[p] ? 10.f : 0.f, p);//trigger out sort of
 			outputs[OUT].setVoltage(out, p);
 		}
