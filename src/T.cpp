@@ -29,6 +29,7 @@ struct T : Module {
 			len[p] = lenL[p] = head[p] = tail[p] = 0.f;
 			lastTrig[p] = hi[p] = false;
 			wait[p] = true; 
+			buff.resize(MAX_BUFFER);
 		}
 	}
 
@@ -38,6 +39,8 @@ struct T : Module {
 	float head[PORT_MAX_CHANNELS];
 	float tail[PORT_MAX_CHANNELS];
 	bool lastTrig[PORT_MAX_CHANNELS];
+	float maxLen;
+	float buffStart[PORT_MAX_CHANNELS];
 
 	//state control
 	bool hi[PORT_MAX_CHANNELS];
@@ -51,17 +54,33 @@ struct T : Module {
     }
 
 	dsp::SchmittTrigger st[PORT_MAX_CHANNELS];
+	std::vector<float> buff;
 
 	bool putBuffer(float in, int chan) {
-		return false;//reset
+		float where = buffStart[chan] + head[chan];
+		head[chan] += 1.f;
+		where /= maxLen;//modulo
+		long w = (long) where;//get an integer index
+		float where2 = buffStart[chan] + tail[chan];
+		where2 /= maxLen;//modulo
+		long w2 = (long) where2;//get an integer index
+		if(w == w2) return true;//overflow
+		buff[w] = in;
+		return false;// no reset
 	}
 
 	float getBuffer(float stepRelative, int chan) {
-		return 0.f;//TODO
+		float where = buffStart[chan] + tail[chan];
+		tail[chan] += stepRelative;
+		where /= maxLen;//modulo
+		long w = (long) where;//get an integer index
+		float out = buff[w];
+		return out;//TODO
 	}
 
 	void resetBuffer(float first, int chan) {
-
+		head[chan] = 0.f;
+		tail[chan] = 0.f;
 		putBuffer(first, chan);//easier implemetation later
 	}
 
@@ -71,9 +90,10 @@ struct T : Module {
 		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
 		// voltage (e.g. with Port::getVoltage())
 		// POLY: Port::getPolyVoltage(c)
-		float fs = args.sampleRate;
+		//float fs = args.sampleRate;
 		int maxPort = inputs[TRIG].getChannels();
 		if(maxPort == 0) maxPort = 1;
+		maxLen = MAX_BUFFER / maxPort;//share buffer 
 
 		float note = params[NOTE].getValue()/12.f;
 		float fine = params[FINE].getValue()/1200.f;
@@ -84,6 +104,7 @@ struct T : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
+			buffStart[p] = (maxLen - 1.f) * p; 
 			float in = inputs[IN].getPolyVoltage(p);
 			float trig = inputs[TRIG].getPolyVoltage(p);
 			st[p].process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
