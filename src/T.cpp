@@ -124,6 +124,7 @@ struct T : Module {
 		int maxPort = inputs[TRIG].getChannels();
 		if(maxPort == 0) maxPort = 1;
 		maxLen = MAX_BUFFER / maxPort;//share buffer 
+		maxLen -= 2.f;//round down for sample guard
 
 		float note = params[NOTE].getValue()/12.f;
 		float fine = params[FINE].getValue()/1200.f;
@@ -135,7 +136,7 @@ struct T : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			buffStart[p] = (maxLen - 1.f) * p; 
+			buffStart[p] = (maxLen - 1.f) * p;//fit 
 			float in = inputs[IN].getPolyVoltage(p);
 			float trig = inputs[TRIG].getPolyVoltage(p);
 			st[p].process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
