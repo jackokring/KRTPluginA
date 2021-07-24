@@ -142,7 +142,7 @@ struct T : Module {
 			if((!lastTrig[p] && st[p].isHigh()) || putBuffer(in, p)) { 
 				len[p] = head[p];//get written length since trigger
 				resetBuffer(in, p);
-				lenL[p] = (2.f * low - 1.f) * len[p] / low;
+				lenL[p] = (note - 1.f) * len / (note - low);//ratio
 				hi[p] = false;
 			}
 			lastTrig[p] = st[p].isHigh();
