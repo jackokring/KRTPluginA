@@ -23,9 +23,103 @@ struct T : Module {
 
 	T() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(NOTE, 0.f, 11.f, 0.f, "Tune", " Semitones");
+		configParam(FINE, 0.f, 100.f, 0.f, "Fine Tune", " Cents");
+		for(int p = 0; p < PORT_MAX_CHANNELS; p++) {
+			len[p] = lenL[p] = head[p] = tail[p] = 0.f;
+			hi[p] = false;
+			wait[p] = true; 
+		}
+	}
+
+	//buffer length
+	const float MAX_BUFFER = 4096.f;//rounding?
+	const float initPos = 0.f;
+	float head[PORT_MAX_CHANNELS];
+	float tail[PORT_MAX_CHANNELS];
+
+	//state control
+	bool hi[PORT_MAX_CHANNELS];
+	bool wait[PORT_MAX_CHANNELS];//wait for state to trigger
+	float lenL[PORT_MAX_CHANNELS];
+	float len[PORT_MAX_CHANNELS];
+
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
+	dsp::SchmittTrigger st;
+
+	bool putBuffer(float in, int chan) {
+		return false;//reset
+	}
+
+	float getBuffer(float stepRelative, int chan) {
+		return 0.f;//TODO
+	}
+
+	void resetBuffer(float first, int chan) {
+
+		putBuffer(first, chan);//easier implemetation later
 	}
 
 	void process(const ProcessArgs& args) override {
+				// For inputs intended to be used solely for audio, sum the voltages of all channels
+		// (e.g. with Port::getVoltageSum())
+		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
+		// voltage (e.g. with Port::getVoltage())
+		// POLY: Port::getPolyVoltage(c)
+		float fs = args.sampleRate;
+		int maxPort = inputs[TRIG].getChannels();
+		if(maxPort == 0) maxPort = 1;
+
+		float note = params[NOTE].getValue()/12.f;
+		float fine = params[FINE].getValue()/1200.f;
+		note += fine;
+		note = log(note, 1.f);//relative hi note rate
+		float low = note * 0.5f;//an octave down
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float in = inputs[IN].getPolyVoltage(p);
+			float trig = inputs[TRIG].getPolyVoltage(p);
+			st.process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
+			trig = st.isHigh();
+
+			if(trig > 0.5f || putBuffer(in, p)) { 
+				len[p] = head[p];//get written length since trigger
+				resetBuffer(in, p);
+				lenL[p] = (2.f * low - 1.f) * len[p] / low;
+				wait[p] = false;
+				hi[p] = false;
+			}
+
+			float out;
+			if(wait[p]) {
+				out = getBuffer(1.f, p);//pass
+			} else if(hi[p]) {
+				if(tail[p] + note > len[p]) {
+					out = getBuffer(1.f, p);//pass
+					hi[p] = false;
+					wait[p] = true;//reset
+				} else {
+					out = getBuffer(note, p);//high
+				}
+			} else {
+				if(tail[p] + low > lenL[p]) {
+					out = getBuffer(1.f, p);//pass
+					hi[p] = true;
+				} else {
+					out = getBuffer(low, p);//low
+				}
+			}
+
+			// OUTS
+			outputs[HI].setVoltage(hi[p] ? 10.f : 0.f, p);//trigger out sort of
+			outputs[OUT].setVoltage(out, p);
+		}
 	}
 };
 
