@@ -143,7 +143,7 @@ struct T : Module {
 				len[p] = head[p];//get written length since trigger
 				resetBuffer(in, p);
 				lenL[p] = (2.f * low - 1.f) * len[p] / low;
-				//wait[p] = false;
+				wait[p] = false;
 				hi[p] = false;
 			}
 			lastTrig[p] = st[p].isHigh();
@@ -169,8 +169,6 @@ struct T : Module {
 			}
 
 			// OUTS
-			//outputs[HI].setVoltage(lenL[p]/1000.f, p);//trigger out sort of
-			//outputs[OUT].setVoltage(len[p]/1000.f, p);
 			outputs[HI].setVoltage(hi[p] ? 10.f : 0.f, p);//trigger out sort of
 			outputs[OUT].setVoltage(out, p);
 		}
