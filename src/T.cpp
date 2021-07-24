@@ -153,7 +153,7 @@ struct T : Module {
 					out = getBuffer(1.f, p);//pass
 					hi[p] = false;
 				} else {
-					if(tail[p] + note > head[p]) tail[p] = head[p] - note;
+					if(tail[p] + note + 1.f > head[p]) tail[p] = head[p] - note;
 					out = getBuffer(note, p);//high
 				}
 			} else {
@@ -161,7 +161,7 @@ struct T : Module {
 					if(tail[p] > len[p]) {
 						out = getBuffer(1.f, p);//pass
 					} else {
-						if(tail[p] + note > head[p]) tail[p] = head[p] - note;
+						if(tail[p] + note + 1.f > head[p]) tail[p] = head[p] - note;
 						out = getBuffer(note, p);//pass edge case
 						//must not overtake input to buffer
 					}
