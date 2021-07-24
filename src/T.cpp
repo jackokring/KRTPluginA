@@ -157,7 +157,7 @@ struct T : Module {
 				}
 			} else {
 				if(tail[p] + low > lenL[p]) {
-					out = getBuffer(1.f, p);//pass
+					out = getBuffer(note, p);//pass
 					hi[p] = true;
 				} else {
 					out = getBuffer(low, p);//low
