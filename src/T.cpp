@@ -86,7 +86,7 @@ struct T : Module {
 		for(int p = 0; p < maxPort; p++) {
 			float in = inputs[IN].getPolyVoltage(p);
 			float trig = inputs[TRIG].getPolyVoltage(p);
-			st.process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
+			st[p].process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
 
 			if((!lastTrig[p] && st[p].isHigh()) || putBuffer(in, p)) { 
 				len[p] = head[p];//get written length since trigger
