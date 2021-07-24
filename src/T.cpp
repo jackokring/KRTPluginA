@@ -27,7 +27,7 @@ struct T : Module {
 		configParam(FINE, 0.f, 100.f, 0.f, "Fine Tune", " Cents");
 		for(int p = 0; p < PORT_MAX_CHANNELS; p++) {
 			len[p] = lenL[p] = head[p] = tail[p] = 0.f;
-			hi[p] = false;
+			lastTrig[p] = hi[p] = false;
 			wait[p] = true; 
 		}
 	}
@@ -37,6 +37,7 @@ struct T : Module {
 	const float initPos = 0.f;
 	float head[PORT_MAX_CHANNELS];
 	float tail[PORT_MAX_CHANNELS];
+	bool lastTrig[PORT_MAX_CHANNELS];
 
 	//state control
 	bool hi[PORT_MAX_CHANNELS];
@@ -87,13 +88,14 @@ struct T : Module {
 			float trig = inputs[TRIG].getPolyVoltage(p);
 			st.process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
 
-			if(st.isHigh() || putBuffer(in, p)) { 
+			if((!lastTrig[p] && st.isHigh()) || putBuffer(in, p)) { 
 				len[p] = head[p];//get written length since trigger
 				resetBuffer(in, p);
 				lenL[p] = (2.f * low - 1.f) * len[p] / low;
 				wait[p] = false;
 				hi[p] = false;
 			}
+			lastTrig[p] = st.isHigh();
 
 			float out;
 			if(wait[p]) {
