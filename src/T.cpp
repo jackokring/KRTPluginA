@@ -86,9 +86,8 @@ struct T : Module {
 			float in = inputs[IN].getPolyVoltage(p);
 			float trig = inputs[TRIG].getPolyVoltage(p);
 			st.process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
-			trig = st.isHigh();
 
-			if(trig > 0.5f || putBuffer(in, p)) { 
+			if(st.isHigh() || putBuffer(in, p)) { 
 				len[p] = head[p];//get written length since trigger
 				resetBuffer(in, p);
 				lenL[p] = (2.f * low - 1.f) * len[p] / low;
