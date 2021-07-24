@@ -130,6 +130,7 @@ struct T : Module {
 		note += fine;
 		note = log(note, 1.f);//relative hi note rate
 		float low = note * 0.5f;//an octave down
+		float n1 = note + 1.f;
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
@@ -153,7 +154,7 @@ struct T : Module {
 					out = getBuffer(1.f, p);//pass
 					hi[p] = false;
 				} else {
-					if(tail[p] + note + 1.f > head[p]) tail[p] = head[p] - note;
+					if(tail[p] + n1 > head[p]) tail[p] = head[p] - n1;
 					out = getBuffer(note, p);//high
 				}
 			} else {
@@ -161,7 +162,7 @@ struct T : Module {
 					if(tail[p] > len[p]) {
 						out = getBuffer(1.f, p);//pass
 					} else {
-						if(tail[p] + note + 1.f > head[p]) tail[p] = head[p] - note;
+						if(tail[p] + n1 > head[p]) tail[p] = head[p] - n1;
 						out = getBuffer(note, p);//pass edge case
 						//must not overtake input to buffer
 					}
