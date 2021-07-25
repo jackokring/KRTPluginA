@@ -50,7 +50,7 @@ struct R : Module {
 		for(int p = 0; p < maxPort; p++) {
 			float out = inputs[IN].getPolyVoltage(p);
 			out += inputs[ION].getPolyVoltage(p) * on;
-			float as *= out;
+			as *= out;
 			// OUTS
 			outputs[OAS].setVoltage(as, p);
 			outputs[OUT].setVoltage(out, p);

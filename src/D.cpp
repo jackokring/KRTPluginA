@@ -95,10 +95,10 @@ struct D : Module {
 			cv = log(db + cv, inputs[IN].getPolyVoltage(p));
 
 			pre[p][idx] = cv;
-			float out = future2(pre[p]]);
+			float out = future2(pre[p]);
 			float temp = b[p];
 			b[p] = future(pre[p]);
-			float err = in - temp;//error estimate
+			float err = cv - temp;//error estimate
 			pre[p+PORT_MAX_CHANNELS][idx] = err;
 			err = future2(pre[p+PORT_MAX_CHANNELS]);
 			// OUTS
