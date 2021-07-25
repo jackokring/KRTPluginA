@@ -9,6 +9,9 @@ Index
 1. [A](#a)
 2. [u](#μ)
 3. [T](#t)
+4. [L](#l)
+5. [;D](#;d)
+6. [R](#r)
 
 A
 ===
@@ -130,3 +133,12 @@ Going down is always a prerequisite before rising to the top! And normal is very
 Polyphonic triggers occur at the optimal octave intercept per trigger, and so the outputs become phasic to the triggers. `HI` can off trigger a trigger to sync with the up speed clearing of the precision down beat zero delay. No trigger equals monophony and no delay after the "blip" as there is a trigger need on `TRIG`.
 
 Try `NOTE` at 5 semitones, and alter the trigger rate for a sync chord arpy sound. In this sense other semitone values are better at lower `TRIG` rates. Try some drums on the `HI` out for an interesting timing effect too.
+
+L
+===
+
+;D
+===
+
+R
+===
