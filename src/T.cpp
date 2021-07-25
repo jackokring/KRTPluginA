@@ -72,12 +72,12 @@ struct T : Module {
 		where = modulo(where, maxLen);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
-		float where2 = tail[chan] + maxLen - 1.f;//trailing tail overview
+		float where2 = tail[chan] + maxLen - 2.f;//trailing tail overview
 		where2 = modulo(where2, maxLen);//modulo
 		where2 += buffStart[chan];
 		long w2 = (long) where2;//get an integer index
-		//ERROR!!
-		//if(w == w2) return true;//overflow
+		//ERROR!! --fixed by -2 on buffer collide slot 
+		if(w == w2) return true;//overflow
 		buff[w] = in;
 		return false;// no reset
 	}

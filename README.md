@@ -128,3 +128,5 @@ The trigger `TRIG` resets the delay and produces a down shifted `OUT` until the 
 Going down is always a prerequisite before rising to the top! And normal is very overdue. The maximal delay length is divided by polyphony. What's the cache flush GB/s on this thing? I'm thinking 4 bars and a bit or so?
 
 Polyphonic triggers occur at the optimal octave intercept per trigger, and so the outputs become phasic to the triggers. `HI` can off trigger a trigger to sync with the up speed clearing of the precision down beat zero delay. No trigger equals monophony and no delay after the "blip" as there is a trigger need on `TRIG`.
+
+Try `NOTE` at 5 semitones, and alter the trigger rate for a sync chord arpy sound. In this sense other semitone values are better at lower `TRIG` rates. Try some drums on the `HI` out for an interesting timing effect too.
