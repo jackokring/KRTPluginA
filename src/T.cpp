@@ -47,7 +47,7 @@ struct T : Module {
 
 	//state control
 	bool hi[PORT_MAX_CHANNELS];
-	bool wait[PORT_MAX_CHANNELS];//wait for state to trigger
+	//bool wait[PORT_MAX_CHANNELS];//wait for state to trigger
 	float lenL[PORT_MAX_CHANNELS];
 	float len[PORT_MAX_CHANNELS];
 

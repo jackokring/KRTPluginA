@@ -25,9 +25,107 @@ struct L : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(PRE, 0.f, 16.f, 0.f, "Pre-trigger Samples", " 2^N Samples");
 		configParam(FINE, 0.f, 1.f, 0.f, "Fine Pre-trigger", " 2^N+ Samples");
+		for(int p = 0; p < PORT_MAX_CHANNELS; p++) {
+			lastHead[p] = head[p] = tail[p] = 0.f;
+			buff.resize(MAX_BUFFER);
+			len[p] = 4096.f;//an initial test
+		}
+	}
+
+	const float rate = 44100.f;
+	const float chans = 16.f;
+	const float time = 32.f;
+
+	//buffer length
+	const float MAX_BUFFER = rate * chans * time;
+	const float initPos = 0.f;
+	float head[PORT_MAX_CHANNELS];
+	float tail[PORT_MAX_CHANNELS];
+	float maxLen;
+	float buffStart[PORT_MAX_CHANNELS];
+
+	//state control
+	float lastHead[PORT_MAX_CHANNELS];
+	float len[PORT_MAX_CHANNELS];
+
+	//obtain mapped control value
+    float log(float val) {
+        return powf(2.f, val);
+    }
+
+	dsp::SchmittTrigger st[PORT_MAX_CHANNELS];
+	std::vector<float> buff;
+
+	float modulo(float x, float m) {
+		float div = x / m;
+		long d = (long) div;
+		float rem = x - d * m;
+		return rem;
+	}
+
+	void putBuffer(float in, int chan) {
+		float where = head[chan];
+		head[chan] += 1.f;
+		where = modulo(where, maxLen);//modulo
+		where += buffStart[chan];
+		long w = (long) where;//get an integer index
+		buff[w] = in;
+	}
+
+	float getBuffer(int chan) {
+		float where = tail[chan];
+		tail[chan] += 1.f;
+		where = modulo(where, maxLen);//modulo
+		where += buffStart[chan];
+		long w = (long) where;//get an integer index
+		float out = buff[w];
+		return out;
 	}
 
 	void process(const ProcessArgs& args) override {
+		// For inputs intended to be used solely for audio, sum the voltages of all channels
+		// (e.g. with Port::getVoltageSum())
+		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
+		// voltage (e.g. with Port::getVoltage())
+		// POLY: Port::getPolyVoltage(c)
+		//float fs = args.sampleRate;
+		int maxPort = inputs[TRIG].getChannels();
+		if(maxPort == 0) maxPort = 1;
+		maxLen = MAX_BUFFER / maxPort;//share buffer 
+		long max = (long) maxLen;
+		maxLen = (float) max;//round down for sample guard
+
+		float pres = params[PRE].getValue();
+		pres += params[FINE].getValue();
+		pres = log(pres);//samples
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			buffStart[p] = maxLen * p;//fit 
+			float in = inputs[IN].getPolyVoltage(p);
+			float trig = inputs[TRIG].getPolyVoltage(p);
+			bool trigger = st[p].process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
+
+			putBuffer(in, p);
+			if(trigger) { 
+				len[p] = head[p] - lastHead[p];//get written length since trigger
+				lastHead[p] = head[p];//maintain length measure
+			}
+
+			float t = head[p] + maxLen;//a suitable positive
+			t -= len[p];//tail point without pre trigger
+			t += pres;//and pre trigger removal of delay
+			tail[p] = t;//suitable delay
+
+			bool preb = (head[p] - lastHead[p]) > (len[p] - pres);
+
+			float out = getBuffer(p);
+
+			// OUTS
+			outputs[OPRE].setVoltage(preb ? 10.f : 0.f, p);//trigger out sort of
+			outputs[OUT].setVoltage(out, p);
+		}
 	}
 };
 
