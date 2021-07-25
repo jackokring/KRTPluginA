@@ -137,8 +137,61 @@ Try `NOTE` at 5 semitones, and alter the trigger rate for a sync chord arpy soun
 L
 ===
 
+*A White One - A synchronized delay with pre-trigger end*
+
+Parameters
+---
+* Pre-trigger Delay `PRE`
+* Fine Tune `FINE`
+
+Ins
+---
+* In `IN`
+* Trigger (Polyphonic master) `TRIG`
+
+Outs
+---
+* Pre-trigger `PRE`
+* Out `OUT`
+
 ;D
 ===
 
+*Another White One - A future estimator with error*
+
+Parameters
+---
+* Level `dB`
+* Level Modulation `CVdB`
+
+Ins
+---
+* In (Polyphonic master) `IN`
+* Level Modulation `CVdB`
+
+Outs
+---
+* Error `ERR`
+* Out `OUT`
+
 R
 ===
+
+*The Final White One - A simple mixer split*
+
+Parameters
+---
+* On Level `ON`
+* As Level `AS`
+
+Ins
+---
+* In (Polyphonic master) `IN`
+* Mix Some On `ON`
+
+Outs
+---
+* Get As `AS`
+* Out `OUT`
+
+Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy modulation mixing.
