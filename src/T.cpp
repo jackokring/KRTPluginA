@@ -27,7 +27,7 @@ struct T : Module {
 		configParam(FINE, 0.f, 100.f, 0.f, "Fine Tune", " Cents");
 		for(int p = 0; p < PORT_MAX_CHANNELS; p++) {
 			head[p] = tail[p] = 0.f;
-			lastTrig[p] = hi[p] = false;
+			hi[p] = false;
 			buff.resize(MAX_BUFFER);
 			len[p] = 4096.f;//an initial test
 		}
@@ -42,7 +42,6 @@ struct T : Module {
 	const float initPos = 0.f;
 	float head[PORT_MAX_CHANNELS];
 	float tail[PORT_MAX_CHANNELS];
-	bool lastTrig[PORT_MAX_CHANNELS];
 	float maxLen;
 	float buffStart[PORT_MAX_CHANNELS];
 
@@ -53,8 +52,8 @@ struct T : Module {
 	float len[PORT_MAX_CHANNELS];
 
 	//obtain mapped control value
-    float log(float val, float centre) {
-        return powf(2.f, val) * centre;
+    float log(float val) {
+        return powf(2.f, val);
     }
 
 	dsp::SchmittTrigger st[PORT_MAX_CHANNELS];
@@ -77,7 +76,8 @@ struct T : Module {
 		where2 = modulo(where2, maxLen);//modulo
 		where2 += buffStart[chan];
 		long w2 = (long) where2;//get an integer index
-		if(w == w2) return true;//overflow
+		//ERROR!!
+		//if(w == w2) return true;//overflow
 		buff[w] = in;
 		return false;// no reset
 	}
@@ -124,30 +124,30 @@ struct T : Module {
 		int maxPort = inputs[TRIG].getChannels();
 		if(maxPort == 0) maxPort = 1;
 		maxLen = MAX_BUFFER / maxPort;//share buffer 
-		maxLen -= 2.f;//round down for sample guard
+		long max = (long) maxLen;
+		maxLen = (float) max;//round down for sample guard
 
 		float note = params[NOTE].getValue()/12.f;
 		float fine = params[FINE].getValue()/1200.f;
 		note += fine;
-		note = log(note, 1.f);//relative hi note rate
+		note = log(note);//relative hi note rate
 		float low = note * 0.5f;//an octave down
 		float n1 = note + 1.f;
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			buffStart[p] = (maxLen + 1.f) * p;//fit 
+			buffStart[p] = maxLen * p;//fit 
 			float in = inputs[IN].getPolyVoltage(p);
 			float trig = inputs[TRIG].getPolyVoltage(p);
-			st[p].process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
+			bool trigger = st[p].process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
 
-			if((!lastTrig[p] && st[p].isHigh()) || putBuffer(in, p)) { 
+			if(trigger || putBuffer(in, p)) { 
 				len[p] = head[p];//get written length since trigger
 				resetBuffer(in, p);
-				lenL[p] = (note - 1.f) * len / (note - low);//ratio
 				hi[p] = false;
 			}
-			lastTrig[p] = st[p].isHigh();
+			lenL[p] = (note - 1.f) * len[p] / (note - low);//ratio
 
 			float out;
 			if(hi[p]) {
