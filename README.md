@@ -154,6 +154,8 @@ Outs
 * Pre-trigger `PRE`
 * Out `OUT`
 
+A synchronized delay with a `PRE` control to remove a time dependant on sample latency so as to match timing one synchronization trigger later.
+
 ;D
 ===
 
