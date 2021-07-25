@@ -174,6 +174,8 @@ Outs
 * Error `ERR`
 * Out `OUT`
 
+Exponetial amplitude modulation with a future projection estimate 2 samples into the future for phase critical all pass when used with modules that have a 1 sample delay. Some estimate of the error in the current sample based on a future prediction is also re-estimated 2 samples into the future.
+
 R
 ===
 
