@@ -115,7 +115,7 @@ struct T : Module {
 	}
 
 	void process(const ProcessArgs& args) override {
-				// For inputs intended to be used solely for audio, sum the voltages of all channels
+		// For inputs intended to be used solely for audio, sum the voltages of all channels
 		// (e.g. with Port::getVoltageSum())
 		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
 		// voltage (e.g. with Port::getVoltage())

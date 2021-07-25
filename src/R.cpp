@@ -13,7 +13,7 @@ struct R : Module {
 		NUM_INPUTS
 	};
 	enum OutputIds {
-		AS,
+		OAS,
 		OUT,
 		NUM_OUTPUTS
 	};
@@ -27,7 +27,34 @@ struct R : Module {
 		configParam(AS, -6.f, 6.f, 0.f, "As Level", " Center dB (rel 6)");
 	}
 
+	float dBMid(float val) {
+		return powf(2.f, val)-powf(2.f, -val);
+	}
+
 	void process(const ProcessArgs& args) override {
+		// For inputs intended to be used solely for audio, sum the voltages of all channels
+		// (e.g. with Port::getVoltageSum())
+		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
+		// voltage (e.g. with Port::getVoltage())
+		// POLY: Port::getPolyVoltage(c)
+		//float fs = args.sampleRate;
+		int maxPort = inputs[IN].getChannels();
+		if(maxPort == 0) maxPort = 1;
+
+		//dBMid(params[G1].getValue()/6.f);
+		float on = dBMid(params[ON].getValue()/6.f);
+		float as = dBMid(params[AS].getValue()/6.f);
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float out = inputs[IN].getPolyVoltage(p);
+			out += inputs[ION].getPolyVoltage(p) * on;
+			float as *= out;
+			// OUTS
+			outputs[OAS].setVoltage(as, p);
+			outputs[OUT].setVoltage(out, p);
+		}
 	}
 };
 
