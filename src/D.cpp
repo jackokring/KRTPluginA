@@ -27,7 +27,85 @@ struct D : Module {
 		configParam(CVDB, -6.f, 6.f, 0.f, "Modulation Level", " Center dB (rel 6)");
 	}
 
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
+	float dBMid(float val) {
+		return powf(2.f, val)-powf(2.f, -val);
+	}
+
+	float future(float* input) {
+		float co1[] = {1, -9, 36, -84, 126, -126, 84, -36, 9};//0th differential in the future
+		return sum(co1, input, idx + 1);
+	}
+
+	float future2(float* input) {
+		float co1[] = {
+			2.0620112372482157e+4f,
+			-1.832898878564529e+5f,
+			+7.217039339343297e+5f,
+			-1.6496089933227736e+6f,
+			+2.4056797847951367e+6f,
+			-2.3094525972362604e+6f,
+			+1.443407876801168e+6f,
+			-5.498696694805404e+5f,
+			+1.0310056373750902e+5f
+		};//0th differential in the future
+		return sum(co1, input, idx + 1) / 2.2911237200293967e+3;
+	}
+
+	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+
+	float pre[2*PORT_MAX_CHANNELS][9];// pre buffer
+	int idx = 0;// buffer current
+
+	float b[PORT_MAX_CHANNELS];
+
+	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
+		float add = 0.f;
+#pragma GCC ivdep		
+		for(int co = 0; co < cycle; co ++) {//right is most recent
+			int idx = mod9[begin + co];
+			add += c[co] * input[idx];
+		}
+		return add;
+	}
+
 	void process(const ProcessArgs& args) override {
+		// For inputs intended to be used solely for audio, sum the voltages of all channels
+		// (e.g. with Port::getVoltageSum())
+		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
+		// voltage (e.g. with Port::getVoltage())
+		// POLY: Port::getPolyVoltage(c)
+		//float fs = args.sampleRate;
+		int maxPort = inputs[IN].getChannels();
+		if(maxPort == 0) maxPort = 1;
+
+		//dBMid(params[G1].getValue()/6.f);
+		float db = params[DB].getValue()/6.f;
+		float cvdb = dBMid(params[CVDB].getValue()/6.f);
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float cv = inputs[ICVDB].getPolyVoltage(p);
+			cv *= cvdb;
+			cv = log(db + cv, inputs[IN].getPolyVoltage(p));
+
+			pre[p][idx] = cv;
+			float out = future2(pre[p]]);
+			float temp = b[p];
+			b[p] = future(pre[p]);
+			float err = in - temp;//error estimate
+			pre[p+PORT_MAX_CHANNELS][idx] = err;
+			err = future2(pre[p+PORT_MAX_CHANNELS]);
+			// OUTS
+			outputs[ERR].setVoltage(err, p);
+			outputs[OUT].setVoltage(out, p);
+		}
+		idx = mod9[idx + 1];//buffer modulo
 	}
 };
 
