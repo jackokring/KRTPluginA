@@ -15,4 +15,7 @@ void init(Plugin* p) {
 	p->addModel(modelA);
 	p->addModel(modelMu);
 	p->addModel(modelT);
+	p->addModel(modelL);
+	p->addModel(modelD);
+	p->addModel(modelR);
 }

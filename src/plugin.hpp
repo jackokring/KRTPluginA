@@ -12,3 +12,6 @@ extern Plugin* pluginInstance;
 extern Model* modelA;
 extern Model *modelMu;
 extern Model *modelT;
+extern Model *modelL;
+extern Model *modelD;
+extern Model *modelR;

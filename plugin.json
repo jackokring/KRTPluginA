@@ -43,6 +43,39 @@
         "Delay",
         "Polyphonic"
       ]
+    },
+    {
+      "slug": "L",
+      "name": "L",
+      "description": "A synchronized delay with pre-trigger end.",
+      "tags": [
+        "Utility",
+        "Clock modulator",
+        "Delay",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "D",
+      "name": ";D",
+      "description": "A future estimator with error.",
+      "tags": [
+        "Utility",
+        "Attenuator",
+        "Dynamics",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "R",
+      "name": "R",
+      "description": "A simple mixer split.",
+      "tags": [
+        "Attenuator",
+        "Mixer",
+        "Utility",
+        "Polyphonic"
+      ]
     }
   ]
 }
