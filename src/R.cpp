@@ -92,7 +92,7 @@ struct RWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, R::IN));
 		addInput(createInputCentered<PJ301MPort>(loc(1, 4), module, R::ION));
 
-		addOutput(createOutputCentered<PJ301MPort>(loc(1, 5), module, R::AS));
+		addOutput(createOutputCentered<PJ301MPort>(loc(1, 5), module, R::OAS));
 		addOutput(createOutputCentered<PJ301MPort>(loc(1, 6), module, R::OUT));
 	}
 };

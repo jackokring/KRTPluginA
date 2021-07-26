@@ -1,17 +1,17 @@
 KRTPluginA 
 ===
 
-Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work. The index is numbered so that `WORKING_MACHINES_COUNT` makes sense given the development ordering of the index. 
+Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work. The index is numbered so that `WORKING_MACHINES_COUNT` makes sense given the development ordering of the index.
 
 Index
 ===
 
-1. [A](#a)
+1. [A](#a) - No demo (it's a filter, so easy to try)
 2. [u](#μ)
-3. [T](#t)
+3. [T](#t) - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
 4. [L](#l)
 5. [;D](#d)
-6. [R](#r)
+6. [R](#r) - No demo required
 
 A
 ===
