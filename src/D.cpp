@@ -32,7 +32,7 @@ struct D : Module {
 
 	D() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(DB, -24.f, 24.f, 0.f, "Exponential Gain", " dB");
+		configParam(DB, -24.f, 6.f, 0.f, "Exponential Gain", " dB");
 		configParam(CVDB, -6.f, 6.f, 0.f, "Modulation Level", " Center dB (rel 6)");
 	}
 

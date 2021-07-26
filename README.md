@@ -6,11 +6,11 @@ Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. A
 Index
 ===
 
-1. [A](#a) - No demo (it's a filter, so easy to try)
+1. [A](#a) - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
 2. [u](#μ)
 3. [T](#t) - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
-4. [L](#l) - No demo (it's a delay which can be slightly shortened for latency timing)
-5. [;D](#d)
+4. [L](#l) - [boring](https://github.com/jackokring/KRTPluginADemo/blob/master/boring.vcv)
+5. [;D](#d) - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
 6. [R](#r) - No demo required
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
