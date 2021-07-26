@@ -26,10 +26,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8284271"
-     inkscape:cx="13.26483"
-     inkscape:cy="359.36828"
+     inkscape:cx="24.048209"
+     inkscape:cy="118.95197"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer1"
      showgrid="true"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -120,17 +120,17 @@
     </g>
     <g
        aria-label="ON"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        id="text109"
        transform="translate(-0.52916667)">
       <path
          d="m 5.6881968,80.978666 q 0,-0.618395 0.3445095,-0.962904 0.3445096,-0.34451 0.9594591,-0.34451 0.6304525,0 0.9715169,0.339342 0.3410644,0.337619 0.3410644,0.947401 0,0.442695 -0.1498616,0.726915 -0.1481391,0.282498 -0.4306369,0.440972 -0.2807753,0.156752 -0.7010769,0.156752 -0.4271919,0 -0.7079671,-0.136081 Q 6.0361514,82.010472 5.8621741,81.715916 5.6881968,81.42136 5.6881968,80.978666 Z m 0.7803141,0.0034 q 0,0.382405 0.1412489,0.549493 0.1429715,0.167087 0.3875732,0.167087 0.251492,0 0.3892958,-0.163642 0.1378038,-0.163642 0.1378038,-0.587389 0,-0.356568 -0.144694,-0.52021 -0.1429714,-0.165364 -0.3892957,-0.165364 -0.2359891,0 -0.3789605,0.167087 -0.1429715,0.167087 -0.1429715,0.552938 z"
-         style="fill:#00ff00;stroke-width:0.26458332"
+         style="fill:#008000;stroke-width:0.26458332"
          id="path124"
          inkscape:connector-curvature="0" />
       <path
          d="M 8.730216,79.714316 H 9.4588537 L 10.4097,81.111302 v -1.396986 h 0.735528 v 2.525255 H 10.4097 L 9.4640213,80.85292 v 1.386651 H 8.730216 Z"
-         style="fill:#00ff00;stroke-width:0.26458332"
+         style="fill:#008000;stroke-width:0.26458332"
          id="path126"
          inkscape:connector-curvature="0" />
     </g>
@@ -192,15 +192,15 @@
        id="text107" />
     <g
        aria-label="IN"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        id="text95">
       <path
          d="M 5.8065393,32.664286 H 6.588576 v 2.525255 H 5.8065393 Z"
-         style="fill:#00ff00;stroke-width:0.26458332"
+         style="fill:#008000;stroke-width:0.26458332"
          id="path175" />
       <path
          d="m 7.1535717,32.664286 h 0.7286376 l 0.9508464,1.396986 v -1.396986 h 0.7355278 v 2.525255 H 8.8330557 L 7.887377,33.80289 v 1.386651 H 7.1535717 Z"
-         style="fill:#00ff00;stroke-width:0.26458332"
+         style="fill:#008000;stroke-width:0.26458332"
          id="path177" />
     </g>
     <g
