@@ -156,6 +156,9 @@ struct T : Module {
 
 			if(trigger || putBuffer(in, p)) { 
 				len[p] = head[p];//get written length since trigger
+				if(len[p] > MAX_BUFFER) len[p] = MAX_BUFFER;//safe
+				//on 24 bit mantissa overflow the head progress many stall
+				//but this is ok - edge case
 				resetBuffer(in, p);
 				hi[p] = false;
 			}
