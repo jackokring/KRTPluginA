@@ -47,9 +47,9 @@ struct Mu : Module {
 
 	Mu() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(DB, -24.f, 24.f, 0.f, "Exponential Gain", " dB");
+		configParam(DB, -24.f, 6.f, 0.f, "Exponential Gain", " dB");
 		configParam(HZ, -4.f, 4.f, 0.f, "Slew LPF", " Oct");
-		configParam(LAM, -4.f, 4.f, 0.f, "Halflife", " per Oct");
+		configParam(LAM, -6.f, 0.f, 0.f, "Halflife", " per Oct");
 		//-infinty centre
 		configParam(G1, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
 		configParam(G2, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
@@ -278,9 +278,10 @@ struct Mu : Module {
 
 			// OUTS
 			outputs[D1].setVoltage(out1, p);
-			outputs[D2].setVoltage(out2, p);
+			//maybe better modulation
+			outputs[D2].setVoltage(inp, p);
 			//slew LPF implicated in tweeter distruction!!!
-			outputs[D3].setVoltage(out3, p);
+			outputs[D3].setVoltage(inl, p);
 
 			outputs[I1].setVoltage(i1, p);
 			outputs[I2].setVoltage(i2, p);

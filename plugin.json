@@ -26,7 +26,7 @@
     {
       "slug": "Mu",
       "name": "\u03bc",
-      "description": "Time dependant caclulus on a summing juntion.",
+      "description": "Time dependant caclulus on a summing juntion. (Precise Distortion)",
       "tags": [
         "Effect",
         "Waveshaper",
@@ -47,7 +47,7 @@
     {
       "slug": "L",
       "name": "L",
-      "description": "A synchronized delay with pre-trigger end.",
+      "description": "A synchronized delay with shortening.",
       "tags": [
         "Utility",
         "Clock modulator",
@@ -58,7 +58,7 @@
     {
       "slug": "D",
       "name": ";D",
-      "description": "A future estimator with error.",
+      "description": "A VCA/future estimator with error.",
       "tags": [
         "Utility",
         "Attenuator",

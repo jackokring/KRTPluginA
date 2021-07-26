@@ -161,7 +161,7 @@ struct A : Module {
 			// INS (NOT IMPLICIT)
 			float in18 = inputs[IN1].getPolyVoltage(p);
 			float fut = 0;
-			if(inputs[ILP1].isConnected()) {}
+			if(inputs[ILP1].isConnected()) {
 				pre[p][idx] = inputs[ILP1].getPolyVoltage(p);
 				fut = future(pre[p]);
 			}
