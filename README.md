@@ -9,7 +9,7 @@ Index
 1. [A](#a) - No demo (it's a filter, so easy to try)
 2. [u](#μ)
 3. [T](#t) - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
-4. [L](#l)
+4. [L](#l) - No demo (it's a delay which can be slightly shortened for latency timing)
 5. [;D](#d)
 6. [R](#r) - No demo required
 
@@ -88,7 +88,7 @@ Some weird calculus module. It really depends what it can be made to do. It migh
 
 All the estimators are predictive one sample into the future (with `λ` kind of being a sophisticated constant of integration), and the slew filter is a 6 dB/Oct zero delay filter.
 
-So the inputs `IN1`, `IN3` and `IN3` are controlled by **centred dB scaling** attenuverters for gain, amplified by an exponetial `dB`, slew limited and then processed for calculus estimates (9th order FIR).
+So the inputs `IN1`, `IN3` and `IN3` are controlled by **centred dB scaling** gainuverters for gain, amplified by an exponetial `dB`, slew limited and then processed for calculus estimates (9th order FIR).
 
 The integrals are further processed by 3 point series accelerations (a tiny effect but interesting) to occur at a sample in the future. `λ` applies an effective modulation of this integral time step from a fraction of a sample to multiple samples. The halflife then is measured in exponetial samples.
 
@@ -154,12 +154,12 @@ Outs
 * Pre-trigger `PRE`
 * Out `OUT`
 
-A synchronized delay with a `PRE` control to remove a time dependant on sample latency so as to match timing one synchronization trigger later.
+A synchronized delay with a `PRE` control to remove a time dependant on sample latency so as to match timing one synchronization trigger later. So suppose you wish to sychronize to some live play and are prepared to time up one `TRIG` later (say a bar for arguments sake), then you can increase `PRE` to achive that less than the bar delay with latency compensating the rest of the bar delay which `PRE` removed on `OUT`. The output `PRE` gates high before the bar end to allow down module to trigger other things with the need to be triggered before the bar start. 
 
 ;D
 ===
 
-*Another White One - A future estimator with error*
+*Another White One - A future estimator VCA with error*
 
 Parameters
 ---
@@ -176,7 +176,7 @@ Outs
 * Error `ERR`
 * Out `OUT`
 
-Exponetial amplitude modulation with a future projection estimate 2 samples into the future for phase critical all pass when used with modules that have a 1 sample delay. Some estimate of the error in the current sample based on a future prediction is also re-estimated 2 samples into the future.
+Exponetial amplitude modulation with a future projection estimate 2 samples into the future for phase critical all pass when used with modules that have a 1 sample delay. Some estimate of the error in the current sample based on a future prediction is also re-estimated 2 samples into the future and output on `ERR`. The `CVdB` control is a **centred dB scaling** gainuverter.
 
 R
 ===
@@ -198,4 +198,4 @@ Outs
 * Get As `AS`
 * Out `OUT`
 
-Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy modulation mixing.
+Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy modulation mixing. The controls are **centred dB scaling** gainuverters.
