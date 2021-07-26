@@ -42,9 +42,10 @@ struct T : Module {
 		}
 	}
 
+	//24 bit float ...
 	const float rate = 44100.f;
 	const float chans = 16.f;
-	const float time = 32.f;
+	const float time = 16.f;
 
 	//buffer length
 	const float MAX_BUFFER = rate * chans * time;
@@ -79,7 +80,8 @@ struct T : Module {
 		float where = head[chan];
 		where = modulo(where, maxLen);//modulo
 		head[chan] += 1.f;
-		head[chan] = modulo(where, maxLen * 2.f);//modulo
+		//messes up timing ...
+		//head[chan] = modulo(where, maxLen * 2.f);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float where2 = tail[chan] + maxLen - 2.f;//trailing tail overview
@@ -106,7 +108,7 @@ struct T : Module {
 		float where = tail[chan];
 		where = modulo(where, maxLen);//modulo
 		tail[chan] += stepRelative;
-		tail[chan] = modulo(where, maxLen * 2.f);//modulo
+		//tail[chan] = modulo(where, maxLen * 2.f);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float fp = where - (float) w;//fractional part

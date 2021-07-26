@@ -43,7 +43,7 @@ struct L : Module {
 
 	const float rate = 44100.f;
 	const float chans = 16.f;
-	const float time = 32.f;
+	const float time = 16.f;
 
 	//buffer length
 	const float MAX_BUFFER = rate * chans * time;
@@ -74,8 +74,9 @@ struct L : Module {
 
 	void putBuffer(float in, int chan) {
 		float where = head[chan];
-		head[chan] = where = modulo(where, maxLen);//modulo
-		head[chan] += 1.f;
+		//modulo fine here!!
+		where = modulo(where, maxLen);//modulo
+		head[chan] = modulo(head[chan] + 1.f, maxLen);
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		buff[w] = in;
@@ -83,8 +84,8 @@ struct L : Module {
 
 	float getBuffer(int chan) {
 		float where = tail[chan];
-		tail[chan] = where = modulo(where, maxLen);//modulo
-		tail[chan] += 1.f;
+		where = modulo(where, maxLen);//modulo
+		tail[chan] = modulo(tail[chan] + 1.f, maxLen);
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float out = buff[w];
@@ -117,7 +118,7 @@ struct L : Module {
 
 			putBuffer(in, p);
 			if(trigger) { 
-				len[p] = head[p] - lastHead[p];//get written length since trigger
+				len[p] = modulo(head[p] - lastHead[p] + maxLen, maxLen);//get written length since trigger
 				lastHead[p] = head[p];//maintain length measure
 			}
 
