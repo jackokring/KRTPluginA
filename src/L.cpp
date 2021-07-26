@@ -74,8 +74,8 @@ struct L : Module {
 
 	void putBuffer(float in, int chan) {
 		float where = head[chan];
+		head[chan] = where = modulo(where, maxLen);//modulo
 		head[chan] += 1.f;
-		where = modulo(where, maxLen);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		buff[w] = in;
@@ -83,8 +83,8 @@ struct L : Module {
 
 	float getBuffer(int chan) {
 		float where = tail[chan];
+		tail[chan] = where = modulo(where, maxLen);//modulo
 		tail[chan] += 1.f;
-		where = modulo(where, maxLen);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float out = buff[w];

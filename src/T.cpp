@@ -77,8 +77,8 @@ struct T : Module {
 
 	bool putBuffer(float in, int chan) {
 		float where = head[chan];
+		head[chan] = where = modulo(where, maxLen);//modulo
 		head[chan] += 1.f;
-		where = modulo(where, maxLen);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float where2 = tail[chan] + maxLen - 2.f;//trailing tail overview
@@ -103,8 +103,8 @@ struct T : Module {
 
 	float getBuffer(float stepRelative, int chan) {
 		float where = tail[chan];
+		tail[chan] = where = modulo(where, maxLen);//modulo
 		tail[chan] += stepRelative;
-		where = modulo(where, maxLen);//modulo
 		where += buffStart[chan];
 		long w = (long) where;//get an integer index
 		float fp = where - (float) w;//fractional part
