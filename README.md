@@ -13,6 +13,8 @@ Index
 5. [;D](#d)
 6. [R](#r) - No demo required
 
+[Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip)
+
 A
 ===
 
