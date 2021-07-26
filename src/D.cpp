@@ -21,6 +21,15 @@ struct D : Module {
 		NUM_LIGHTS
 	};
 
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		return poly;
+	}
+
 	D() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(DB, -24.f, 24.f, 0.f, "Exponential Gain", " dB");
@@ -80,8 +89,7 @@ struct D : Module {
 		// voltage (e.g. with Port::getVoltage())
 		// POLY: Port::getPolyVoltage(c)
 		//float fs = args.sampleRate;
-		int maxPort = inputs[IN].getChannels();
-		if(maxPort == 0) maxPort = 1;
+		int maxPort = maxPoly();
 
 		//dBMid(params[G1].getValue()/6.f);
 		float db = params[DB].getValue()/6.f;

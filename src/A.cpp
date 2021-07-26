@@ -33,6 +33,15 @@ struct A : Module {
 		NUM_LIGHTS
 	};
 
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		return poly;
+	}
+
 	A() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
@@ -129,10 +138,9 @@ struct A : Module {
 
 		float res = params[REZ].getValue();
 		float plate = params[RING].getValue();
-		int maxPort = inputs[CV].getChannels();
+		int maxPort = maxPoly();
 		float modf = params[MOD].getValue();
 		float modo = params[MAM].getValue();
-		if(maxPort == 0) maxPort = 1;
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep

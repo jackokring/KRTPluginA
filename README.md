@@ -33,7 +33,7 @@ Ins
 ---
 * -18 dB In (HP on `XP12`) `IN1`
 * -18 dB Predictive (LP on `XP12`) `LP1`
-* Frequency CV (Polyphonic master) `CV`
+* Frequency CV `CV`
 * -12 dB In (No Plate) `IN2`
 * -6 dB HP In (Plate Ring) `HP1`
 * Modulation `MOD`
@@ -71,7 +71,7 @@ Parameters
 Ins
 ---
 * 1V/6dB `CVdB`
-* 1V/Oct (Polyphonic master) `CVHz`
+* 1V/Oct `CVHz`
 * 1V/halflife  `CVλ`
 * In 1 `IN1`
 * In 2 `IN2`
@@ -121,7 +121,7 @@ Parameters
 Ins
 ---
 * In `IN`
-* Trigger (Polyphonic master) `TRIG`
+* Trigger`TRIG`
 
 Outs
 ---
@@ -149,7 +149,7 @@ Parameters
 Ins
 ---
 * In `IN`
-* Trigger (Polyphonic master) `TRIG`
+* Trigger `TRIG`
 
 Outs
 ---
@@ -170,7 +170,7 @@ Parameters
 
 Ins
 ---
-* In (Polyphonic master) `IN`
+* In `IN`
 * Level Modulation `CVdB`
 
 Outs
@@ -192,7 +192,7 @@ Parameters
 
 Ins
 ---
-* In (Polyphonic master) `IN`
+* In `IN`
 * Mix Some On `ON`
 
 Outs

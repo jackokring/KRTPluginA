@@ -21,6 +21,15 @@ struct L : Module {
 		NUM_LIGHTS
 	};
 
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		return poly;
+	}
+
 	L() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(PRE, 0.f, 16.f, 0.f, "Pre-trigger Samples", " 2^N Samples");
@@ -89,8 +98,7 @@ struct L : Module {
 		// voltage (e.g. with Port::getVoltage())
 		// POLY: Port::getPolyVoltage(c)
 		//float fs = args.sampleRate;
-		int maxPort = inputs[TRIG].getChannels();
-		if(maxPort == 0) maxPort = 1;
+		int maxPort = maxPoly();
 		maxLen = MAX_BUFFER / maxPort;//share buffer 
 		long max = (long) maxLen;
 		maxLen = (float) max;//round down for sample guard
