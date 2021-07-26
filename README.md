@@ -180,6 +180,8 @@ Outs
 
 Exponetial amplitude modulation with a future projection estimate 2 samples into the future for phase critical all pass when used with modules that have a 1 sample delay. Some estimate of the error in the current sample based on a future prediction is also re-estimated 2 samples into the future and output on `ERR`. The `CVdB` control is a **centred dB scaling** gainuverter.
 
+Also useful for pointing out transients in `IN` as the estimator is excited by the parts of the signal with aliasing potential.
+
 R
 ===
 
