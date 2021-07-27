@@ -200,13 +200,6 @@ struct Mu : Module {
 		return add;
 	}
 
-	float rmMs(float x) {//well the integral is a mean
-		if(x < 0.f) {
-			return -sqrtf(-x);
-		}
-		return sqrtf(x);
-	}
-
 	void process(const ProcessArgs& args) override {
 		// For inputs intended to be used solely for audio, sum the voltages of all channels
 		// (e.g. with Port::getVoltageSum())
@@ -312,15 +305,15 @@ struct Mu : Module {
 			}
 
 			// OUTS
-			outputs[D1].setVoltage(rmMs(out1), p);
+			outputs[D1].setVoltage(cbrtf(out1), p);
 			//maybe better modulation
-			outputs[D2].setVoltage(rmMs(inp), p);
+			outputs[D2].setVoltage(cbrtf(inp), p);
 			//slew LPF implicated in tweeter distruction!!!
-			outputs[D3].setVoltage(rmMs(inl), p);
+			outputs[D3].setVoltage(cbrtf(inl), p);
 
-			outputs[I1].setVoltage(rmMs(i1), p);
-			outputs[I2].setVoltage(rmMs(i2), p);
-			outputs[I3].setVoltage(rmMs(i3), p);
+			outputs[I1].setVoltage(cbrtf(i1), p);
+			outputs[I2].setVoltage(cbrtf(i2), p);
+			outputs[I3].setVoltage(cbrtf(i3), p);
 		}
 		idx = mod9[idx + 1];//buffer modulo
 	}
