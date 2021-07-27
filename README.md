@@ -7,6 +7,8 @@ Current public version: [here](https://library.vcvrack.com/KRTPluginA) achives f
 
 Compiled with: `gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0` or later. Any issues due to edge case optimizations of `float` may be corrected if they are a problem.
 
+Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/)
+
 Index - Demo
 ===
 
