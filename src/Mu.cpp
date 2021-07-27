@@ -232,6 +232,7 @@ struct Mu : Module {
 			float in2 = inputs[IN2].getPolyVoltage(p);
 			float in3 = inputs[IN3].getPolyVoltage(p);
 
+			float in = in1 * g1 + in2 * g2 + in3 * g3;
 			cvdb = log(cvdb + db, 1.f);
 			cvhz = log(cvhz + hz, dsp::FREQ_C4);
 			float cheat = cvlam + lam;
@@ -254,8 +255,11 @@ struct Mu : Module {
 			setFK1(cvhz, fs);
 			in = process1(in, p);//LPF
 
-			pre[p][idx] = in;//buffer
-			in = future(pre[p]);
+			if(inputs[IN1].isConnected() || inputs[IN2].isConnected()
+				|| inputs[IN3].isConnected()) {
+				pre[p][idx] = in;//buffer
+				in = future(pre[p]);
+			}
 			
 			float h = dsp::FREQ_C4/cvhz;//inverse of central rate nyquist
 			//scale? - V/sample -> normalization of sample rate change
