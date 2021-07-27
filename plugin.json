@@ -7,11 +7,11 @@
   "author": "Jacko",
   "authorEmail": "jackokring@gmail.com",
   "authorUrl": "https://kring.co.uk",
-  "pluginUrl": "",
+  "pluginUrl": "https://jackokring.github.io/KRTPluginADemo/",
   "manualUrl": "https://github.com/jackokring/KRTPluginA/blob/master/README.md",
   "sourceUrl": "https://github.com/jackokring/KRTPluginA",
   "donateUrl": "https://github.com/jackokring",
-  "changelogUrl": "",
+  "changelogUrl": "https://github.com/jackokring/KRTPluginA/blob/master/README.md",
   "modules": [
     {
       "slug": "A",
