@@ -5,6 +5,8 @@ Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. A
 
 Current public version: [here](https://library.vcvrack.com/KRTPluginA) achives for older versions of the demos maybe available [here](https://github.com/jackokring/KRTPluginADemo).
 
+Compiled with: `gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0` or later. Any issues due to edge case optimizations of `float` may be corrected if they are a problem.
+
 Index - Demo
 ===
 
