@@ -217,6 +217,10 @@ struct Mu : Module {
 		float g2 = dBMid(params[G2].getValue()/6.f);
 		float g3 = dBMid(params[G3].getValue()/6.f);
 
+		// added elimination of calculations not necessary for outputs
+		// which are not used. Inputs not used are different as
+		// controls maybe used as voltage setters for outputs.
+
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -228,17 +232,21 @@ struct Mu : Module {
 			float in2 = inputs[IN2].getPolyVoltage(p);
 			float in3 = inputs[IN3].getPolyVoltage(p);
 
-			float in = in1*g1 + in2*g2 + in3*g3;//add
-
 			cvdb = log(cvdb + db, 1.f);
 			cvhz = log(cvhz + hz, dsp::FREQ_C4);
 			float cheat = cvlam + lam;
 			cvlam = log(cheat, 1.f);
-			pre[p+3*PORT_MAX_CHANNELS][idx] = cvlam;
-			cvlam = future(pre[p+3*PORT_MAX_CHANNELS]);
-			cheat *= 0.69314718056f;//base e log cheat
-			pre[p+4*PORT_MAX_CHANNELS][idx] = cheat;
-			cheat = future(pre[p+4*PORT_MAX_CHANNELS]);
+			if(outputs[I1].isConnected() || outputs[I2].isConnected()
+				|| outputs[I3].isConnected() || outputs[D2].isConnected()
+				|| outputs[D3].isConnected()) {
+				pre[p+3*PORT_MAX_CHANNELS][idx] = cvlam;
+				cvlam = future(pre[p+3*PORT_MAX_CHANNELS]);
+			}
+			if(outputs[I3].isConnected()) {
+				cheat *= 0.69314718056f;//base e log cheat
+				pre[p+4*PORT_MAX_CHANNELS][idx] = cheat;
+				cheat = future(pre[p+4*PORT_MAX_CHANNELS]);
+			}
 			
 			cvhz = clamp(cvhz, 0.f, fs * 0.5f);//limit max filter
 
@@ -253,28 +261,44 @@ struct Mu : Module {
 			//scale? - V/sample -> normalization of sample rate change
 			float si = fs/dsp::FREQ_C4;//doubling rate should double gain
 			float f = h * h;
-			float out1 = dif1(pre[p])*si;//h
-			float out2 = dif2(pre[p])*h*si;//h^2
-			float out3 = dif3(pre[p])*f*si;//h^3
+			float i1 = 0.f;
+			float out1 = 0.f;
+			if(outputs[I1].isConnected() || outputs[D1].isConnected()) {
+				out1 = dif1(pre[p])*si;//h
+			}
+			if(outputs[I1].isConnected()) {
+				float out2 = dif2(pre[p])*h*si;//h^2
+				float out3 = dif3(pre[p])*f*si;//h^3
+				i1 = int1(in, out1, out2, out3, cvlam);
+			}
 
-			float inp = in/cvlam;
-			pre[p+PORT_MAX_CHANNELS][idx] = inp;//just in case?
-			inp = future(pre[p+PORT_MAX_CHANNELS]);
-			float out1p = dif1(pre[p+PORT_MAX_CHANNELS])*si;//h
-			float out2p = dif2(pre[p+PORT_MAX_CHANNELS])*h*si;//h^2
-			float out3p = dif3(pre[p+PORT_MAX_CHANNELS])*f*si;//h^3
+			float inp = 0.f;
+			if(outputs[I2].isConnected() || outputs[D2].isConnected()) {
+				inp = in/cvlam;
+				pre[p+PORT_MAX_CHANNELS][idx] = inp;//just in case?
+				inp = future(pre[p+PORT_MAX_CHANNELS]);
+			}
+			float i2 = 0.f;
+			if(outputs[I2].isConnected()) {
+				float out1p = dif1(pre[p+PORT_MAX_CHANNELS])*si;//h
+				float out2p = dif2(pre[p+PORT_MAX_CHANNELS])*h*si;//h^2
+				float out3p = dif3(pre[p+PORT_MAX_CHANNELS])*f*si;//h^3
+				i2 = int2(inp, out1p, out2p, out3p, cvlam);
+			}
 
-			float inl = in*cvlam;
-			pre[p+2*PORT_MAX_CHANNELS][idx] = inl;//just in case?
-			inl = future(pre[p+2*PORT_MAX_CHANNELS]);
-			float out1l = dif1(pre[p+2*PORT_MAX_CHANNELS])*si;//h
-			float out2l = dif2(pre[p+2*PORT_MAX_CHANNELS])*h*si;//h^2
-			float out3l = dif3(pre[p+2*PORT_MAX_CHANNELS])*f*si;//h^3
-
-			//process endpoint integrals @ cvlam
-			float i1 = int1(in, out1, out2, out3, cvlam);
-			float i2 = int2(inp, out1p, out2p, out3p, cvlam);
-			float i3 = int3(inl, out1l, out2l, out3l, cvlam, cheat);
+			float inl = 0.f;
+			if(outputs[I3].isConnected() || outputs[D3].isConnected()) {
+				inl = in*cvlam;
+				pre[p+2*PORT_MAX_CHANNELS][idx] = inl;//just in case?
+				inl = future(pre[p+2*PORT_MAX_CHANNELS]);
+			}
+			float i3 = 0.f;
+			if(outputs[I3].isConnected()) {
+				float out1l = dif1(pre[p+2*PORT_MAX_CHANNELS])*si;//h
+				float out2l = dif2(pre[p+2*PORT_MAX_CHANNELS])*h*si;//h^2
+				float out3l = dif3(pre[p+2*PORT_MAX_CHANNELS])*f*si;//h^3
+				i3 = int3(inl, out1l, out2l, out3l, cvlam, cheat);
+			}
 
 			// OUTS
 			outputs[D1].setVoltage(out1, p);
