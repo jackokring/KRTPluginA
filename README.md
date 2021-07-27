@@ -3,6 +3,8 @@ KRTPluginA
 
 Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work. The index is numbered so that `WORKING_MACHINES_COUNT` makes sense given the development ordering of the index.
 
+Current public version: [here](https://library.vcvrack.com/KRTPluginA) achives for older versions of the demos maybe available [here](https://github.com/jackokring/KRTPluginADemo).
+
 Index - Demo
 ===
 
