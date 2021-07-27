@@ -39,6 +39,9 @@ struct A : Module {
 			int chan = inputs[i].getChannels();
 			if(chan > poly) poly = chan;
 		}
+		for(int o = 0; o < NUM_OUTPUTS; o++) {
+			outputs[o].setChannels(poly);
+		}
 		return poly;
 	}
 
