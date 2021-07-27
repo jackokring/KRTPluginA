@@ -88,15 +88,18 @@ Outs
 * Integral Pole `1/Σ`
 * Integral Log `LNΣ`
 
-Some weird calculus module. It really depends what it can be made to do. It might become unstable if you feedback connections. It might not as well. The `λ` control only affects the integral outputs, as the 3 representations should converge to the same value and `λ` affects the effective sample timing offset which defaults to 1 perhaps toward a singularity.
+Some weird calculus module. It really depends what it can be made to do. It might become unstable if you feedback connections. It might not as well. The `λ` control only affects the last 5 outputs, as the 3 integral representations should converge to the same value and `λ` affects the effective sample timing offset next to a potential singular solution.
 
-All the estimators are predictive one sample into the future (with `λ` kind of being a sophisticated constant of integration), a pre slew filter is set as a 6 dB/Oct zero delay filter. This filter works opposite to how you might expect.
+All the estimators are predictive one sample into the future (with `λ` kind of being a sophisticated constant of integration), a pre slew filter is set as a 6 dB/Oct zero delay filter. This filter may work opposite to how you might expect for some outputs.
 
 So the inputs `IN1`, `IN3` and `IN3` are controlled by **centred dB scaling** gainuverters for gain, amplified by an exponetial `dB`, slew limited and then processed for calculus estimates (9th order FIR).
 
-The integrals are further processed by 3 point series accelerations (a tiny effect but interesting) to occur at a sample in the future. `λ` applies an effective modulation of this integral time step from a fraction of a sample to multiple samples. The halflife then is measured in exponetial samples.
+The integrals are further processed by 3 point series accelerations (a tiny effect but interesting) to occur at a sample in the future. `λ` applies an effective modulation of this integral time step from a fraction of a sample to multiple samples. The halflife then is measured in exponetial inverse octaves.
 
-I mean why a 9th order FIR, and the number 27 of the sporadic simple groups connection? From 2 comes 2 to the power of all N. From 3 comes all odd numbers?
+I mean why a 9th order FIR, and the number 27 of the sporadic simple groups connection? From 2 comes 2 to the power of all N. From 3 comes all odd numbers? This likely explains the choice of cube root to control the range of output voltage.
+
+Blerb (not essential to understanding the module)
+---
 
 He's irisponsible :D https://en.wikipedia.org/wiki/Jacques_Tits ... roll on (Monster Moonshine)[https://en.wikipedia.org/wiki/Monstrous_moonshine] and let's not confuse maths with physics "speculated" on maths. Hope I got all the integration by parts and collection of approximants in limited terms right? (Some 2's, some 3's, some hopeful sporadics on the elliptic). Did I mention the congruants div 3 and the determinats (count 44 (18n+26 (Groupies)[https://en.wikipedia.org/wiki/Sporadic_group])) with Z(p) and alternating groups to a 42 which the circle and ellipse are the alternating or not on the major minor radius?
 
