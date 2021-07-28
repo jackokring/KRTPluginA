@@ -77,6 +77,12 @@
         "Utility",
         "Polyphonic"
       ]
+    },
+    {
+      "slug": "Om",
+      "name": "Ω",
+      "description": "",
+      "tags": []
     }
   ]
 }

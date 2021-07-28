@@ -18,4 +18,6 @@ void init(Plugin* p) {
 	p->addModel(modelL);
 	p->addModel(modelD);
 	p->addModel(modelR);
+
+	p->addModel(modelOm);
 }

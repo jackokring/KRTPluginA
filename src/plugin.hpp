@@ -15,3 +15,5 @@ extern Model *modelT;
 extern Model *modelL;
 extern Model *modelD;
 extern Model *modelR;
+
+extern Model *modelOm;
