@@ -41,35 +41,48 @@ struct Om : Module {
 //placement macro
 #define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
 
-const char onDisp[] = "OK";
-char *show = &onDisp;
+char onDisplay1[3] = "OK";
+char *showNow = onDisplay1;//use pointer for changing display based on context
+
+NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
+	NVGcolor backgroundColor = nvgRGB(0x38, 0x38, 0x38); 
+	NVGcolor borderColor = nvgRGB(0x10, 0x10, 0x10);
+	nvgBeginPath(vg);
+	nvgRoundedRect(vg, 0.0, 0.0, box->size.x, box->size.y, 5.0);
+	nvgFillColor(vg, backgroundColor);
+	nvgFill(vg);
+	nvgStrokeWidth(vg, 1.0);
+	nvgStrokeColor(vg, borderColor);
+	nvgStroke(vg);
+	nvgFontSize(vg, fontSize);
+	NVGcolor textColor = nvgRGB(0xaf, 0xd2, 0x2c);
+	return textColor;
+}
+
+struct DisplayWidget : LightWidget {//TransparentWidget {
+	std::shared_ptr<Font> font;
+	std::string fontPath;
+	
+	DisplayWidget() {
+		fontPath = std::string(asset::plugin(pluginInstance, "res/fonts/Segment14.ttf"));
+	}
+
+	void draw(const DrawArgs &args) override {
+		if (!(font = APP->window->loadFont(fontPath))) {
+			return;
+		}
+		NVGcolor textColor = prepareDisplay(args.vg, &box, 18);
+		nvgFontFaceId(args.vg, font->handle);
+
+		Vec textPos = Vec(6, 24);//?
+		nvgFillColor(args.vg, nvgTransRGBA(textColor, 23));//alpha 23
+		nvgText(args.vg, textPos.x, textPos.y, "~~", NULL);
+		nvgFillColor(args.vg, textColor);
+		nvgText(args.vg, textPos.x, textPos.y, showNow, NULL);
+	}
+};
 
 struct OmWidget : ModuleWidget {
-
-	struct DisplayWidget : LightWidget {//TransparentWidget {
-		std::shared_ptr<Font> font;
-		std::string fontPath;
-		char **what;
-		
-		DisplayWidget(char **textPtr) {
-			what = textPtr;
-			fontPath = std::string(asset::plugin(pluginInstance, "res/fonts/Segment14.ttf"));
-		}
-
-		void draw(const DrawArgs &args) override {
-			if (!(font = APP->window->loadFont(fontPath))) {
-				return;
-			}
-			NVGcolor textColor = prepareDisplay(args.vg, &box, 18);
-			nvgFontFaceId(args.vg, font->handle);
-
-			Vec textPos = VecPx(6, 24);
-			nvgFillColor(args.vg, nvgTransRGBA(textColor, displayAlpha));
-			nvgText(args.vg, textPos.x, textPos.y, "~~", NULL);
-			nvgFillColor(args.vg, textColor);
-			nvgText(args.vg, textPos.x, textPos.y, *textPtr, NULL);
-		}
-	};
 
 	OmWidget(Om* module) {
 		setModule(module);
@@ -80,9 +93,9 @@ struct OmWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-	DisplayWidget *display = new DisplayWidget(&show);
+		DisplayWidget *display = new DisplayWidget();
 		display->box.pos = loc(1, 1);//try
-		display->box.size = VecPx(24 * 2, 30);// 2 character
+		display->box.size = Vec(24 * 2, 30);// 2 character?
 		addChild(display);	
 	}
 };
