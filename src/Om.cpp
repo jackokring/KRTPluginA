@@ -41,12 +41,12 @@ struct Om : Module {
 //placement macro
 #define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
 
-char onDisplay1[3] = "OK";
+char onDisplay1[] = "KRTOMEGA";
 char *showNow = onDisplay1;//use pointer for changing display based on context
 
 NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
-	NVGcolor backgroundColor = nvgRGB(0x38, 0x38, 0x38); 
-	NVGcolor borderColor = nvgRGB(0x10, 0x10, 0x10);
+	NVGcolor backgroundColor = nvgRGB(0x10, 0x10, 0x10); 
+	NVGcolor borderColor = nvgRGB(0xff, 0xff, 0xff);
 	nvgBeginPath(vg);
 	nvgRoundedRect(vg, 0.0, 0.0, box->size.x, box->size.y, 5.0);
 	nvgFillColor(vg, backgroundColor);
@@ -55,7 +55,7 @@ NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
 	nvgStrokeColor(vg, borderColor);
 	nvgStroke(vg);
 	nvgFontSize(vg, fontSize);
-	NVGcolor textColor = nvgRGB(0xaf, 0xd2, 0x2c);
+	NVGcolor textColor = nvgRGB(0x5d, 0xfc, 0x0a);
 	return textColor;
 }
 
@@ -76,15 +76,15 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 		NVGcolor textColor = prepareDisplay(args.vg, &box, 18);
 		nvgFontFaceId(args.vg, font->handle);
 
-		Vec textPos = Vec(6, 24);//?
-		nvgFillColor(args.vg, nvgTransRGBA(textColor, 23));//alpha 23
-		nvgText(args.vg, textPos.x, textPos.y, "~~", NULL);
+		Vec textPos = Vec(6, 24);
+		//nvgFillColor(args.vg, nvgTransRGBA(textColor, 23));//alpha 23
+		//nvgText(args.vg, textPos.x, textPos.y, "~~", NULL);
 		nvgFillColor(args.vg, textColor);
 		nvgText(args.vg, textPos.x, textPos.y, *what, NULL);
 	}
 
 	void fixCentre(Vec here, int many) {
-		box.size = Vec(12 * many + 12, 30);
+		box.size = Vec(14.5 * many + 12, 30);
 		box.pos = Vec(here.x - box.size.x / 2, here.y - box.size.y / 2);
 	}
 };
@@ -101,7 +101,7 @@ struct OmWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		DisplayWidget *display = new DisplayWidget(&showNow);
-		display->fixCentre(loc(1, 1), 2);//chars
+		display->fixCentre(loc(2, 1), 8);//chars
 		addChild(display);	
 	}
 };

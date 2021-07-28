@@ -18,6 +18,7 @@ Index - Demo
 4. [L](#l) - [boring](https://github.com/jackokring/KRTPluginADemo/blob/master/boring.vcv)
 5. [;D](#d) - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
 6. [R](#r) - No demo required
+7. [Ω](#Ω) - ?
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -210,3 +211,20 @@ Outs
 * Out `OUT`
 
 Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy modulation mixing. The controls are **centred dB scaling** gainuverters.
+
+Ω
+===
+
+*The Average Grey One - ?*
+
+Parameters
+---
+* ?
+
+Ins
+---
+* ?
+
+Outs
+---
+* ?
