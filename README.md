@@ -215,7 +215,7 @@ Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy mod
 Ω
 ===
 
-*The Average Grey One - ?*
+*The 70% Grey One (With A Display) - ?*
 
 Parameters
 ---

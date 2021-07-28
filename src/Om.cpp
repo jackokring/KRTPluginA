@@ -46,14 +46,10 @@ char *showNow = onDisplay1;//use pointer for changing display based on context
 
 NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
 	NVGcolor backgroundColor = nvgRGB(0x10, 0x10, 0x10); 
-	NVGcolor borderColor = nvgRGB(0xff, 0xff, 0xff);
 	nvgBeginPath(vg);
-	nvgRoundedRect(vg, 0.0, 0.0, box->size.x, box->size.y, 5.0);
+	nvgRoundedRect(vg, 0.f, 0.f, box->size.x, box->size.y, 3.f);
 	nvgFillColor(vg, backgroundColor);
 	nvgFill(vg);
-	nvgStrokeWidth(vg, 1.0);
-	nvgStrokeColor(vg, borderColor);
-	nvgStroke(vg);
 	nvgFontSize(vg, fontSize);
 	NVGcolor textColor = nvgRGB(0x5d, 0xfc, 0x0a);
 	return textColor;
@@ -76,15 +72,13 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 		NVGcolor textColor = prepareDisplay(args.vg, &box, 18);
 		nvgFontFaceId(args.vg, font->handle);
 
-		Vec textPos = Vec(6, 24);
-		//nvgFillColor(args.vg, nvgTransRGBA(textColor, 23));//alpha 23
-		//nvgText(args.vg, textPos.x, textPos.y, "~~", NULL);
+		Vec textPos = Vec(4, 22);
 		nvgFillColor(args.vg, textColor);
 		nvgText(args.vg, textPos.x, textPos.y, *what, NULL);
 	}
 
 	void fixCentre(Vec here, int many) {
-		box.size = Vec(14.5 * many + 12, 30);
+		box.size = Vec(14.6f * many + 8, 26);
 		box.pos = Vec(here.x - box.size.x / 2, here.y - box.size.y / 2);
 	}
 };
