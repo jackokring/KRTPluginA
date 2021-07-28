@@ -3,6 +3,7 @@
 
 struct Om : Module {
 	enum ParamIds {
+		VAR,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -17,6 +18,7 @@ struct Om : Module {
 
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(VAR, 0.f, 100.f, 50.f, "Random", " %");
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -96,7 +98,9 @@ struct OmWidget : ModuleWidget {
 
 		DisplayWidget *display = new DisplayWidget(&showNow);
 		display->fixCentre(loc(2, 1), 8);//chars
-		addChild(display);	
+		addChild(display);
+
+		addParam(createParamCentered<RoundBlackKnob>(loc(3, 2), module, Om::VAR));	
 	}
 };
 
