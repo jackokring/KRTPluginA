@@ -26,7 +26,7 @@ struct Om : Module {
 //geometry edit
 #define HP 9
 #define LANES 3
-#define RUNGS 6
+#define RUNGS 7
 
 //ok
 #define HP_UNIT 5.08
