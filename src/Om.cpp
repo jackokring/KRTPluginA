@@ -25,7 +25,7 @@ struct Om : Module {
 
 //geometry edit
 #define HP 9
-#define LANES 4
+#define LANES 3
 #define RUNGS 6
 
 //ok
@@ -62,9 +62,11 @@ NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
 struct DisplayWidget : LightWidget {//TransparentWidget {
 	std::shared_ptr<Font> font;
 	std::string fontPath;
+	char **what;
 	
-	DisplayWidget() {
+	DisplayWidget(char **p) {
 		fontPath = std::string(asset::plugin(pluginInstance, "res/fonts/Segment14.ttf"));
+		what = p;
 	}
 
 	void draw(const DrawArgs &args) override {
@@ -78,7 +80,12 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 		nvgFillColor(args.vg, nvgTransRGBA(textColor, 23));//alpha 23
 		nvgText(args.vg, textPos.x, textPos.y, "~~", NULL);
 		nvgFillColor(args.vg, textColor);
-		nvgText(args.vg, textPos.x, textPos.y, showNow, NULL);
+		nvgText(args.vg, textPos.x, textPos.y, *what, NULL);
+	}
+
+	void fixCentre(Vec here, int many) {
+		box.size = Vec(12 * many + 12, 30);
+		box.pos = Vec(here.x - box.size.x / 2, here.y - box.size.y / 2);
 	}
 };
 
@@ -93,9 +100,8 @@ struct OmWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		DisplayWidget *display = new DisplayWidget();
-		display->box.pos = loc(1, 1);//try
-		display->box.size = Vec(24 * 2, 30);// 2 character?
+		DisplayWidget *display = new DisplayWidget(&showNow);
+		display->fixCentre(loc(1, 1), 2);//chars
 		addChild(display);	
 	}
 };
