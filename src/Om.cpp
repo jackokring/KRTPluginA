@@ -52,9 +52,9 @@ struct Om : Module {
 		"A",//K
 		"A@BB",//L
 		"AA",//M
-		"",//N
+		"AB@AB",//N - Double Mockingbird
 		"B@AB",//O
-		"YO",//P - Theta bird YO special by SLL > E
+		"YO",//P - Theta bird YO special by YO > E
 		"B@AC",//Q
 		"BCA",//R
 		"AC@BC",//S
@@ -80,7 +80,7 @@ struct Om : Module {
 		2,//K
 		2,//L
 		1,//M
-		0,//N
+		2,//N
 		2,//O
 		0,//P
 		3,//Q
