@@ -36,7 +36,7 @@
     {
       "slug": "T",
       "name": "T",
-      "description": "A pitched time stretch and matched trigger sync delay.",
+      "description": "Pitched time stretch and matched trigger sync delay.",
       "tags": [
         "Effect",
         "Tuner",
@@ -47,7 +47,7 @@
     {
       "slug": "L",
       "name": "L",
-      "description": "A synchronized delay with shortening.",
+      "description": "Synchronized delay with shortening.",
       "tags": [
         "Utility",
         "Clock modulator",
@@ -58,7 +58,7 @@
     {
       "slug": "D",
       "name": ";D",
-      "description": "A VCA/future estimator with error.",
+      "description": "VCA/future estimator with error.",
       "tags": [
         "Utility",
         "Attenuator",
@@ -70,7 +70,7 @@
     {
       "slug": "R",
       "name": "R",
-      "description": "A simple mixer split.",
+      "description": "Simple mixer split.",
       "tags": [
         "Attenuator",
         "Mixer",
@@ -81,8 +81,13 @@
     {
       "slug": "Om",
       "name": "Ω",
-      "description": "",
-      "tags": []
+      "description": "Clock distribution randomizer.",
+      "tags": [
+        "Clock modulator",
+        "Polyphonic",
+        "Random",
+        "Switch"
+      ]
     }
   ]
 }
