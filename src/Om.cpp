@@ -54,7 +54,7 @@ struct Om : Module {
 		"AA",//M
 		"",//N
 		"B@AB",//O
-		"",//P
+		"YO",//P - Theta bird YO special by SLL > E
 		"B@AC",//Q
 		"BCA",//R
 		"AC@BC",//S
@@ -64,7 +64,7 @@ struct Om : Module {
 		"ABB",//W
 		"",//X
 		"SLLA",//Y - SLLx special by SLL > E
-		"" //Z
+		"B" //Z - Kite
 	};
 	int birdConsume[26] = {
 		0,//A
@@ -92,7 +92,7 @@ struct Om : Module {
 		2,//W
 		0,//X
 		1,//Y
-		0 //Z
+		2 //Z
 	};
 
 	Om() {
