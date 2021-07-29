@@ -67,7 +67,7 @@ struct Om : Module {
 		"B" //Z - Kite
 	};
 	int birdConsume[26] = {
-		0,//A
+		4,//A
 		3,//B
 		3,//C
 		4,//D
