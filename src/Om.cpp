@@ -37,6 +37,64 @@ struct Om : Module {
 		NUM_LIGHTS
 	};
 
+	//char rang @A-Z (with @ as composition of next 2 with potential nest)
+	char birdTo[26][] = {
+		"",//A
+		"A@BC",//B
+		"ACB",//C
+		"AB@CD",//D
+		"AB@@CDE",//E
+		"CBA",//F
+		"AD@BC",//G
+		"ABCB",//H
+		"A",//I
+		"AB@@ADC",//J
+		"A",//K
+		"A@BB",//L
+		"AA",//M
+		"",//N
+		"B@AB",//O
+		"",//P
+		"B@AC",//Q
+		"BCA",//R
+		"AC@BC",//S
+		"BA",//T
+		"B@@AAB",//U
+		"CAB",//V
+		"ABB",//W
+		"",//X
+		"SLLA",//Y - SLLx special by SLL > E
+		"" //Z
+	};
+	int birdConsume[26] = {
+		0,//A
+		3,//B
+		3,//C
+		4,//D
+		5,//E
+		3,//F
+		4,//G
+		3,//H
+		1,//I
+		4,//J
+		2,//K
+		2,//L
+		1,//M
+		0,//N
+		2,//O
+		0,//P
+		3,//Q
+		3,//R
+		3,//S
+		2,//T
+		2,//U
+		3,//V
+		2,//W
+		0,//X
+		1,//Y
+		0 //Z
+	};
+
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
