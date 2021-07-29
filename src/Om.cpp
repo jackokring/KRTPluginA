@@ -3,7 +3,7 @@
 
 struct Om : Module {
 	enum ParamIds {
-
+		BIRD,
 		SEED,
 		VAR,
 		NUM_PARAMS
@@ -39,6 +39,7 @@ struct Om : Module {
 
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
 		configParam(SEED, 1.f, 27.f, 14.f, "Reset Seed", " Symbol");
 		configParam(VAR, 0.f, 100.f, 50.f, "Random", " %");
 	}
@@ -122,7 +123,7 @@ struct OmWidget : ModuleWidget {
 		display->fixCentre(loc(2, 1), 8);//chars
 		addChild(display);
 
-		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, Om::VAR));
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, Om::BIRD));
 		addParam(createParamCentered<RoundBlackKnob>(loc(2, 2), module, Om::SEED));
 		addParam(createParamCentered<RoundBlackKnob>(loc(3, 2), module, Om::VAR));	
 
