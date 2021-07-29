@@ -215,16 +215,21 @@ Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy mod
 Ω
 ===
 
-*The 70% Grey One (With A Display) - ?*
+*The 70% Grey One (With A Display) - Clock distribution randomizer*
 
 Parameters
 ---
-* ?
+* Bird `BIRD`
+* Seed `SEED`
+* Randomize `RAND`
 
 Ins
 ---
-* ?
+* Clock `CLK`
+* Reset `RST`
 
-Outs
+Outs (Bi-phase on clock given current letter)
 ---
-* ?
+* `AN`, `BO`, `CP`, `DQ`, `ER`, `FS`, `GT`, `HU`, `IV`, `JW`, `KX`, `LY`, `MZ`
+
+`RST` starts a sequence of gate activations, from the beginning, on the outputs `AN` to `MZ` advanced by the `CLK` trigger. The `SEED` controls the initial symbol and some randomness of the following symbols. `RAND` increaes the chaos of randomization from the initial `SEED`. The magic of `BIRD` (the word) applies some modal operator lambda calculus to modify the sequence with the **very** discrete occasional stall in the `MM` Omega bird. This is not the differential calculus of Newton fame, but the one with names such as [Godel](https://en.wikipedia.org/wiki/Kurt_G%C3%B6del) and [Church](https://en.wikipedia.org/wiki/Alonzo_Church).
