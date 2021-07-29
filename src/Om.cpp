@@ -3,13 +3,34 @@
 
 struct Om : Module {
 	enum ParamIds {
+
+		SEED,
 		VAR,
 		NUM_PARAMS
 	};
 	enum InputIds {
+		CLK,
+		RST,
 		NUM_INPUTS
 	};
 	enum OutputIds {
+		AN,
+
+		BO,
+		CP,
+		DQ,
+
+		ER,
+		FS,
+		GT,
+
+		HU,
+		IV,
+		JW,
+
+		KX,
+		LY,
+		MZ,
 		NUM_OUTPUTS
 	};
 	enum LightIds {
@@ -18,6 +39,7 @@ struct Om : Module {
 
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(SEED, 1.f, 27.f, 14.f, "Reset Seed", " Symbol");
 		configParam(VAR, 0.f, 100.f, 50.f, "Random", " %");
 	}
 
@@ -100,7 +122,29 @@ struct OmWidget : ModuleWidget {
 		display->fixCentre(loc(2, 1), 8);//chars
 		addChild(display);
 
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, Om::VAR));
+		addParam(createParamCentered<RoundBlackKnob>(loc(2, 2), module, Om::SEED));
 		addParam(createParamCentered<RoundBlackKnob>(loc(3, 2), module, Om::VAR));	
+
+		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, Om::CLK));
+		addInput(createInputCentered<PJ301MPort>(loc(2, 3), module, Om::RST));
+		addOutput(createOutputCentered<PJ301MPort>(loc(3, 3), module, Om::AN));
+
+		addOutput(createOutputCentered<PJ301MPort>(loc(1, 4), module, Om::BO));
+		addOutput(createOutputCentered<PJ301MPort>(loc(2, 4), module, Om::CP));
+		addOutput(createOutputCentered<PJ301MPort>(loc(3, 4), module, Om::DQ));
+
+		addOutput(createOutputCentered<PJ301MPort>(loc(1, 5), module, Om::ER));
+		addOutput(createOutputCentered<PJ301MPort>(loc(2, 5), module, Om::FS));
+		addOutput(createOutputCentered<PJ301MPort>(loc(3, 5), module, Om::GT));
+
+		addOutput(createOutputCentered<PJ301MPort>(loc(1, 6), module, Om::HU));
+		addOutput(createOutputCentered<PJ301MPort>(loc(2, 6), module, Om::IV));
+		addOutput(createOutputCentered<PJ301MPort>(loc(3, 6), module, Om::JW));
+
+		addOutput(createOutputCentered<PJ301MPort>(loc(1, 7), module, Om::KX));
+		addOutput(createOutputCentered<PJ301MPort>(loc(2, 7), module, Om::LY));
+		addOutput(createOutputCentered<PJ301MPort>(loc(3, 7), module, Om::MZ));
 	}
 };
 
