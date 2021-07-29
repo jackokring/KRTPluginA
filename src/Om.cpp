@@ -38,7 +38,7 @@ struct Om : Module {
 	};
 
 	//char rang @A-Z (with @ as composition of next 2 with potential nest)
-	char birdTo[26][] = {
+	const char *birdTo[26] = {
 		"A@B@CD",//A - Becard - for @@x -> @x@
 		"A@BC",//B
 		"ACB",//C
