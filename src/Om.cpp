@@ -62,8 +62,8 @@ struct Om : Module {
 		"B@@AAB",//U
 		"CAB",//V
 		"ABB",//W
-		"",//X
-		"SLLA",//Y - SLLx special by SLL > E
+		"LL",//X - Double Lark - SX special by LL > E
+		"SX",//Y - SX special by SX > E
 		"B" //Z - Kite
 	};
 	int birdConsume[26] = {
@@ -91,7 +91,7 @@ struct Om : Module {
 		3,//V
 		2,//W
 		0,//X
-		1,//Y
+		0,//Y
 		2 //Z
 	};
 
