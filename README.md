@@ -19,6 +19,7 @@ Index - Demo
 5. [;D](#d) - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
 6. [R](#r) - No demo required
 7. [Ω](#Ω) - ?
+8. [V](#v) - ?
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -233,3 +234,20 @@ Outs (Bi-phase on clock given current letter)
 * `AN`, `BO`, `CP`, `DQ`, `ER`, `FS`, `GT`, `HU`, `IV`, `JW`, `KX`, `LY`, `MZ`
 
 `RST` starts a sequence of gate activations, from the beginning, on the outputs `AN` to `MZ` advanced by the `CLK` trigger. The `SEED` controls the initial symbol and some randomness of the following symbols. `RAND` increaes the chaos of randomization from the initial `SEED`. The magic of `BIRD` (the word) applies some modal operator lambda calculus to modify the sequence with the **very** discrete occasional stall in the `MM` Omega bird. This is not the differential calculus of Newton fame, but the one with names such as [Godel](https://en.wikipedia.org/wiki/Kurt_G%C3%B6del) and [Church](https://en.wikipedia.org/wiki/Alonzo_Church).
+
+V
+===
+
+*The 70% Grey One - Envelope VCA and CV producer*
+
+Parameters
+---
+* ?
+
+Ins
+---
+* ?
+
+Outs
+---
+* `?
