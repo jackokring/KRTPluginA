@@ -242,12 +242,24 @@ V
 
 Parameters
 ---
-* ?
+* Base Frequency `Hz`
+* Envelope Attack `ATK`
+* Envelope Decay `DCY`
 
 Ins
 ---
-* ?
+* Frequency Modulation `CVHz`
+* Amplitude Modulation `CVdB`
+* Envelope Time Modulation `CVs`
+* 3 of
+    * Oscillator In `IN`
+    * Up 5 Semitones Trigger `T5`
+    * Up 7 Semitones Trigger `T7`
 
 Outs
 ---
-* `?
+* 3 of
+    * Frequency CV to Oscillator`CV`
+    * Envelope Shaped Output `OUT`
+
+Takes in triggers on `T5` and `T7` to trigger one of the three vertical envelopes. `IN` is from the oscillator source, and `OUT` is that signal modified by the envelope. `CV` can be tuned dependant on the trigger pair combination. I thought it would help with using Ω. Although it might be quite useful on its own. The two outer `OUT` signals are normalized to the center `OUT` channel for less cables.
