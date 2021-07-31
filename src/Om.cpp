@@ -132,6 +132,7 @@ struct Om : Module {
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
+		//umm polyphony?
 
 		float bird = params[BIRD].getValue()/100.f;
 		float seed = params[SEED].getValue();
