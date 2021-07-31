@@ -212,7 +212,8 @@ struct Mu : Module {
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
 
-		float db = params[DB].getValue()/6.f;
+		//gain in a cube root peak
+		float db = params[DB].getValue()/2.f;
 		float hz = params[HZ].getValue();
 		float lam = params[LAM].getValue();
 
@@ -227,7 +228,7 @@ struct Mu : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float cvdb = inputs[CVDB].getPolyVoltage(p)/6.f;
+			float cvdb = inputs[CVDB].getPolyVoltage(p) * 0.1f;
 			float cvhz = inputs[CVHZ].getPolyVoltage(p);
 			float cvlam = inputs[CVLAM].getPolyVoltage(p);
 

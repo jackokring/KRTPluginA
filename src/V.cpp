@@ -103,11 +103,11 @@ struct V : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float cvdb = log(inputs[CVDB].getPolyVoltage(p)/6.f, 1.f);
+			float cvdb = log(inputs[CVDB].getPolyVoltage(p) * 0.1f, 1.f);
 			float cvhz = inputs[CVHZ].getPolyVoltage(p) + hz;
 			float cvs = inputs[CVS].getPolyVoltage(p) * 0.4f;//10v = quad/quarter
-			float a = 1.f / log(atk + cvs, 1.f);
-			float d = 1.f / log(dcy + cvs, 1.f);
+			float a = 1.f / log(atk + cvs, fs);
+			float d = 1.f / log(dcy + cvs, fs);
 
 			// OUTS
 			float normal = 0.f;//normal total
@@ -124,15 +124,15 @@ struct V : Module {
 					env[i][p] = 1.f;
 				}
 				if(envA[i][p]) {
-					env[i][p] *= a;
-					expEnv = 5.f * (1.f - env[i][p]);
-					if(expEnv > 4.9f) {//almost
+					env[i][p] -= a * env[i][p];
+					expEnv = (1.f - env[i][p]);
+					if(expEnv > 0.95f) {//almost
 						envA[i][p] = false;//decay
 						env[i][p] = 1.f;
 					}
 				} else {
-					env[i][p] *= d;
-					expEnv = 5.f * env[i][p];
+					env[i][p] -= d * env[i][p];
+					expEnv = env[i][p];
 				}
 				float outNorm = cvdb * inOsc * expEnv;//individual out
 				if(!outputs[out[i]].isConnected()) normal += outNorm;//normalized

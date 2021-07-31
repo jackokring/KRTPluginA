@@ -1,7 +1,7 @@
 vTBC
 ===
 
-* Reduced scaling on `u` input `CVdb` (breaks compatibility)
+* Reduced scaling on `u` input `CVdb` (breaks compatibility) 10V/6dB
 * Improved documentation
 * Website GitHub pages [Captain's log](https://jackokring.github.io/KRTPluginADemo/)
 
