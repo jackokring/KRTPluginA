@@ -75,7 +75,9 @@ struct V : Module {
 		for(int p = 0; p < maxPort; p++) {
 			float cvdb = log(inputs[CVDB].getPolyVoltage(p)/6.f, 1.f);
 			float cvhz = log(inputs[CVHZ].getPolyVoltage(p) + hz, dsp::FREQ_C4);
-			float cvs = inputs[CVS].getPolyVoltage(p);
+			float cvs = inputs[CVS].getPolyVoltage(p) * 0.4f;//10v = quad/quarter
+			float a = log(atk + cvs, 1.f);
+			float d = log(dcy + cvs, 1.f);
 
 			// OUTS
 			outputs[OUT1].setVoltage(0.f, p);

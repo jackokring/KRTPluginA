@@ -124,6 +124,9 @@ struct Om : Module {
 		AN, BO, CP,	DQ,	ER,	FS,	GT,	HU,	IV,	JW,	KX,	LY,	MZ
 	};
 
+	dsp::SchmittTrigger sClk[PORT_MAX_CHANNELS];
+	dsp::SchmittTrigger sRst[PORT_MAX_CHANNELS];
+
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
@@ -138,6 +141,11 @@ struct Om : Module {
 		for(int p = 0; p < maxPort; p++) {
 			float clk = inputs[CLK].getPolyVoltage(p);
 			float rst = inputs[RST].getPolyVoltage(p);
+			bool trigClk = sClk[p].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
+			//clock normalization
+			clk = sClk[p].state ? 10.f : 0.f;
+			float clk2 = sClk[p].state ? 0.f : 10.f;
+			bool trigRst = sRst[p].process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
 
 			// OUTS
 #pragma GCC ivdep			
