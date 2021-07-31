@@ -55,6 +55,12 @@ struct V : Module {
 		// 1/512th to 8 seconds (default 1/8th)
 		configParam(ATK, -9.f, 3.f, -3.f, "Attack Time", " per Oct");
 		configParam(DCY, -9.f, 3.f, -3.f, "Decay Time", " per Oct");
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < PORT_MAX_CHANNELS; j++) {
+				env[i][j] = 0.f;//silence
+				envA[i][j] = false;//not triggered
+			}
+		}
 	}
 
 	//obtain mapped control value
@@ -83,6 +89,8 @@ struct V : Module {
 	};
 
 	dsp::SchmittTrigger trig[3][PORT_MAX_CHANNELS];
+	float env[3][PORT_MAX_CHANNELS];
+	bool envA[3][PORT_MAX_CHANNELS];
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -109,8 +117,19 @@ struct V : Module {
 				float tr7 = inputs[t7[i]].getPolyVoltage(p);
 				float inOsc = inputs[in[i]].getPolyVoltage(p);
 				bool trigger = trig[i][p].process(rescale(tr5 + tr7, 0.1f, 2.f, 0.f, 1.f));
-				float outNorm = cvdb * inOsc;//individual out
 				//TODO envelope on trigger
+				if(env[i][p] > 10.f) {
+					envA[i][p] = false;//decay
+				}
+				if(trigger) {
+					envA[i][p] = true;//attack
+				}
+				if(envA[i][p]) {
+					env[i][p] *= 0.f;
+				} else {
+					env[i][p] *= 0.f;
+				}
+				float outNorm = cvdb * inOsc * env[i][p];//individual out
 				if(!outputs[out[i]].isConnected()) normal += outNorm;//normalized
 				outputs[out[i]].setVoltage(outNorm, p);
 				float cvNorm = cvhz + (tr5 * 0.5f + tr7 * 0.7f) / 10.f;
