@@ -1,3 +1,9 @@
+vTBC
+===
+
+* Reduced scaling on `u` input `CVdb` (breaks compatibility)
+
+
 1.6.9
 ===
 
