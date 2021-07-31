@@ -124,6 +124,8 @@ struct Om : Module {
 		AN, BO, CP,	DQ,	ER,	FS,	GT,	HU,	IV,	JW,	KX,	LY,	MZ
 	};
 
+	int outSym = 0;
+
 	dsp::SchmittTrigger sClk[PORT_MAX_CHANNELS];
 	dsp::SchmittTrigger sRst[PORT_MAX_CHANNELS];
 
@@ -150,7 +152,14 @@ struct Om : Module {
 			// OUTS
 #pragma GCC ivdep			
 			for(int i = 0; i < 13; i++) {
-				outputs[out[i]].setVoltage(0.f, p);
+				float combined = 0.f;
+				if(outSym == i + 1) {
+					combined = clk;
+				}
+				if(outSym == i + 14) {
+					combined = clk2;
+				}
+				outputs[out[i]].setVoltage(combined, p);
 			}
 		}
 	}
