@@ -109,7 +109,7 @@ struct V : Module {
 				float tr7 = inputs[t7[i]].getPolyVoltage(p);
 				float inOsc = inputs[in[i]].getPolyVoltage(p);
 				bool trigger = trig[i][p].process(rescale(tr5 + tr7, 0.1f, 2.f, 0.f, 1.f));
-				float outNorm = inOsc;//individual out
+				float outNorm = cvdb * inOsc;//individual out
 				//TODO envelope on trigger
 				if(!outputs[out[i]].isConnected()) normal += outNorm;//normalized
 				outputs[out[i]].setVoltage(outNorm, p);
