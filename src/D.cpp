@@ -101,7 +101,7 @@ struct D : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float cv = inputs[ICVDB].getPolyVoltage(p);
+			float cv = inputs[ICVDB].getPolyVoltage(p)/6.f;
 			cv *= cvdb;
 			cv = log(db + cv, inputs[IN].getPolyVoltage(p));
 

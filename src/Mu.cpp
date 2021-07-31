@@ -227,7 +227,7 @@ struct Mu : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float cvdb = inputs[CVDB].getPolyVoltage(p);
+			float cvdb = inputs[CVDB].getPolyVoltage(p)/6.f;
 			float cvhz = inputs[CVHZ].getPolyVoltage(p);
 			float cvlam = inputs[CVLAM].getPolyVoltage(p);
 

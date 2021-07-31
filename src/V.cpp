@@ -51,9 +51,10 @@ struct V : Module {
 	V() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(HZ, -4.f, 4.f, 0.f, "Frequency", " Oct");
-		//perhaps exponetials ...
-		configParam(ATK, 0.01f, 10.f, 1.f, "Attack Time Constant", " s");
-		configParam(DCY, 0.01f, 10.f, 1.f, "Decay Time Constant", " s");
+		//perhaps exponetials ... inverse Oct -> Hz to seconds
+		// 1/512th to 8 seconds (default 1/8th)
+		configParam(ATK, -9.f, 3.f, -3.f, "Attack Time", " per Oct");
+		configParam(DCY, -9.f, 3.f, -3.f, "Decay Time", " per Oct");
 	}
 
 	//obtain mapped control value
@@ -62,11 +63,6 @@ struct V : Module {
     }
 
 	void process(const ProcessArgs& args) override {
-		// For inputs intended to be used solely for audio, sum the voltages of all channels
-		// (e.g. with Port::getVoltageSum())
-		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
-		// voltage (e.g. with Port::getVoltage())
-		// POLY: Port::getPolyVoltage(c)
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
 
@@ -77,8 +73,8 @@ struct V : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float cvdb = inputs[CVDB].getPolyVoltage(p);
-			float cvhz = inputs[CVHZ].getPolyVoltage(p);
+			float cvdb = log(inputs[CVDB].getPolyVoltage(p)/6.f, 1.f);
+			float cvhz = log(inputs[CVHZ].getPolyVoltage(p) + hz, dsp::FREQ_C4);
 			float cvs = inputs[CVS].getPolyVoltage(p);
 
 			// OUTS

@@ -125,16 +125,12 @@ struct Om : Module {
 	};
 
 	void process(const ProcessArgs& args) override {
-		// For inputs intended to be used solely for audio, sum the voltages of all channels
-		// (e.g. with Port::getVoltageSum())
-		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
-		// voltage (e.g. with Port::getVoltage())
-		// POLY: Port::getPolyVoltage(c)
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
 
 		float bird = params[BIRD].getValue()/100.f;
 		float seed = params[SEED].getValue();
+		if(seed >= 27.f) seed = 1.f;//wrap
 		float var = params[VAR].getValue()/100.f;
 
 		// PARAMETERS (AND IMPLICIT INS)
