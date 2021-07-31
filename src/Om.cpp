@@ -141,7 +141,7 @@ struct Om : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 		float rst = inputs[RST].getVoltageSum();//signal OR
 		bool trigRst = sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
-		for(int p = maxPort - 1; p > 0; p--) {
+		for(int p = PORT_MAX_CHANNELS - 1; p > 0; p--) {
 			float clk = inputs[CLK].getPolyVoltage(p);			
 			bool trigClk = sClk[p].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
 			if(trigClk) {
