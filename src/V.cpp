@@ -36,14 +36,60 @@ struct V : Module {
 		NUM_LIGHTS
 	};
 
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		for(int o = 0; o < NUM_OUTPUTS; o++) {
+			outputs[o].setChannels(poly);
+		}
+		return poly;
+	}
+
 	V() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(HZ, -4.f, 4.f, 0.f, "Frequency", " Oct");
-		configParam(ATK, 0.f, 10.f, 1.f, "Attack", " s");
-		configParam(DCY, 0.f, 10.f, 1.f, "Decay", " s");
+		//perhaps exponetials ...
+		configParam(ATK, 0.01f, 10.f, 1.f, "Attack Time Constant", " s");
+		configParam(DCY, 0.01f, 10.f, 1.f, "Decay Time Constant", " s");
 	}
 
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
 	void process(const ProcessArgs& args) override {
+		// For inputs intended to be used solely for audio, sum the voltages of all channels
+		// (e.g. with Port::getVoltageSum())
+		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
+		// voltage (e.g. with Port::getVoltage())
+		// POLY: Port::getPolyVoltage(c)
+		float fs = args.sampleRate;
+		int maxPort = maxPoly();
+
+		float hz = params[HZ].getValue();
+		float atk = params[ATK].getValue();
+		float dcy = params[DCY].getValue();
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float cvdb = inputs[CVDB].getPolyVoltage(p);
+			float cvhz = inputs[CVHZ].getPolyVoltage(p);
+			float cvs = inputs[CVS].getPolyVoltage(p);
+
+			// OUTS
+			outputs[OUT1].setVoltage(0.f, p);
+			outputs[OUT2].setVoltage(0.f, p);
+			outputs[OUT3].setVoltage(0.f, p);
+
+			outputs[CV1].setVoltage(0.f, p);
+			outputs[CV2].setVoltage(0.f, p);
+			outputs[CV3].setVoltage(0.f, p);
+		}
 	}
 };
 

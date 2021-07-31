@@ -37,6 +37,18 @@ struct Om : Module {
 		NUM_LIGHTS
 	};
 
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		for(int o = 0; o < NUM_OUTPUTS; o++) {
+			outputs[o].setChannels(poly);
+		}
+		return poly;
+	}
+
 	//char rang @A-Z (with @ as composition of next 2 with potential nest)
 	const char *birdTo[26] = {
 		"A@B@CD",//A - Becard - for @@x -> @x@
@@ -98,11 +110,45 @@ struct Om : Module {
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
+		//decide symbol rangs ...
 		configParam(SEED, 1.f, 27.f, 14.f, "Reset Seed", " Symbol");
 		configParam(VAR, 0.f, 100.f, 50.f, "Random", " %");
 	}
 
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
+	const int out[13] = {
+		AN, BO, CP,	DQ,	ER,	FS,	GT,	HU,	IV,	JW,	KX,	LY,	MZ
+	};
+
 	void process(const ProcessArgs& args) override {
+		// For inputs intended to be used solely for audio, sum the voltages of all channels
+		// (e.g. with Port::getVoltageSum())
+		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
+		// voltage (e.g. with Port::getVoltage())
+		// POLY: Port::getPolyVoltage(c)
+		float fs = args.sampleRate;
+		int maxPort = maxPoly();
+
+		float bird = params[BIRD].getValue()/100.f;
+		float seed = params[SEED].getValue();
+		float var = params[VAR].getValue()/100.f;
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float clk = inputs[CLK].getPolyVoltage(p);
+			float rst = inputs[RST].getPolyVoltage(p);
+
+			// OUTS
+#pragma GCC ivdep			
+			for(int i = 0; i < 13; i++) {
+				outputs[out[i]].setVoltage(0.f, p);
+			}
+		}
 	}
 };
 
