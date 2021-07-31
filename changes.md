@@ -2,7 +2,8 @@ vTBC
 ===
 
 * Reduced scaling on `u` input `CVdb` (breaks compatibility)
-
+* Improved documentation
+* Website GitHub pages [Captain's log](https://jackokring.github.io/KRTPluginADemo/)
 
 1.6.9
 ===
