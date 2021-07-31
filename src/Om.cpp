@@ -38,11 +38,7 @@ struct Om : Module {
 	};
 
 	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
+		int poly = inputs[CLK].getChannels();
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
 			outputs[o].setChannels(poly);
 		}
@@ -113,6 +109,9 @@ struct Om : Module {
 		//decide symbol rangs ...
 		configParam(SEED, 1.f, 27.f, 14.f, "Reset Seed", " Symbol");
 		configParam(VAR, 0.f, 100.f, 50.f, "Random", " %");
+		for(int o = 0; o < PORT_MAX_CHANNELS; o++) {
+			outSym[o] = 0;
+		}
 	}
 
 	//obtain mapped control value
@@ -124,10 +123,10 @@ struct Om : Module {
 		AN, BO, CP,	DQ,	ER,	FS,	GT,	HU,	IV,	JW,	KX,	LY,	MZ
 	};
 
-	int outSym = 0;
+	int outSym[PORT_MAX_CHANNELS];
 
 	dsp::SchmittTrigger sClk[PORT_MAX_CHANNELS];
-	dsp::SchmittTrigger sRst[PORT_MAX_CHANNELS];
+	dsp::SchmittTrigger sRst;
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -140,24 +139,33 @@ struct Om : Module {
 		float var = params[VAR].getValue()/100.f;
 
 		// PARAMETERS (AND IMPLICIT INS)
-#pragma GCC ivdep
-		for(int p = 0; p < maxPort; p++) {
-			float clk = inputs[CLK].getPolyVoltage(p);
-			float rst = inputs[RST].getPolyVoltage(p);
+		float rst = inputs[RST].getVoltageSum();//signal OR
+		bool trigRst = sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
+		for(int p = maxPort - 1; p > 0; p--) {
+			float clk = inputs[CLK].getPolyVoltage(p);			
 			bool trigClk = sClk[p].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
-			//clock normalization
-			clk = sClk[p].state ? 10.f : 0.f;
-			float clk2 = sClk[p].state ? 0.f : 10.f;
-			bool trigRst = sRst[p].process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
+			if(trigClk) {
+				outSym[p] = outSym[p - 1];//chain arp
+			}
+		}
+		//clock normalization
+		float clk = inputs[CLK].getPolyVoltage(0);
+		bool trigClk = sClk[0].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
+		clk = sClk[p].state ? 10.f : 0.f;
+		float clk2 = sClk[p].state ? 0.f : 10.f;
 
+		//last assign TODO
+		outSym[0] = 0;
+#pragma GCC ivdep
+		for(int p = 1; p < maxPort; p++) {
 			// OUTS
 #pragma GCC ivdep			
 			for(int i = 0; i < 13; i++) {
 				float combined = 0.f;
-				if(outSym == i + 1) {
+				if(outSym[p] == i + 1) {
 					combined = clk;
 				}
-				if(outSym == i + 14) {
+				if(outSym[p] == i + 14) {
 					combined = clk2;
 				}
 				outputs[out[i]].setVoltage(combined, p);

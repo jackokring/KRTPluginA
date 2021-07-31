@@ -226,8 +226,8 @@ Parameters
 
 Ins
 ---
-* Clock `CLK`
-* Reset `RST`
+* Clock (Polyphony Master) `CLK`
+* Reset (Polyphonic OR) `RST`
 
 Outs (Bi-phase on clock given current letter)
 ---
@@ -236,6 +236,8 @@ Outs (Bi-phase on clock given current letter)
 `RST` starts a sequence of gate activations, from the beginning, on the outputs `AN` to `MZ` advanced by the `CLK` trigger. The `SEED` controls the initial symbol and some randomness of the following symbols. `RAND` increaes the chaos of randomization from the initial `SEED`. The magic of `BIRD` (the word) applies some modal operator lambda calculus to modify the sequence with the **very** discrete occasional stall in the `MM` Omega bird. This is not the differential calculus of Newton fame, but the one with names such as [Godel](https://en.wikipedia.org/wiki/Kurt_G%C3%B6del) and [Church](https://en.wikipedia.org/wiki/Alonzo_Church).
 
 There is a great book on modal logic called [To Mock a Mocking Bird](https://en.wikipedia.org/wiki/To_Mock_a_Mockingbird), itself a follow up to [Forever Undecided](https://en.wikipedia.org/wiki/Raymond_Smullyan). A lay person introduction to the subject.
+
+Higher polyphony using `CLK` copies the mono output one from the lowest channel to the highest given a `CLK` on a channel. For example when clocked the second channel takes the output of the first channel.
 
 V
 ===
