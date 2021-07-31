@@ -62,6 +62,28 @@ struct V : Module {
         return powf(2.f, val) * centre;
     }
 
+	const int out[3] = {
+		OUT1, OUT2, OUT3
+	};
+
+	const int cv[3] = {
+		CV1, CV2, CV3
+	};
+
+	const int t5[3] = {
+		T51, T52, T53
+	};
+
+	const int t7[3] = {
+		T71, T72, T73
+	};
+
+	const int in[3] = {
+		IN1, IN2, IN3
+	};
+
+	dsp::SchmittTrigger trig[3][PORT_MAX_CHANNELS];
+
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
@@ -74,19 +96,27 @@ struct V : Module {
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
 			float cvdb = log(inputs[CVDB].getPolyVoltage(p)/6.f, 1.f);
-			float cvhz = log(inputs[CVHZ].getPolyVoltage(p) + hz, dsp::FREQ_C4);
+			float cvhz = inputs[CVHZ].getPolyVoltage(p) + hz;
 			float cvs = inputs[CVS].getPolyVoltage(p) * 0.4f;//10v = quad/quarter
 			float a = log(atk + cvs, 1.f);
 			float d = log(dcy + cvs, 1.f);
 
 			// OUTS
-			outputs[OUT1].setVoltage(0.f, p);
-			outputs[OUT2].setVoltage(0.f, p);
-			outputs[OUT3].setVoltage(0.f, p);
-
-			outputs[CV1].setVoltage(0.f, p);
-			outputs[CV2].setVoltage(0.f, p);
-			outputs[CV3].setVoltage(0.f, p);
+			float normal = 0.f;//normal total
+#pragma GCC ivdep			
+			for(int i = 0; i < 3; i++) {
+				float tr5 = inputs[t5[i]].getPolyVoltage(p);
+				float tr7 = inputs[t7[i]].getPolyVoltage(p);
+				float inOsc = inputs[in[i]].getPolyVoltage(p);
+				bool trigger = trig[i][p].process(rescale(tr5 + tr7, 0.1f, 2.f, 0.f, 1.f));
+				float outNorm = inOsc;//individual out
+				//TODO envelope on trigger
+				if(!outputs[out[i]].isConnected()) normal += outNorm;//normalized
+				outputs[out[i]].setVoltage(outNorm, p);
+				float cvNorm = cvhz + (tr5 * 0.5f + tr7 * 0.7f) / 10.f;
+				outputs[cv[i]].setVoltage(cvNorm, p);
+			}
+			outputs[OUT2].setVoltage(normal, p);//add in normalized
 		}
 	}
 };
