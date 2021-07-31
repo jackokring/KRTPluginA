@@ -120,16 +120,21 @@ struct V : Module {
 				//TODO envelope on trigger
 				if(env[i][p] > 10.f) {
 					envA[i][p] = false;//decay
+					env[i][p] = 1.f;
 				}
+				float expEnv;
 				if(trigger) {
 					envA[i][p] = true;//attack
+					env[i][p] = 1.f;
 				}
 				if(envA[i][p]) {
 					env[i][p] *= 0.f;
+					expEnv = 10.f * (1.f - env[i][p]);
 				} else {
 					env[i][p] *= 0.f;
+					expEnv = 10.f * env[i][p];
 				}
-				float outNorm = cvdb * inOsc * env[i][p];//individual out
+				float outNorm = cvdb * inOsc * expEnv;//individual out
 				if(!outputs[out[i]].isConnected()) normal += outNorm;//normalized
 				outputs[out[i]].setVoltage(outNorm, p);
 				float cvNorm = cvhz + (tr5 * 0.5f + tr7 * 0.7f) / 10.f;
