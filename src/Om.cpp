@@ -151,8 +151,8 @@ struct Om : Module {
 		//clock normalization
 		float clk = inputs[CLK].getPolyVoltage(0);
 		bool trigClk = sClk[0].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
-		clk = sClk[p].state ? 10.f : 0.f;
-		float clk2 = sClk[p].state ? 0.f : 10.f;
+		clk = sClk[0].state ? 10.f : 0.f;
+		float clk2 = sClk[0].state ? 0.f : 10.f;
 
 		//last assign TODO
 		outSym[0] = 0;
