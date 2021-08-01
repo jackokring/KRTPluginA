@@ -104,7 +104,7 @@ struct Om : Module {
 	};
 
 	char randomz[65];
-	char offsets[64];
+	char offsets[65];
 
 	int ptrRandomz = 0;
 	int ptrOffsets = 0;
@@ -129,6 +129,22 @@ struct Om : Module {
 		return rem;
 	}
 
+	json_t* dataToJson() override {
+		json_t *rootJ = json_object();
+		json_object_set_new(rootJ, "save", json_string(offsets));
+		return rootJ;
+	}
+
+	void dataFromJson(json_t* rootJ) override {  
+		json_t* textJ = json_object_get(rootJ, "save");
+  		if (textJ) {
+			const char *str = json_string_value(textJ);
+			for(int i = 0; i < 64; i++) {
+				offsets[i] = str[i];//limit buffer size hack
+			}
+		}
+	}
+
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
@@ -144,6 +160,7 @@ struct Om : Module {
 			offsets[o] = 0;//calculation offsets
 		}
 		randomz[64] = randomz[0];//loop
+		offsets[64] = '\n';//end
 	}
 
 	//obtain mapped control value
