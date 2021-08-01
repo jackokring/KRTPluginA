@@ -272,7 +272,7 @@ struct Om : Module {
 		AN, BO, CP,	DQ,	ER,	FS,	GT,	HU,	IV,	JW,	KX,	LY,	MZ
 	};
 
-	int outSym[PORT_MAX_CHANNELS];
+	unsigned char outSym[PORT_MAX_CHANNELS];
 
 	dsp::SchmittTrigger sClk[PORT_MAX_CHANNELS];
 	dsp::SchmittTrigger sRst;
@@ -299,8 +299,8 @@ struct Om : Module {
 		//clock normalization
 		float clk = inputs[CLK].getPolyVoltage(0);
 		bool trigClk = sClk[0].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
-		clk = sClk[0].state ? 10.f : 0.f;
-		float clk2 = sClk[0].state ? 0.f : 10.f;
+		clk = sClk[0].isHigh() ? 10.f : 0.f;
+		float clk2 = sClk[0].isHigh() ? 0.f : 10.f;
 		lights[LCLK].setBrightness(clk);//only needs to be 1.f
 		if(trigRst) {
 			//on reset
@@ -348,6 +348,7 @@ struct Om : Module {
 				outputs[out[i]].setVoltage(combined, p);
 			}
 		}
+		//outputs[MZ].setVoltage(3.f, 0);//test works drive??
 	}
 };
 
