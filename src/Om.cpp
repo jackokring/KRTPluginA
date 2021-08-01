@@ -59,7 +59,7 @@ struct Om : Module {
 		"CBA",//F
 		"AD@BC",//G
 		"ABCB",//H
-		"A",//I
+		"",//I -- efficiency
 		"AB@@ADC",//J
 		"A",//K
 		"A@BB",//L
@@ -88,7 +88,7 @@ struct Om : Module {
 		3,//F
 		4,//G
 		3,//H
-		1,//I
+		0,//I
 		4,//J
 		2,//K
 		2,//L
@@ -112,18 +112,12 @@ struct Om : Module {
 
 	char randomz[65];
 	char offsets[65];
+	char store[5][65];//data temp store A-E
+	int storeLen[5];
 
 	unsigned int ptrOffsets = 0;
 
-	void getBird(int many, int ptrMax) {
-
-	}
-
-	void putBird(const char *how, int len, int ptrMax) {
-
-	}
-
-	char getDigit(int ptrO, float seed) {
+	char getDigit(unsigned int ptrO, float seed) {
 		seed += ptrO;
 		int s1 = ((int) seed) & 63;//pos
 		float rem = modulo(seed, 64);//remainder and positive for 
@@ -136,15 +130,42 @@ struct Om : Module {
 		return (char) ((s1 % 27) + '@');//@ plus
 	}
 
-	void alterOffPtr(int off) {
+	int alterOffPtr(int off) {
+		int tmp = ptrOffsets;//post increment
 		ptrOffsets += off;
 		ptrOffsets &= 63;//modulo
+		return tmp;
 	}
 
-	void putDigit(int ptrO, float seed, char digit) {
+	void putDigit(unsigned int ptrO, float seed, char digit) {
 		offsets[ptrO & 63] = 0;//blank zero 
 		char x = getDigit(ptrO, seed) - '@';//producing
 		offsets[ptrO & 63] = digit - x;//calc offset to make digit
+	}
+
+	void readNest(int num, int start, unsigned int ptrMax, float seed) {
+		int idx = start;
+		char x = getDigit(alterOffPtr(1), seed);//keep modulo
+		store[num][idx++] = x;
+		storeLen[num]++;//count
+		if(x == '@' && (ptrOffsets != ptrMax)) {
+			//bracket
+			readNest(num, idx++, ptrMax, seed);
+			if(ptrOffsets != ptrMax) {//avoid overflow
+				readNest(num, idx++, ptrMax, seed);
+			}
+		}
+	}
+
+	void getBird(int many, unsigned int ptrMax, float seed) {
+		for(int i = 0; i < many; i++) {
+			storeLen[i] = 0;
+			readNest(i, 0, ptrMax, seed);//beginning
+		}
+	}
+
+	void putBird(const char *how, int len, unsigned int ptrMax, float seed) {
+
 	}
 
 	float modulo(float x, float m) {
@@ -265,8 +286,8 @@ struct Om : Module {
 				int consume = birdConsume[x - 1];//details
 				const char *to = birdTo[x - 1];
 				int len = birdLen[x - 1];
-				getBird(consume, ptrOffsets);
-				putBird(to, len, ptrOffsets);
+				getBird(consume, ptrOffsets, seed);
+				putBird(to, len, ptrOffsets, seed);
 			}
 			//apply rand
 			if((rand() * 100.f / RAND_MAX) < var) {//on prob
