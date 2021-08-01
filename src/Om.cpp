@@ -118,8 +118,14 @@ struct Om : Module {
 		s2 = randomz[s2];
 		rem = s1 * (1.f - rem) + s2 * rem;
 		s1 = (int) rem;
-		s1 += offsets[ptrO];//eveentual char
+		s1 += offsets[ptrO & 63];//eveentual char
 		return (char) ((s1 % 27) + '@');//@ plus
+	}
+
+	void putDigit(int ptrR, int ptrO, float seed, char digit) {
+		offsets[ptrO & 63] = 0;//blank zero 
+		char x = getDigit(ptrR, ptrO, seed) - '@';//producing
+		offsets[ptrO & 63] = digit - x;//calc offset to make digit
 	}
 
 	float modulo(float x, float m) {
