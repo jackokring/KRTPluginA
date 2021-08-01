@@ -110,18 +110,18 @@ struct Om : Module {
 
 	int birdLen[26];
 
-	char randomz[65];
-	char offsets[65];
-	char store[5][65];//data temp store A-E
+	unsigned char randomz[65];
+	unsigned char offsets[65];
+	unsigned char store[5][65];//data temp store A-E
 	int storeLen[5];
 
 	unsigned int ptrOffsets = 0;
 
 	char getDigit(unsigned int ptrO, float seed) {
 		seed += ptrO;
-		int s1 = ((int) seed) & 63;//pos
-		float rem = modulo(seed, 64);//remainder and positive for 
-		int s2 = s1 + 1;
+		unsigned int s1 = ((int) seed) & 63;//pos
+		float rem = modulo(seed, 1.f);//remainder and positive for 
+		unsigned int s2 = s1 + 1;
 		s1 = randomz[s1];
 		s2 = randomz[s2];
 		rem = s1 * (1.f - rem) + s2 * rem;
@@ -197,7 +197,7 @@ struct Om : Module {
 
 	json_t* dataToJson() override {
 		json_t *rootJ = json_object();
-		json_object_set_new(rootJ, "save", json_string(offsets));
+		json_object_set_new(rootJ, "save", json_string((char *)offsets));
 		return rootJ;
 	}
 
