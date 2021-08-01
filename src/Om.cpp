@@ -78,6 +78,7 @@ struct Om : Module {
 		"SLL",//Y - special by SLL > E
 		"B" //Z - Kite
 	};
+
 	int birdConsume[26] = {
 		4,//A
 		3,//B
@@ -107,10 +108,20 @@ struct Om : Module {
 		2 //Z
 	};
 
+	int birdLen[26];
+
 	char randomz[65];
 	char offsets[65];
 
 	unsigned int ptrOffsets = 0;
+
+	void getBird(int many, int ptrMax) {
+
+	}
+
+	void putBird(const char *how, int len, int ptrMax) {
+
+	}
 
 	char getDigit(int ptrO, float seed) {
 		seed += ptrO;
@@ -198,6 +209,9 @@ struct Om : Module {
 		}
 		randomz[64] = randomz[0];//loop
 		offsets[64] = '\n';//end
+		for(int o = 0; o < 26; o++) {
+			birdLen[o] = strlen(birdTo[o]);//opt
+		}
 	}
 
 	//obtain mapped control value
@@ -244,12 +258,19 @@ struct Om : Module {
 			ptrOffsets = 0;//reset
 		} else if(trigClk) {
 			//on clock step forward
+			char x = getDigit(ptrOffsets, seed) - '@';
 			ptrOffsets++;
 			//apply bird
-
+			if(x != 0 && (rand() * 100.f / RAND_MAX) < bird) {//on prob
+				int consume = birdConsume[x - 1];//details
+				const char *to = birdTo[x - 1];
+				int len = birdLen[x - 1];
+				getBird(consume, ptrOffsets);
+				putBird(to, len, ptrOffsets);
+			}
 			//apply rand
 			if((rand() * 100.f / RAND_MAX) < var) {//on prob
-				putDigit(ptrOffsets, seed, (rand() * 27 / RAND_MAX));//modify
+				putDigit(ptrOffsets, seed, (rand() * 27 / RAND_MAX) + '@');//modify
 			}
 		}
 		showOnDisplay(seed);
