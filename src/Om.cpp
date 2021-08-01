@@ -117,7 +117,7 @@ struct Om : Module {
 
 	unsigned int ptrOffsets = 0;
 
-	char getDigit(unsigned int ptrO, float seed) {
+	unsigned char getDigit(unsigned int ptrO, float seed) {
 		seed += ptrO;
 		unsigned int s1 = ((int) seed) & 63;//pos
 		float rem = modulo(seed, 1.f);//remainder and positive for 
@@ -127,7 +127,7 @@ struct Om : Module {
 		rem = s1 * (1.f - rem) + s2 * rem;
 		s1 = (int) rem;
 		s1 += offsets[ptrO & 63];//eveentual char
-		return (char) ((s1 % 27) + '@');//@ plus
+		return (unsigned char) ((s1 % 27) + '@');//@ plus
 	}
 
 	int alterOffPtr(int off) {
@@ -137,9 +137,9 @@ struct Om : Module {
 		return tmp;
 	}
 
-	void putDigit(unsigned int ptrO, float seed, char digit) {
+	void putDigit(unsigned int ptrO, float seed, unsigned char digit) {
 		offsets[ptrO & 63] = 0;//blank zero 
-		char x = getDigit(ptrO, seed) - '@';//producing
+		unsigned char x = getDigit(ptrO, seed) - '@';//producing
 		offsets[ptrO & 63] = digit - x;//calc offset to make digit
 	}
 
@@ -245,7 +245,7 @@ struct Om : Module {
 		}
 		srand(666);
 		for(int o = 0; o < 64; o++) {
-			randomz[o] = (char) (rand() * 64.f / RAND_MAX);//a randomized pattern
+			randomz[o] = (char) (rand() * 25.99999f / RAND_MAX + 1.f);//a randomized pattern
 			offsets[o] = 0;//calculation offsets
 		}
 		randomz[64] = randomz[0];//loop
