@@ -152,10 +152,15 @@ struct Om : Module {
 		}
 	}
 
+	int mux = 0;
+
 	void showOnDisplay(float seed) {
-		for(int i = 0; i < 8; i++) {
-			onDisplay1[i] = getDigit(ptrRandomz + i, ptrOffsets + i, seed);
+		if((mux & 1023) == 0) {
+			for(int i = 0; i < 8; i++) {
+				onDisplay1[i] = getDigit(ptrRandomz + i, ptrOffsets + i, seed);
+			}
 		}
+		mux++;//
 	}
 
 	Om() {
@@ -215,9 +220,15 @@ struct Om : Module {
 		bool trigClk = sClk[0].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
 		clk = sClk[0].state ? 10.f : 0.f;
 		float clk2 = sClk[0].state ? 0.f : 10.f;
+		if(trigRst) {
+			//on reset
 
-		//last assign TODO
-		outSym[0] = 0;
+		} else if(trigClk) {
+			//on clock
+
+		}
+		showOnDisplay(seed);
+		outSym[0] = getDigit(ptrRandomz, ptrOffsets, seed);//set out
 #pragma GCC ivdep
 		for(int p = 1; p < maxPort; p++) {
 			// OUTS
