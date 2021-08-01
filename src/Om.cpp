@@ -1,6 +1,9 @@
 #include "plugin.hpp"
 
 char onDisplay1[] = "KRTOMEGA";
+char onDisplay2[] = "        ";//double
+bool flip = false;
+char *showNow = onDisplay1;//use pointer for changing display based on context
 
 struct Om : Module {
 	enum ParamIds {
@@ -157,7 +160,19 @@ struct Om : Module {
 	void showOnDisplay(float seed) {
 		if((mux & 1023) == 0) {
 			for(int i = 0; i < 8; i++) {
-				onDisplay1[i] = getDigit(ptrRandomz + i, ptrOffsets + i, seed);
+				char x = getDigit(ptrRandomz + i, ptrOffsets + i, seed);
+				if(flip) {
+					onDisplay1[i] = x;
+				} else {
+					onDisplay2[i] = x;
+				}
+			}
+			flip = !flip;
+			//double buffer
+			if(flip) {
+				showNow = onDisplay2;
+			} else {
+				showNow = onDisplay1;
 			}
 		}
 		mux++;//
@@ -269,8 +284,6 @@ struct Om : Module {
 
 //placement macro
 #define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
-
-char *showNow = onDisplay1;//use pointer for changing display based on context
 
 NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
 	NVGcolor backgroundColor = nvgRGB(0x10, 0x10, 0x10); 
