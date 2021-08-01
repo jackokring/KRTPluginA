@@ -196,7 +196,7 @@ struct Om : Module {
 	dsp::SchmittTrigger sRst;
 
 	void process(const ProcessArgs& args) override {
-		float fs = args.sampleRate;
+		//float fs = args.sampleRate;
 		int maxPort = maxPoly();
 		//umm polyphony?
 
@@ -222,9 +222,14 @@ struct Om : Module {
 		float clk2 = sClk[0].state ? 0.f : 10.f;
 		if(trigRst) {
 			//on reset
-
+			ptrRandomz = ptrOffsets = 0;//reset
 		} else if(trigClk) {
-			//on clock
+			//on clock step forward
+			ptrRandomz++;
+			ptrOffsets++;
+			//apply bird
+
+			//apply rand
 
 		}
 		showOnDisplay(seed);
