@@ -189,7 +189,7 @@ struct Om : Module {
 		}
 		srand(666);
 		for(int o = 0; o < 64; o++) {
-			randomz[o] = (char) rand();//a randomized pattern
+			randomz[o] = (char) (rand() * 64.f / RAND_MAX);//a randomized pattern
 			offsets[o] = 0;//calculation offsets
 		}
 		randomz[64] = randomz[0];//loop
@@ -245,7 +245,9 @@ struct Om : Module {
 			//apply bird
 
 			//apply rand
-
+			if((rand() * 100.f / RAND_MAX) < var) {//on prob
+				putDigit(ptrRandomz, ptrOffsets, seed, (rand() * 27 / RAND_MAX));//modify
+			}
 		}
 		showOnDisplay(seed);
 		outSym[0] = getDigit(ptrRandomz, ptrOffsets, seed);//set out
