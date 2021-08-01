@@ -159,13 +159,33 @@ struct Om : Module {
 
 	void getBird(int many, unsigned int ptrMax, float seed) {
 		for(int i = 0; i < many; i++) {
-			storeLen[i] = 0;
+			storeLen[i] = -1;
 			readNest(i, 0, ptrMax, seed);//beginning
 		}
 	}
 
-	void putBird(const char *how, int len, unsigned int ptrMax, float seed) {
+	void writeNest(int num, unsigned int ptrMax, float seed) {
+		for(int i = storeLen[num]; i != -1; i--) {
+			if(ptrOffsets != ptrMax) {
+				putDigit(alterOffPtr(-1), seed, store[num][i]);//write backwards
+			}
+		}
+	}
 
+	void putBird(const char *how, int len, unsigned int ptrMax, float seed) {
+		alterOffPtr(-1);//align placement removing last post increment
+		for(int i = len; i != -1; i--) {
+			char x = how[i];//action
+			if(x <= 'E' && x > '@') {//not literals
+				writeNest(x - 'A', ptrMax, seed);
+			} else {
+				//literal
+				if(ptrOffsets != ptrMax) {
+					putDigit(alterOffPtr(-1), seed, x);
+				}
+			}
+		}
+		alterOffPtr(1);//place on first
 	}
 
 	float modulo(float x, float m) {
