@@ -151,6 +151,12 @@ struct Om : Module {
 		}
 	}
 
+	void showOnDisplay(float seed) {
+		for(int i = 0; i < 8; i++) {
+			::onDisplay1[i] = getDigit(ptrRandomz + i, ptrOffsets + i, seed);
+		}
+	}
+
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
