@@ -282,10 +282,9 @@ struct Om : Module {
 		int maxPort = maxPoly();
 		//umm polyphony?
 
-		float bird = params[BIRD].getValue()/100.f;
+		float bird = params[BIRD].getValue();
 		float seed = params[SEED].getValue();
-		if(seed >= 27.f) seed = 1.f;//wrap
-		float var = params[VAR].getValue()/100.f;
+		float var = params[VAR].getValue();
 
 		// PARAMETERS (AND IMPLICIT INS)
 		float rst = inputs[RST].getVoltageSum();//signal OR
