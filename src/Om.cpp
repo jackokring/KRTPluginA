@@ -38,6 +38,8 @@ struct Om : Module {
 		NUM_OUTPUTS
 	};
 	enum LightIds {
+		LRAND,
+		LBIRD,
 		NUM_LIGHTS
 	};
 
@@ -297,6 +299,8 @@ struct Om : Module {
 		if(trigRst) {
 			//on reset
 			ptrOffsets = 0;//reset
+			lights[LRAND].setSmoothBrightness(false, args.sampleTime);
+			lights[LBIRD].setSmoothBrightness(false, args.sampleTime);
 		} else if(trigClk) {
 			//on clock step forward
 			unsigned char x = getDigit(ptrOffsets, seed) - '@';
@@ -308,11 +312,17 @@ struct Om : Module {
 				int len = birdLen[x - 1];
 				getBird(consume, ptrOffsets, seed);
 				putBird(to, len, ptrOffsets, seed);
+				lights[LBIRD].setSmoothBrightness(true, args.sampleTime);
+			} else {
+				lights[LBIRD].setSmoothBrightness(false, args.sampleTime);
 			}
 			//apply rand
 			if((rand() * 100.f / RAND_MAX) < var) {//on prob
 				putDigit(ptrOffsets, seed, (unsigned char) (rand() * 26.99999f / RAND_MAX) + '@');
 				//modify
+				lights[LRAND].setSmoothBrightness(true, args.sampleTime);
+			} else {
+				lights[LRAND].setSmoothBrightness(false, args.sampleTime);
 			}
 		}
 		showOnDisplay(seed);
@@ -409,7 +419,10 @@ struct OmWidget : ModuleWidget {
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, Om::BIRD));
 		addParam(createParamCentered<RoundBlackKnob>(loc(2, 2), module, Om::SEED));
-		addParam(createParamCentered<RoundBlackKnob>(loc(3, 2), module, Om::VAR));	
+		addParam(createParamCentered<RoundBlackKnob>(loc(3, 2), module, Om::VAR));
+
+		addChild(createLightCentered<SmallLight<GreenLight>>(loc(1, 1.5f), module, Om::LBIRD));
+		addChild(createLightCentered<SmallLight<GreenLight>>(loc(3, 1.5f), module, Om::LRAND));	
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, Om::CLK));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 3), module, Om::RST));
