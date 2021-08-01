@@ -110,11 +110,10 @@ struct Om : Module {
 	char randomz[65];
 	char offsets[65];
 
-	unsigned int ptrRandomz = 0;
 	unsigned int ptrOffsets = 0;
 
-	char getDigit(int ptrR, int ptrO, float seed) {
-		seed += ptrRandomz;
+	char getDigit(int ptrO, float seed) {
+		seed += ptrO;
 		int s1 = ((int) seed) & 63;//pos
 		float rem = modulo(seed, 64);//remainder and positive for 
 		int s2 = s1 + 1;
@@ -131,9 +130,9 @@ struct Om : Module {
 		ptrOffsets &= 63;//modulo
 	}
 
-	void putDigit(int ptrR, int ptrO, float seed, char digit) {
+	void putDigit(int ptrO, float seed, char digit) {
 		offsets[ptrO & 63] = 0;//blank zero 
-		char x = getDigit(ptrR, ptrO, seed) - '@';//producing
+		char x = getDigit(ptrO, seed) - '@';//producing
 		offsets[ptrO & 63] = digit - x;//calc offset to make digit
 	}
 
@@ -165,7 +164,7 @@ struct Om : Module {
 	void showOnDisplay(float seed) {
 		if((mux & 1023) == 0) {
 			for(int i = 0; i < 8; i++) {
-				char x = getDigit(ptrRandomz + i, ptrOffsets + i, seed);
+				char x = getDigit(ptrOffsets + i, seed);
 				if(flip) {
 					onDisplay1[i] = x;
 				} else {
@@ -242,20 +241,19 @@ struct Om : Module {
 		float clk2 = sClk[0].state ? 0.f : 10.f;
 		if(trigRst) {
 			//on reset
-			ptrRandomz = ptrOffsets = 0;//reset
+			ptrOffsets = 0;//reset
 		} else if(trigClk) {
 			//on clock step forward
-			ptrRandomz++;
 			ptrOffsets++;
 			//apply bird
 
 			//apply rand
 			if((rand() * 100.f / RAND_MAX) < var) {//on prob
-				putDigit(ptrRandomz, ptrOffsets, seed, (rand() * 27 / RAND_MAX));//modify
+				putDigit(ptrOffsets, seed, (rand() * 27 / RAND_MAX));//modify
 			}
 		}
 		showOnDisplay(seed);
-		outSym[0] = getDigit(ptrRandomz, ptrOffsets, seed) - '@';//set out
+		outSym[0] = getDigit(ptrOffsets, seed) - '@';//set out
 #pragma GCC ivdep
 		for(int p = 1; p < maxPort; p++) {
 			// OUTS
