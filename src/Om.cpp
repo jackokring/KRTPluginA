@@ -250,7 +250,7 @@ struct Om : Module {
 			}
 		}
 		showOnDisplay(seed);
-		outSym[0] = getDigit(ptrRandomz, ptrOffsets, seed);//set out
+		outSym[0] = getDigit(ptrRandomz, ptrOffsets, seed) - '@';//set out
 #pragma GCC ivdep
 		for(int p = 1; p < maxPort; p++) {
 			// OUTS
