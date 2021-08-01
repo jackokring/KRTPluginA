@@ -152,7 +152,7 @@ struct Om : Module {
 			//bracket
 			readNest(num, idx++, ptrMax, seed);
 			if(ptrOffsets != ptrMax) {//avoid overflow
-				readNest(num, idx++, ptrMax, seed);
+				readNest(num, idx, ptrMax, seed);
 			}
 		}
 	}
