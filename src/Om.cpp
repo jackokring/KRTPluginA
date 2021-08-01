@@ -106,6 +106,29 @@ struct Om : Module {
 	char randomz[65];
 	char offsets[64];
 
+	int ptrRandomz = 0;
+	int ptrOffsets = 0;
+
+	char getDigit(int ptrR, int ptrO, float seed) {
+		seed += ptrRandomz;
+		int s1 = ((int) seed) & 63;//pos
+		float rem = modulo(seed, 64);//remainder
+		int s2 = s1 + 1;
+		s1 = randomz[s1];
+		s2 = randomz[s2];
+		rem = s1 * (1.f - rem) + s2 * rem;
+		s1 = (int) rem;
+		s1 += offsets[ptrO];//eveentual char
+		return (char) ((s1 % 27) + '@');//@ plus
+	}
+
+	float modulo(float x, float m) {
+		float div = x / m;
+		long d = (long) div;
+		float rem = x - d * m;
+		return rem;
+	}
+
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
