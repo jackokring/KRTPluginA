@@ -146,29 +146,27 @@ struct Om : Module {
 		offsets[ptrO & 63] = digit - x;//calc offset to make digit
 	}
 
-	void readNest(int num, int start, unsigned int ptrMax, float seed) {
-		int idx = start;
-		char x = getDigit(alterOffPtr(1), seed);//keep modulo
-		store[num][idx++] = x;
-		storeLen[num]++;//count
+	void readNest(int num, unsigned int ptrMax, float seed) {
+		unsigned char x = getDigit(alterOffPtr(1), seed);//keep modulo
+		store[num][storeLen[num]++] = x;
 		if(x == '@' && (ptrOffsets != ptrMax)) {
 			//bracket
-			readNest(num, idx++, ptrMax, seed);
+			readNest(num, ptrMax, seed);
 			if(ptrOffsets != ptrMax) {//avoid overflow
-				readNest(num, idx, ptrMax, seed);
+				readNest(num, ptrMax, seed);
 			}
 		}
 	}
 
 	void getBird(int many, unsigned int ptrMax, float seed) {
 		for(int i = 0; i < many; i++) {
-			storeLen[i] = -1;
-			readNest(i, 0, ptrMax, seed);//beginning
+			storeLen[i] = 0;
+			readNest(i, ptrMax, seed);//beginning
 		}
 	}
 
 	void writeNest(int num, unsigned int ptrMax, float seed) {
-		for(int i = storeLen[num]; i != -1; i--) {
+		for(int i = storeLen[num] - 1; i != -1; i--) {
 			if(ptrOffsets != ptrMax) {
 				putDigit(alterOffPtr(-1), seed, store[num][i]);//write backwards
 			}
@@ -177,8 +175,8 @@ struct Om : Module {
 
 	void putBird(const char *how, int len, unsigned int ptrMax, float seed) {
 		alterOffPtr(-1);//align placement removing last post increment
-		for(int i = len; i != -1; i--) {
-			char x = how[i];//action
+		for(int i = len - 1; i != -1; i--) {
+			unsigned char x = how[i];//action
 			if(x <= 'E' && x > '@') {//not literals
 				writeNest(x - 'A', ptrMax, seed);
 			} else {
