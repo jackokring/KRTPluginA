@@ -110,13 +110,13 @@ struct Om : Module {
 	char randomz[65];
 	char offsets[65];
 
-	int ptrRandomz = 0;
-	int ptrOffsets = 0;
+	unsigned int ptrRandomz = 0;
+	unsigned int ptrOffsets = 0;
 
 	char getDigit(int ptrR, int ptrO, float seed) {
 		seed += ptrRandomz;
 		int s1 = ((int) seed) & 63;//pos
-		float rem = modulo(seed, 64);//remainder
+		float rem = modulo(seed, 64);//remainder and positive for 
 		int s2 = s1 + 1;
 		s1 = randomz[s1];
 		s2 = randomz[s2];
@@ -124,6 +124,11 @@ struct Om : Module {
 		s1 = (int) rem;
 		s1 += offsets[ptrO & 63];//eveentual char
 		return (char) ((s1 % 27) + '@');//@ plus
+	}
+
+	void alterOffPtr(int off) {
+		ptrOffsets += off;
+		ptrOffsets &= 63;//modulo
 	}
 
 	void putDigit(int ptrR, int ptrO, float seed, char digit) {
