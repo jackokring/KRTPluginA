@@ -334,7 +334,7 @@ struct Om : Module {
 		showOnDisplay(seed);
 		outSym[0] = getDigit(ptrOffsets, seed) - '@';//set out
 #pragma GCC ivdep
-		for(int p = 1; p < maxPort; p++) {
+		for(int p = 0; p < maxPort; p++) {
 			// OUTS
 #pragma GCC ivdep			
 			for(int i = 0; i < 13; i++) {
@@ -348,7 +348,6 @@ struct Om : Module {
 				outputs[out[i]].setVoltage(combined, p);
 			}
 		}
-		//outputs[MZ].setVoltage(3.f, 0);//test works drive??
 	}
 };
 
