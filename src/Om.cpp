@@ -40,6 +40,7 @@ struct Om : Module {
 	enum LightIds {
 		LRAND,
 		LBIRD,
+		LCLK,
 		NUM_LIGHTS
 	};
 
@@ -236,6 +237,11 @@ struct Om : Module {
 		mux++;//
 	}
 
+	bool percent(float per) {
+		per *= (0.01f * RAND_MAX);
+		return rand() <= per;//should work
+	}
+
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
@@ -247,7 +253,7 @@ struct Om : Module {
 		}
 		srand(666);
 		for(int o = 0; o < 64; o++) {
-			randomz[o] = (unsigned char) (rand() * 26.99999f / RAND_MAX);//a randomized pattern
+			randomz[o] = (unsigned char) (rand() % 27);//a randomized pattern
 			offsets[o] = 0;//calculation offsets
 		}
 		randomz[64] = randomz[0];//loop
@@ -296,33 +302,34 @@ struct Om : Module {
 		bool trigClk = sClk[0].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
 		clk = sClk[0].state ? 10.f : 0.f;
 		float clk2 = sClk[0].state ? 0.f : 10.f;
+		lights[LCLK].setBrightness(clk);//only needs to be 1.f
 		if(trigRst) {
 			//on reset
 			ptrOffsets = 0;//reset
-			lights[LRAND].setSmoothBrightness(false, args.sampleTime);
-			lights[LBIRD].setSmoothBrightness(false, args.sampleTime);
+			lights[LRAND].setBrightness(0.f);
+			lights[LBIRD].setBrightness(0.f);
 		} else if(trigClk) {
 			//on clock step forward
 			unsigned char x = getDigit(ptrOffsets, seed) - '@';
 			ptrOffsets++;
 			//apply bird
-			if(x != 0 && (rand() * 100.f / RAND_MAX) < bird) {//on prob
+			if(x != 0 && percent(bird)) {//on prob
 				int consume = birdConsume[x - 1];//details
 				const char *to = birdTo[x - 1];
 				int len = birdLen[x - 1];
 				getBird(consume, ptrOffsets, seed);
 				putBird(to, len, ptrOffsets, seed);
-				lights[LBIRD].setSmoothBrightness(true, args.sampleTime);
+				lights[LBIRD].setBrightness(1.f);
 			} else {
-				lights[LBIRD].setSmoothBrightness(false, args.sampleTime);
+				lights[LBIRD].setBrightness(0.f);
 			}
 			//apply rand
-			if((rand() * 100.f / RAND_MAX) < var) {//on prob
-				putDigit(ptrOffsets, seed, (unsigned char) (rand() * 26.99999f / RAND_MAX) + '@');
+			if(percent(var)) {//on prob
+				putDigit(ptrOffsets, seed, (unsigned char) (rand() % 27 + '@'));
 				//modify
-				lights[LRAND].setSmoothBrightness(true, args.sampleTime);
+				lights[LRAND].setBrightness(1.f);
 			} else {
-				lights[LRAND].setSmoothBrightness(false, args.sampleTime);
+				lights[LRAND].setBrightness(0.f);
 			}
 		}
 		showOnDisplay(seed);
@@ -422,6 +429,7 @@ struct OmWidget : ModuleWidget {
 		addParam(createParamCentered<RoundBlackKnob>(loc(3, 2), module, Om::VAR));
 
 		addChild(createLightCentered<SmallLight<GreenLight>>(loc(1, 1.5f), module, Om::LBIRD));
+		addChild(createLightCentered<SmallLight<GreenLight>>(loc(2, 1.5f), module, Om::LCLK));
 		addChild(createLightCentered<SmallLight<GreenLight>>(loc(3, 1.5f), module, Om::LRAND));	
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, Om::CLK));
