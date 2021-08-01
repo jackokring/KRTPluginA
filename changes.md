@@ -1,4 +1,4 @@
-vTBC
+1.8.9
 ===
 
 * Reduced scaling on `u` input `CVdb` (breaks compatibility) 10V/6dB
