@@ -103,15 +103,24 @@ struct Om : Module {
 		2 //Z
 	};
 
+	char randomz[65];
+	char offsets[64];
+
 	Om() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
 		//decide symbol rangs ...
-		configParam(SEED, 1.f, 27.f, 14.f, "Reset Seed", " Symbol");
+		configParam(SEED, 0.f, 64.f, 0.f, "Seed");
 		configParam(VAR, 0.f, 100.f, 50.f, "Random", " %");
 		for(int o = 0; o < PORT_MAX_CHANNELS; o++) {
 			outSym[o] = 0;
 		}
+		srand(666);
+		for(int o = 0; o < 64; o++) {
+			randomz[o] = (char) rand();//a randomized pattern
+			offsets[o] = 0;//calculation offsets
+		}
+		randomz[64] = randomz[0];//loop
 	}
 
 	//obtain mapped control value
