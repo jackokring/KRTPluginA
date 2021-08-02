@@ -20,6 +20,7 @@ Index - Demo
 6. [R](#r) - No demo required
 7. [Ω](#Ω) - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 8. [V](#v) - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
+9. [F](#f) - ?
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -267,3 +268,33 @@ Outs
     * Envelope Shaped Output `OUT`
 
 Takes in triggers on `T5` and `T7` to trigger one of the three vertical envelopes. `IN` is from the oscillator source, and `OUT` is that signal modified by the envelope. `CV` can be tuned dependant on the trigger pair combination. I thought it would help with using Ω. Although it might be quite useful on its own. The two outer `OUT` signals are normalized to the center `OUT` channel for less cables.
+
+F
+===
+
+*The Blue One - Morph filter*
+
+Parameters
+---
+* Pole Spread `SPD`
+* Pole Skew `SKW`
+* Modulation Spread `MSP`
+* Modulation Skew `MSK`
+* Frequency `Hz`
+
+Ins
+---
+* Frequency Modulation `CVHz`
+* Spread Modulation `CVSP`
+* Skew Modulation `CVSK`
+* Input `IN`
+
+Outs
+---
+* Transpose `CVT`
+* Band Pass `BP`
+* Inverted In `II`
+* Low Pass `LP`
+* High Pass `HP`
+
+A filter with some internal gain processing to handle filter k values into self-oscillation. The four corners set by spread and skew form Linkwitz to Butterwork on spread when skew is full off, and Legendre to Bessel when skew is full on. The concept is stabilized by soft clipping.
