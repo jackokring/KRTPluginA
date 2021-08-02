@@ -71,6 +71,7 @@ struct Mu : Module {
     /* 1P H(s) = 1 / (s + fb) */
     //ONE POLE FILTER
 	float f1, f2, b[PORT_MAX_CHANNELS];
+	float f12, f22, b2[PORT_MAX_CHANNELS];
 
 	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
 		f1   = tanf(M_PI * fc / fs);
@@ -80,6 +81,17 @@ struct Mu : Module {
 	float process1(float in, int p) {
 		float out = (f1 * in + b[p]) * f2;
 		b[p] = f1 * (in - out) + out;
+		return out;//lpf default
+	}
+
+	void setFK3(float fc, float fs) {//fb feedback not k*s denominator
+		f12   = tanf(M_PI * fc / fs);
+		f22   = 1 / (1 + f12);
+	}
+
+	float process3(float in, int p) {
+		float out = (f12 * in + b2[p]) * f22;
+		b2[p] = f12 * (in - out) + out;
 		return out;//lpf default
 	}
 
@@ -240,6 +252,9 @@ struct Mu : Module {
 			cvdb = log(cvdb + db, 1.f);
 			cvhz = log(cvhz + hz, dsp::FREQ_C4);
 			float cheat = cvlam + lam;
+			//low pass add
+			setFK3(cvhz, fs);
+			cheat = process3(cheat, p);//LPF
 			cvlam = log(cheat, 1.f);
 			if(outputs[I1].isConnected() || outputs[I2].isConnected()
 				|| outputs[I3].isConnected() || outputs[D2].isConnected()
