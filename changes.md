@@ -1,3 +1,9 @@
+1.8.11
+===
+
+* LPF on `μ` added for slightly less noise on transients.
+
+
 1.8.10
 ===
 
