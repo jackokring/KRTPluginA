@@ -1,3 +1,10 @@
+1.8.13
+===
+
+* Fixed version numbering mixup with 1.8.11
+* Increased range of halflife on `μ` (breaks compatibility)
+* Fixed unit `dBs` (relative log scaled seconds) on `μ` (breaks compatibility)
+
 1.8.11
 ===
 
