@@ -48,10 +48,10 @@ struct A : Module {
 	A() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
-		configParam(REZ, 0.f, 10.f, 0.f, "Resonance");
+		configParam(REZ, -6.f, 54.f, -6.f, "Resonance", " dBQ");
 		configParam(MOD, -2.f, 2.f, 0.f, "Mod frequency");
 		configParam(OFF, -4.f, 4.f, 0.f, "Offset", " Oct");
-		configParam(RING, 0.f, 2.f, 0.f, "Ring Mod");
+		configParam(RING, 0.f, 6.f, 0.f, "Ring Mod", " dB (rel 6)");
 		configParam(MAM, -2.f, 2.f, 0.f, "Mod offset");
 	}
 
@@ -60,8 +60,12 @@ struct A : Module {
         return powf(2.f, val) * centre;
     }
 
+	float dBMid(float val) {
+		return powf(2.f, val)-powf(2.f, -val);
+	}
+
     float qk(float val) {
-        float v = log(val, 0.5f);
+        float v = log(val, 1.f);
         return 1 / v;//return k from Q
     }
 
@@ -139,8 +143,8 @@ struct A : Module {
 		// POLY: Port::getPolyVoltage(c)
 		float fs = args.sampleRate;
 
-		float res = params[REZ].getValue();
-		float plate = params[RING].getValue();
+		float res = params[REZ].getValue()/6.f;
+		float plate = dBMid(params[RING].getValue()/6.f);
 		int maxPort = maxPoly();
 		float modf = params[MOD].getValue();
 		float modo = params[MAM].getValue();

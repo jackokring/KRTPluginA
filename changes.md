@@ -1,7 +1,15 @@
+1.8.10
+===
+
+* Fixed percent controls on `Ω` (minor 1 in a million bug)
+* Introduced unit `dBs` (relative log scaled seconds) on `V` (breaks compatibility)
+* Introduced dB scaling on `A` for `REZ` and `AM` (breaks patch)
+* Introduced unit `dBs` (relative log scaled seconds) on `μ` (breaks compatibility)
+
 1.8.9
 ===
 
-* Reduced scaling on `u` input `CVdb` (breaks compatibility) 10V/6dB
+* Reduced scaling on `μ` input `CVdb` (breaks compatibility) 10V/6dB
 * Improved documentation
 * Website GitHub pages [Captain's log](https://jackokring.github.io/KRTPluginADemo/)
 

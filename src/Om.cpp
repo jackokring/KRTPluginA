@@ -235,9 +235,9 @@ struct Om : Module {
 		mux++;//
 	}
 
-	bool percent(float per) {
+	bool percent(double per) {
 		per *= (0.01f * RAND_MAX);
-		return rand() <= per;//should work
+		return rand() < per;//should work
 	}
 
 	Om() {

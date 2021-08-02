@@ -52,7 +52,7 @@ struct Mu : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(DB, -24.f, 6.f, 0.f, "Exponential Gain", " dB");
 		configParam(HZ, -4.f, 4.f, 0.f, "Slew LPF", " Oct");
-		configParam(LAM, -6.f, 0.f, 0.f, "Halflife", " per Oct");
+		configParam(LAM, -36.f, 0.f, 6.f, "Halflife", " dBs");
 		//-infinty centre
 		configParam(G1, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
 		configParam(G2, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
@@ -213,9 +213,9 @@ struct Mu : Module {
 		int maxPort = maxPoly();
 
 		//gain in a cube root peak
-		float db = params[DB].getValue()/2.f;
+		float db = params[DB].getValue()/6.f;
 		float hz = params[HZ].getValue();
-		float lam = params[LAM].getValue();
+		float lam = params[LAM].getValue()/6.f;
 
 		float g1 = dBMid(params[G1].getValue()/6.f);
 		float g2 = dBMid(params[G2].getValue()/6.f);

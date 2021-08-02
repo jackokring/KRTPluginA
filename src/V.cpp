@@ -53,8 +53,8 @@ struct V : Module {
 		configParam(HZ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		//perhaps exponetials ... inverse Oct -> Hz to seconds
 		// 1/512th to 8 seconds (default 1/8th)
-		configParam(ATK, -9.f, 3.f, -3.f, "Attack Time", " per Oct");
-		configParam(DCY, -9.f, 3.f, -3.f, "Decay Time", " per Oct");
+		configParam(ATK, -27.f, 9.f, -9.f, "Attack Time", " dBs");
+		configParam(DCY, -27.f, 9.f, -9.f, "Decay Time", " dBs");
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < PORT_MAX_CHANNELS; j++) {
 				env[i][j] = 0.f;//silence
@@ -97,8 +97,8 @@ struct V : Module {
 		int maxPort = maxPoly();
 
 		float hz = params[HZ].getValue();
-		float atk = params[ATK].getValue();
-		float dcy = params[DCY].getValue();
+		float atk = params[ATK].getValue()/3.f;
+		float dcy = params[DCY].getValue()/3.f;
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
