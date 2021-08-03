@@ -28,6 +28,19 @@ struct F : Module {
 		{ 1.09948f, 0.430787f },//L4/2
 	};
 
+	//LPF standard transforms
+	float freqMul(int filt) {
+		//s^2
+		float s2 = 1.f / kk[filt][1];//divide through
+		return sqrtf(s2);//root for s multiplier
+	}
+
+	float findK(int filt) {
+		//s
+		float s = kk[filt][0] / freqMul(filt);
+		return s;//damping effective given frequecy shift
+	}
+
 	F() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 	}
