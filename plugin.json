@@ -98,6 +98,15 @@
         "Voltage-controlled amplifier",
         "Polyphonic"
       ]
+    },
+    {
+      "slug": "F",
+      "name": "F",
+      "description": "24 dB morph filter.",
+      "tags": [
+        "Filter",
+        "Polyphonic"
+      ]
     }
   ]
 }
