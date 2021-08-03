@@ -15,6 +15,19 @@ struct F : Module {
 		NUM_LIGHTS
 	};
 
+	//KK constants
+	//s^2+k1*s+k2
+	float kk[8][2] = {
+		{ sqrtf(2.f), 1.f },//BW2
+		{ sqrtf(2.f), 1.f },//BW2
+		{ 0.765367f, 1.f },//BW4/2
+		{ 1.847759f, 1.f },//BW4/2
+		{ 5.79242f, 9.140131f },//BE4/2
+		{ 4.20758f, 6.45943f },//BE4/2
+		{ 0.46338f, 0.947669f },//L4/2
+		{ 1.09948f, 0.430787f },//L4/2
+	};
+
 	F() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 	}
