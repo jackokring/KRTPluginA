@@ -105,7 +105,7 @@ struct F : Module {
 		bb[p][add] = band + f * high;
 		bl[p][add] = low  + f * band;
 		lah = low * ((lah - 1.f) * -0.5f) + high * ((lah + 1.f) * 0.5f);
-		return lah * ((inv - 1.f) * -0.5f) + (in - lah) * ((inv + 1.f) * 0.5f)
+		return lah * ((inv - 1.f) * -0.5f) + (in - lah) * ((inv + 1.f) * 0.5f);
 	}
 
 	F() {
@@ -155,9 +155,9 @@ struct F : Module {
 			// IN
 			float in = inputs[IN].getPolyVoltage(p);
 			setFK2(flo0, damp0, fs);
-			in = process2(in, p, lah, inv, 0);
+			in = process2(in, p, ilah, iinv, 0);
 			setFK2(flo1, damp1, fs);
-			in = process2(in, p, lah, inv, 1);
+			in = process2(in, p, ilah, iinv, 1);
 
 			// OUT
 			outputs[OUT].setVoltage(in, p);
