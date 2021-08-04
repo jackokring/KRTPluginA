@@ -109,6 +109,10 @@ struct F : Module {
 	}
 
 	float clomp(float in, float drv) {
+		in /= drv;
+		in = clamp(in, -1.f, 1.f);//unitary
+		in *= (3.f - in * in) / 2.f;//softer
+		in *= drv;//restore
 		return in;
 	}
 
@@ -118,7 +122,7 @@ struct F : Module {
 		configParam(SKW, -1.f, 1.f, -1.f, "Skew");
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(LAH, -1.f, 1.f, -1.f, "Low High");
-		configParam(DRV, -1.f, 1.f, 0.f, "Drive");
+		configParam(DRV, -6.f, 6.f, 0.f, "Drive", " dB");
 		configParam(INV, -1.f, 1.f, -1.f, "Invert");
 	}
 
@@ -135,7 +139,7 @@ struct F : Module {
 		float skw = params[SKW].getValue();
 		float frq = params[FRQ].getValue();
 		float lah = params[LAH].getValue();
-		float drv = params[DRV].getValue();
+		float drv = params[DRV].getValue()/6.f;//dB
 		float inv = params[INV].getValue();
 
 		// PARAMETERS (AND IMPLICIT INS)
@@ -155,6 +159,7 @@ struct F : Module {
 			float ilah = inputs[ILAH].getPolyVoltage(p) * 0.1f + lah;
 			float idrv = inputs[IDRV].getPolyVoltage(p) * 0.1f + drv;
 			float iinv = inputs[IINV].getPolyVoltage(p) * 0.1f + inv;
+			idrv = log(-idrv, 5.f);//normal magnitude
 
 			// IN
 			float in = inputs[IN].getPolyVoltage(p);
