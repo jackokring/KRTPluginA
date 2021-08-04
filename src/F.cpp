@@ -81,7 +81,7 @@ struct F : Module {
 		return z;
 	}
 
-	float f, t, u, k, tf, bl[2*PORT_MAX_CHANNELS][2], bb[2*PORT_MAX_CHANNELS][2];
+	float f, t, u, k, tf, bl[PORT_MAX_CHANNELS][2], bb[PORT_MAX_CHANNELS][2];
 
     /* 2P
            Ghigh * s^2 + Gband * s + Glow
