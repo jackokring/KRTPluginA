@@ -149,14 +149,17 @@ struct F : Module {
 			float iskw = inputs[ISKW].getPolyVoltage(p) * 0.1f + skw;
 			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
 			float flo0 = freqMul(ispd, iskw, 0);//first
+			float ilah = inputs[ILAH].getPolyVoltage(p) * 0.1f + lah;
+			flo0 = powf(flo0, -ilah);
 			float flo1 = freqMul(ispd, iskw, 1);//second
+			flo1 = powf(flo1, -ilah);
 			float damp0 = findK(ispd, iskw, 0);//first
 			float damp1 = findK(ispd, iskw, 1);//second
 
 			flo0 = clamp(ifrq * flo0, 0.f, fs * 0.5f);
 			flo1 = clamp(ifrq * flo1, 0.f, fs * 0.5f);
 			//calm max change
-			float ilah = inputs[ILAH].getPolyVoltage(p) * 0.1f + lah;
+			
 			float idrv = inputs[IDRV].getPolyVoltage(p) * 0.1f + drv;
 			float iinv = inputs[IINV].getPolyVoltage(p) * 0.1f + inv;
 			idrv = log(idrv, 5.f);//normal magnitude

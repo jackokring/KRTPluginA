@@ -1,3 +1,8 @@
+1.9.15
+===
+
+* `F` tracks high pass pattern (breaks compatibility)
+
 1.9.14
 ===
 
