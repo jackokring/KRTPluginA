@@ -177,6 +177,7 @@ Parameters
 ---
 * Level `dB`
 * Level Modulation `CVdB`
+* Frequency `FRQ`
 
 Ins
 ---
@@ -185,10 +186,9 @@ Ins
 
 Outs
 ---
-* Error `ERR`
 * Out `OUT`
 
-Exponetial amplitude modulation with a future projection estimate 2 samples into the future for phase critical all pass when used with modules that have a 1 sample delay. Some estimate of the error in the current sample based on a future prediction is also re-estimated 2 samples into the future and output on `ERR`. The `CVdB` control is a **centred dB scaling** gainuverter.
+Exponetial amplitude modulation with a future projection estimate 2 samples into the future for phase critical all pass when used with modules that have a 1 sample delay. The `CVdB` control is a **centred dB scaling** gainuverter.
 
 Also useful for pointing out transients in `IN` as the estimator is excited by the parts of the signal with aliasing potential.
 
@@ -278,23 +278,23 @@ Parameters
 ---
 * Pole Spread `SPD`
 * Pole Skew `SKW`
-* Modulation Spread `MSP`
-* Modulation Skew `MSK`
-* Frequency `Hz`
+* Frequency `FRQ`
+* Low All High `LAH`
+* Invert `INV`
+* Drive `DRV`
 
 Ins
 ---
-* Frequency Modulation `CVHz`
-* Spread Modulation `CVSP`
-* Skew Modulation `CVSK`
+* Frequency Modulation `FRQ`
+* Spread Modulation `SPD`
+* Skew Modulation `SKW`
+* Low All High Modulation `LAH`
+* Invert Modulation `INV`
+* Drive Modulation `DRV`
 * Input `IN`
 
 Outs
 ---
-* Transpose `CVT`
-* Band Pass `BP`
-* Inverted In `II`
-* Low Pass `LP`
-* High Pass `HP`
+* Output `OUT`
 
 A filter with some internal gain processing to handle filter k values into self-oscillation. The four corners set by spread and skew form Linkwitz to Butterwork on spread when skew is full off, and Legendre to Bessel when skew is full on. The concept is stabilized by soft clipping.

@@ -1,3 +1,9 @@
+1.9.14
+===
+
+* Added `F` filter
+* Removed `ERR` from `D` and added `FRQ` filter (breaks compatibility)
+
 1.8.13
 ===
 

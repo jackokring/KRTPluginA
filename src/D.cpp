@@ -5,6 +5,7 @@ struct D : Module {
 	enum ParamIds {
 		DB,
 		CVDB,
+		FRQ,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -13,7 +14,6 @@ struct D : Module {
 		NUM_INPUTS
 	};
 	enum OutputIds {
-		ERR,
 		OUT,
 		NUM_OUTPUTS
 	};
@@ -33,10 +33,26 @@ struct D : Module {
 		return poly;
 	}
 
+	/* 1P H(s) = 1 / (s + fb) */
+    //ONE POLE FILTER
+	float f1, f2, b[PORT_MAX_CHANNELS];
+
+	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
+		f1   = tanf(M_PI * fc / fs);
+		f2   = 1 / (1 + f1);
+	}
+
+	float process1(float in, int p) {
+		float out = (f1 * in + b[p]) * f2;
+		b[p] = f1 * (in - out) + out;
+		return out;//lpf default
+	}
+
 	D() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(DB, -24.f, 6.f, 0.f, "Exponential Gain", " dB");
 		configParam(CVDB, -6.f, 6.f, 0.f, "Modulation Level", " Center dB (rel 6)");
+		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 	}
 
 	//obtain mapped control value
@@ -46,11 +62,6 @@ struct D : Module {
 
 	float dBMid(float val) {
 		return powf(2.f, val)-powf(2.f, -val);
-	}
-
-	float future(float* input) {
-		float co1[] = {1, -9, 36, -84, 126, -126, 84, -36, 9};//0th differential in the future
-		return sum(co1, input, idx + 1);
 	}
 
 	float future2(float* input) {
@@ -70,10 +81,8 @@ struct D : Module {
 
 	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
-	float pre[2*PORT_MAX_CHANNELS][9];// pre buffer
+	float pre[PORT_MAX_CHANNELS][9];// pre buffer
 	int idx = 0;// buffer current
-
-	float b[PORT_MAX_CHANNELS];
 
 	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
 		float add = 0.f;
@@ -93,10 +102,12 @@ struct D : Module {
 		// POLY: Port::getPolyVoltage(c)
 		//float fs = args.sampleRate;
 		int maxPort = maxPoly();
+		float fs = args.sampleRate;
 
 		//dBMid(params[G1].getValue()/6.f);
 		float db = params[DB].getValue()/6.f;
 		float cvdb = dBMid(params[CVDB].getValue()/6.f);
+		float hz = log(params[FRQ].getValue(), dsp::FREQ_C4);
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
@@ -107,13 +118,10 @@ struct D : Module {
 
 			pre[p][idx] = cv;
 			float out = future2(pre[p]);
-			float temp = b[p];
-			b[p] = future(pre[p]);
-			float err = cv - temp;//error estimate
-			pre[p+PORT_MAX_CHANNELS][idx] = err;
-			err = future2(pre[p+PORT_MAX_CHANNELS]);
+			hz = clamp(hz, 0.f, fs * 0.5f);
+			setFK1(hz, fs);
+			out = process1(out, p);//add future for low pass
 			// OUTS
-			outputs[ERR].setVoltage(err, p);
 			outputs[OUT].setVoltage(out, p);
 		}
 		idx = mod9[idx + 1];//buffer modulo
@@ -150,11 +158,11 @@ struct DWidget : ModuleWidget {
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 1), module, D::DB));
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, D::CVDB));
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 3), module, D::FRQ));
 
-		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, D::IN));
-		addInput(createInputCentered<PJ301MPort>(loc(1, 4), module, D::ICVDB));
+		addInput(createInputCentered<PJ301MPort>(loc(1, 4), module, D::IN));
+		addInput(createInputCentered<PJ301MPort>(loc(1, 5), module, D::ICVDB));
 
-		addOutput(createOutputCentered<PJ301MPort>(loc(1, 5), module, D::ERR));
 		addOutput(createOutputCentered<PJ301MPort>(loc(1, 6), module, D::OUT));
 	}
 };
