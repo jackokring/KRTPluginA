@@ -67,7 +67,21 @@ struct F : Module {
 		return s;//damping effective given frequecy shift
 	}
 
-	float f, t, u, k, tf, bl[PORT_MAX_CHANNELS], bb[PORT_MAX_CHANNELS];
+	float freqMul(float spd, float skw, int add) {//add == 0 or 1
+		float x = freqMul(add) * ((spd - 1.f) * -0.5f) + freqMul(add + 2) * ((spd + 1.f) * 0.5f);
+		float y = freqMul(add + 3) * ((spd - 1.f) * -0.5f) + freqMul(add + 4) * ((spd + 1.f) * 0.5f);
+		float z = x * ((skw - 1.f) * -0.5f) + y * ((skw + 1.f) * 0.5f);
+		return z;
+	}
+
+	float findK(float spd, float skw, int add) {//add == 0 or 1
+		float x = findK(add) * ((spd - 1.f) * -0.5f) + findK(add + 2) * ((spd + 1.f) * 0.5f);
+		float y = findK(add + 3) * ((spd - 1.f) * -0.5f) + findK(add + 4) * ((spd + 1.f) * 0.5f);
+		float z = x * ((skw - 1.f) * -0.5f) + y * ((skw + 1.f) * 0.5f);
+		return z;
+	}
+
+	float f, t, u, k, tf, bl[2*PORT_MAX_CHANNELS][2], bb[2*PORT_MAX_CHANNELS][2];
 
     /* 2P
            Ghigh * s^2 + Gband * s + Glow
@@ -83,13 +97,15 @@ struct F : Module {
 		tf  = t * f;
 	}
 
-	float process2(float in, int p) {
-		float low = (bl[p] + tf * (bb[p] + f * in)) * u;
-		float band = (bb[p] + f * (in - low)) * t;
+	float process2(float in, int p, float lah, float inv, int add) {
+		float low = (bl[p][add] + tf * (bb[p][add] + f * in)) * u;
+		float band = (bb[p][add] + f * (in - low)) * t;
 		float high = in - low - k * band;
-		bb[p] = band + f * high;
-		bl[p] = low  + f * band;
-		return low;//lpf default
+		//TODO still needs energy clamp!!
+		bb[p][add] = band + f * high;
+		bl[p][add] = low  + f * band;
+		lah = low * ((lah - 1.f) * -0.5f) + high * ((lah + 1.f) * 0.5f);
+		return lah * ((inv - 1.f) * -0.5f) + (in - lah) * ((inv + 1.f) * 0.5f)
 	}
 
 	F() {
@@ -124,7 +140,13 @@ struct F : Module {
 			float ispd = inputs[ISPD].getPolyVoltage(p) + spd;
 			float iskw = inputs[ISKW].getPolyVoltage(p) + skw;
 			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
-			ifrq = clamp(ifrq, 0.f, fs * 0.5f);
+			float flo0 = freqMul(ispd, iskw, 0);//first
+			float flo1 = freqMul(ispd, iskw, 1);//second
+			float damp0 = findK(ispd, iskw, 0);//first
+			float damp1 = findK(ispd, iskw, 1);//second
+
+			flo0 = clamp(ifrq * flo0, 0.f, fs * 0.5f);
+			flo1 = clamp(ifrq * flo1, 0.f, fs * 0.5f);
 			//calm max change
 			float ilah = inputs[ILAH].getPolyVoltage(p) * 0.1f + lah;
 			float idrv = inputs[IDRV].getPolyVoltage(p) * 0.1f + drv;
@@ -132,6 +154,10 @@ struct F : Module {
 
 			// IN
 			float in = inputs[IN].getPolyVoltage(p);
+			setFK2(flo0, damp0, fs);
+			in = process2(in, p, lah, inv, 0);
+			setFK2(flo1, damp1, fs);
+			in = process2(in, p, lah, inv, 1);
 
 			// OUT
 			outputs[OUT].setVoltage(in, p);
