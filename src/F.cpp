@@ -111,7 +111,7 @@ struct F : Module {
 	float clomp(float in, float drv) {
 		in /= drv;
 		in = clamp(in, -1.f, 1.f);//unitary
-		in *= (3.f - in * in) / 2.f;//softer
+		//in *= (3.f - in * in) * 0.5f;//softer
 		in *= drv;//restore
 		return in;
 	}
@@ -145,8 +145,8 @@ struct F : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float ispd = inputs[ISPD].getPolyVoltage(p) + spd;
-			float iskw = inputs[ISKW].getPolyVoltage(p) + skw;
+			float ispd = inputs[ISPD].getPolyVoltage(p) * 0.1f + spd;
+			float iskw = inputs[ISKW].getPolyVoltage(p) * 0.1f + skw;
 			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
 			float flo0 = freqMul(ispd, iskw, 0);//first
 			float flo1 = freqMul(ispd, iskw, 1);//second
@@ -159,7 +159,7 @@ struct F : Module {
 			float ilah = inputs[ILAH].getPolyVoltage(p) * 0.1f + lah;
 			float idrv = inputs[IDRV].getPolyVoltage(p) * 0.1f + drv;
 			float iinv = inputs[IINV].getPolyVoltage(p) * 0.1f + inv;
-			idrv = log(-idrv, 5.f);//normal magnitude
+			idrv = log(idrv, 5.f);//normal magnitude
 
 			// IN
 			float in = inputs[IN].getPolyVoltage(p);
