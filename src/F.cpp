@@ -97,15 +97,19 @@ struct F : Module {
 		tf  = t * f;
 	}
 
-	float process2(float in, int p, float lah, float inv, int add) {
+	float process2(float in, int p, float lah, float inv, int add, float drv) {
 		float low = (bl[p][add] + tf * (bb[p][add] + f * in)) * u;
 		float band = (bb[p][add] + f * (in - low)) * t;
 		float high = in - low - k * band;
 		//TODO still needs energy clamp!!
-		bb[p][add] = band + f * high;
-		bl[p][add] = low  + f * band;
+		bb[p][add] = clomp(band + f * high, drv);
+		bl[p][add] = clomp(low  + f * band, drv);
 		lah = low * ((lah - 1.f) * -0.5f) + high * ((lah + 1.f) * 0.5f);
 		return lah * ((inv - 1.f) * -0.5f) + (in - lah) * ((inv + 1.f) * 0.5f);
+	}
+
+	float clomp(float in, float drv) {
+		return in;
 	}
 
 	F() {
@@ -155,9 +159,9 @@ struct F : Module {
 			// IN
 			float in = inputs[IN].getPolyVoltage(p);
 			setFK2(flo0, damp0, fs);
-			in = process2(in, p, ilah, iinv, 0);
+			in = process2(in, p, ilah, iinv, 0, idrv);
 			setFK2(flo1, damp1, fs);
-			in = process2(in, p, ilah, iinv, 1);
+			in = process2(in, p, ilah, iinv, 1, idrv);
 
 			// OUT
 			outputs[OUT].setVoltage(in, p);
