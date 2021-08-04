@@ -69,14 +69,14 @@ struct F : Module {
 
 	float freqMul(float spd, float skw, int add) {//add == 0 or 1
 		float x = freqMul(add) * ((spd - 1.f) * -0.5f) + freqMul(add + 2) * ((spd + 1.f) * 0.5f);
-		float y = freqMul(add + 3) * ((spd - 1.f) * -0.5f) + freqMul(add + 4) * ((spd + 1.f) * 0.5f);
+		float y = freqMul(add + 4) * ((spd - 1.f) * -0.5f) + freqMul(add + 6) * ((spd + 1.f) * 0.5f);
 		float z = x * ((skw - 1.f) * -0.5f) + y * ((skw + 1.f) * 0.5f);
 		return z;
 	}
 
 	float findK(float spd, float skw, int add) {//add == 0 or 1
 		float x = findK(add) * ((spd - 1.f) * -0.5f) + findK(add + 2) * ((spd + 1.f) * 0.5f);
-		float y = findK(add + 3) * ((spd - 1.f) * -0.5f) + findK(add + 4) * ((spd + 1.f) * 0.5f);
+		float y = findK(add + 4) * ((spd - 1.f) * -0.5f) + findK(add + 6) * ((spd + 1.f) * 0.5f);
 		float z = x * ((skw - 1.f) * -0.5f) + y * ((skw + 1.f) * 0.5f);
 		return z;
 	}
