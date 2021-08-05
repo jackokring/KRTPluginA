@@ -21,6 +21,7 @@ Index - Demo
 7. [Ω](#Ω) - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 8. [V](#v) - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 9. [F](#f) - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
+10. [W](#w) - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -298,3 +299,24 @@ Outs
 * Output `OUT`
 
 A filter with some internal gain processing to handle filter k values into self-oscillation. The four corners set by spread and skew form Linkwitz to Butterwork on spread when skew is full off, and Legendre to Bessel when skew is full on. The concept is stabilized by soft clipping.
+
+W
+===
+
+*The Red One - Gate transposer*
+
+Parameters
+---
+* None
+
+Ins
+---
+* Input `IN`
+* Gates Transpose `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`
+
+Outs
+---
+* Output Add `+`
+* Output Subtract `-`
+
+To assist in turning patterned gates into CV chromatic sequences. Simple.
