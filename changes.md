@@ -2,6 +2,7 @@
 ===
 
 * `F` tracks high pass pattern (breaks compatibility)
+* `*-rc2` graphics fix colors
 
 1.9.14
 ===
