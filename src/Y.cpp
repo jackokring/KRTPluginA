@@ -11,10 +11,14 @@ struct Y : Module {
 		NUM_PARAMS
 	};
 	enum InputIds {
+		ICV_BUT,
+		IGATE_BUT,
 		NUM_INPUTS
 	};
 	enum OutputIds {
 		ENUMS(OUTS, 16),
+		ORUN,
+		ORST,
 		NUM_OUTPUTS
 	};
 	enum LightIds {
@@ -91,11 +95,16 @@ struct YWidget : ModuleWidget {
 
 		addParam(createParamCentered<LEDBezel>(loc(8, 4.75f), module, Y::RUN));
 		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4), module, Y::RUN));
+		addOutput(createOutputCentered<PJ301MPort>(loc(8, 2.5f), module, Y::ORUN));
 
 		addParam(createParamCentered<LEDBezel>(loc(7, 4.75f), module, Y::RST));
 		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(7, 4), module, Y::RST));
+		addOutput(createOutputCentered<PJ301MPort>(loc(7, 2.5f), module, Y::ORST));
 
-		addParam(createParamCentered<RoundBlackKnob>(loc(7.5f, 3.5f), module, Y::TEMPO));		
+		addParam(createParamCentered<RoundBlackKnob>(loc(7.5f, 3.5f), module, Y::TEMPO));
+
+		addInput(createInputCentered<PJ301MPort>(loc(1, 2.5f), module, Y::ICV_BUT));
+		addInput(createInputCentered<PJ301MPort>(loc(2, 2.5f), module, Y::IGATE_BUT));	
 	}
 };
 
