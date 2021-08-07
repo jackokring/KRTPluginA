@@ -9,6 +9,7 @@ struct Y : Module {
 		TEMPO,
 		ENUMS(MODE, 4),
 		LEN,
+		IS_RUN,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -52,9 +53,12 @@ struct Y : Module {
 		for(int i = 0; i < 4; i++) {
 			configParam(MODE + i, 0.f, 1.f, 0.f, "Mode");
 		}
+		configParam(IS_RUN, 0.f, 1.f, 0.f);
 	}
 
 	int sampleCounter = 0;
+	dsp::SchmittTrigger sRun;
+	dsp::SchmittTrigger sRst;
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -63,7 +67,14 @@ struct Y : Module {
 		float bps = params[TEMPO].getValue() / 60.f;
 		float beatSamp = bps / fs;//beats per sample
 		float beats = beatSamp * (float)sampleCounter;
-		if(beats >= 64) {
+		float rst = params[RST].getValue();
+		bool trigRst = sRst.process(rst);
+		float run = params[RUN].getValue();
+		bool trigRun = sRun.process(run);
+		if(trigRun) {
+			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
+		}
+		if(beats >= 64 || trigRst) {
 			sampleCounter = 0;//beats long
 			beats = 0.f;//faster and sample accurate
 		}
@@ -81,7 +92,7 @@ struct Y : Module {
 			outputs[ORST].setVoltage(0.f);
 			lights[LRST].setBrightness(0.f);
 		}
-		sampleCounter++;
+		if(params[IS_RUN].getValue() > 0.5f) sampleCounter++;
 	}
 };
 
