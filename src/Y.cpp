@@ -5,6 +5,8 @@ struct Y : Module {
 	enum ParamIds {
 		ENUMS(QUADS, 16),
 		ENUMS(TRIPS, 12),
+		RUN,
+		RST,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -17,6 +19,8 @@ struct Y : Module {
 	enum LightIds {
 		ENUMS(LQUADS, 16),
 		ENUMS(LTRIPS, 12),
+		LRUN,
+		LRST,
 		NUM_LIGHTS
 	};
 
@@ -82,6 +86,12 @@ struct YWidget : ModuleWidget {
 				addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(x, y), module, Y::LTRIPS + i + j * 3));
 			}
 		}
+
+		addParam(createParamCentered<LEDBezel>(loc(8, 4.75f), module, Y::RUN));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4), module, Y::RUN));
+
+		addParam(createParamCentered<LEDBezel>(loc(7, 4.75f), module, Y::RST));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(7, 4), module, Y::RST));		
 	}
 };
 
