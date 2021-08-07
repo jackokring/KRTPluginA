@@ -56,13 +56,23 @@ struct Y : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
+		float len = 0.5f;
 		maxPoly();//1
 		float bps = params[TEMPO].getValue() / 60.f;
 		float beatSamp = bps / fs;//beats per sample
 		float beats = beatSamp * (float)sampleCounter;
-		outputs[ORUN].setVoltage(beats);//test
-
-		if(beats < 0.5f) {
+		if(beats >= 64) {
+			sampleCounter = 0;//beats long
+			beats = 0.f;//faster and sample accurate
+		}
+		if(beats - (int)beats < len) {
+			outputs[ORUN].setVoltage(10.f);
+			lights[LRUN].setBrightness(1.f);
+		} else {
+			outputs[ORUN].setVoltage(0.f);
+			lights[LRUN].setBrightness(0.f);
+		}
+		if(beats < len) {
 			outputs[ORST].setVoltage(10.f);
 			lights[LRST].setBrightness(1.f);
 		} else {
@@ -70,7 +80,6 @@ struct Y : Module {
 			lights[LRST].setBrightness(0.f);
 		}
 		sampleCounter++;
-		if(beats >= 64) sampleCounter = 0;//beats long
 	}
 };
 

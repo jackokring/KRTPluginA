@@ -1,4 +1,4 @@
-1.x.16
+1.11.16
 ===
 
 * Potential `Ω` sharing of display bug fixed
