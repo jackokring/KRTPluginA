@@ -8,6 +8,7 @@ struct Y : Module {
 		RUN,
 		RST,
 		TEMPO,
+		ENUMS(MODE, 4),
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -26,6 +27,7 @@ struct Y : Module {
 		ENUMS(LTRIPS, 12),
 		LRUN,
 		LRST,
+		ENUMS(LMODE, 4),
 		NUM_LIGHTS
 	};
 
@@ -39,6 +41,17 @@ struct Y : Module {
 	Y() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(TEMPO, 0.f, 240.f, 120.f, "Tempo", " bpm");
+		for(int i = 0; i < 16; i++) {
+			configParam(QUADS + i, 0.f, 1.f, 0.f, "Beat");
+		}
+		for(int i = 0; i < 12; i++) {
+			configParam(TRIPS + i, 0.f, 1.f, 0.f, "Beat");
+		}
+		configParam(RUN, 0.f, 1.f, 0.f, "Run and Stop");
+		configParam(RST, 0.f, 1.f, 0.f, "Reset");
+		for(int i = 0; i < 4; i++) {
+			configParam(MODE + i, 0.f, 1.f, 0.f, "Mode");
+		}
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -104,7 +117,14 @@ struct YWidget : ModuleWidget {
 		addParam(createParamCentered<RoundBlackKnob>(loc(7.5f, 3.5f), module, Y::TEMPO));
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 2.5f), module, Y::ICV_BUT));
-		addInput(createInputCentered<PJ301MPort>(loc(2, 2.5f), module, Y::IGATE_BUT));	
+		addInput(createInputCentered<PJ301MPort>(loc(2, 2.5f), module, Y::IGATE_BUT));
+
+		for(int j = 0; j < 4; j++) {
+			float x = 3 + j;
+			float y = 3.f;
+			addParam(createParamCentered<LEDBezel>(loc(x, y), module, Y::MODE + j));
+			addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(x, y), module, Y::LMODE + j));
+		}	
 	}
 };
 
