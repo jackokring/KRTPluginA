@@ -1,3 +1,8 @@
+1.x.16
+===
+
+* Potential `Ω` sharing of display bug fixed
+
 1.9.15
 ===
 

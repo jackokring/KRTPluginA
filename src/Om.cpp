@@ -1,9 +1,7 @@
 #include "plugin.hpp"
 
-char onDisplay1[] = "KRTOMEGA";
-char onDisplay2[] = "        ";//double
-bool flip = false;
-char *showNow = onDisplay1;//use pointer for changing display based on context
+char onDisplayD[9] = "KRTOMEGA";
+char *showNow = onDisplayD;//use pointer for changing display based on context
 
 struct Om : Module {
 	enum ParamIds {
@@ -43,6 +41,11 @@ struct Om : Module {
 		LCLK,
 		NUM_LIGHTS
 	};
+
+	char onDisplay1[9] = "        ";
+	char onDisplay2[9] = "        ";//double
+	bool flip = false;
+	char *showNowM = onDisplay1;
 
 	int maxPoly() {
 		int poly = inputs[CLK].getChannels();
@@ -227,9 +230,9 @@ struct Om : Module {
 			flip = !flip;
 			//double buffer
 			if(flip) {
-				showNow = onDisplay2;
+				showNowM = onDisplay2;
 			} else {
-				showNow = onDisplay1;
+				showNowM = onDisplay1;
 			}
 		}
 		mux++;//
@@ -381,10 +384,13 @@ NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
 struct DisplayWidget : LightWidget {//TransparentWidget {
 	std::shared_ptr<Font> font;
 	std::string fontPath;
-	char **what;
+	char **what = NULL;
 	
-	DisplayWidget(char **p) {
+	DisplayWidget() {
 		fontPath = std::string(asset::plugin(pluginInstance, "res/fonts/Segment14.ttf"));
+	}
+
+	void set(char **p) {
 		what = p;
 	}
 
@@ -407,6 +413,15 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 };
 
 struct OmWidget : ModuleWidget {
+	Om *pModule = NULL;
+	DisplayWidget *display;
+
+	void step() override {
+		ModuleWidget::step();
+		if (pModule != NULL) {
+			display->set(&(pModule->showNowM));//valid?
+		}
+	}
 
 	OmWidget(Om* module) {
 		setModule(module);
@@ -417,8 +432,10 @@ struct OmWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		DisplayWidget *display = new DisplayWidget(&showNow);
+		display = new DisplayWidget();
 		display->fixCentre(loc(2, 1), 8);//chars
+		display->set(&showNow);
+		pModule = module;//hook
 		addChild(display);
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, Om::BIRD));
