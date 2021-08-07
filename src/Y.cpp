@@ -8,6 +8,7 @@ struct Y : Module {
 		RST,
 		TEMPO,
 		ENUMS(MODE, 4),
+		LEN,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -39,6 +40,7 @@ struct Y : Module {
 	Y() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(TEMPO, 0.f, 480.f, 240.f, "Tempo", " bpm");
+		configParam(LEN, 0.f, 100.f, 50.f, "Gate Length", " %");
 		for(int i = 0; i < 16; i++) {
 			configParam(QUADS + i, 0.f, 1.f, 0.f, "Beat");
 		}
@@ -56,7 +58,7 @@ struct Y : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
-		float len = 0.5f;
+		float len = params[LEN].getValue() / 100.f;
 		maxPoly();//1
 		float bps = params[TEMPO].getValue() / 60.f;
 		float beatSamp = bps / fs;//beats per sample
@@ -140,6 +142,7 @@ struct YWidget : ModuleWidget {
 		addOutput(createOutputCentered<PJ301MPort>(loc(7, 2.5f), module, Y::ORST));
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(7.5f, 3.5f), module, Y::TEMPO));
+		addParam(createParamCentered<RoundBlackKnob>(loc(1.5f, 3.5f), module, Y::LEN));
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 2.5f), module, Y::ICV_BUT));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 2.5f), module, Y::IGATE_BUT));
