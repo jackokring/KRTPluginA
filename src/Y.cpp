@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct Y : Module {
 	enum ParamIds {
 		ENUMS(QUADS, 16),
@@ -31,16 +30,15 @@ struct Y : Module {
 		NUM_LIGHTS
 	};
 
-	int maxPoly() {
+	void maxPoly() {
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
 			outputs[o].setChannels(1);
 		}
-		return 1;//monophonic
 	}
 
 	Y() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(TEMPO, 0.f, 240.f, 120.f, "Tempo", " bpm");
+		configParam(TEMPO, 0.f, 480.f, 240.f, "Tempo", " bpm");
 		for(int i = 0; i < 16; i++) {
 			configParam(QUADS + i, 0.f, 1.f, 0.f, "Beat");
 		}
@@ -54,7 +52,25 @@ struct Y : Module {
 		}
 	}
 
+	int sampleCounter = 0;
+
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+		maxPoly();//1
+		float bps = params[TEMPO].getValue() / 60.f;
+		float beatSamp = bps / fs;//beats per sample
+		float beats = beatSamp * (float)sampleCounter;
+		outputs[RUN].setVoltage(beats);//test
+
+		if(beats < 0.5f) {
+			outputs[RST].setVoltage(10.f);
+			lights[LRST].setBrightness(1.f);
+		} else {
+			outputs[RST].setVoltage(0.f);
+			lights[LRST].setBrightness(0.f);
+		}
+		sampleCounter++;
+		if(beats >= 64) sampleCounter = 0;//beats long
 	}
 };
 
@@ -107,11 +123,11 @@ struct YWidget : ModuleWidget {
 		}
 
 		addParam(createParamCentered<LEDBezel>(loc(8, 4.75f), module, Y::RUN));
-		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4), module, Y::RUN));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4.75f), module, Y::RUN));
 		addOutput(createOutputCentered<PJ301MPort>(loc(8, 2.5f), module, Y::ORUN));
 
 		addParam(createParamCentered<LEDBezel>(loc(7, 4.75f), module, Y::RST));
-		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(7, 4), module, Y::RST));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(7, 4.75f), module, Y::RST));
 		addOutput(createOutputCentered<PJ301MPort>(loc(7, 2.5f), module, Y::ORST));
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(7.5f, 3.5f), module, Y::TEMPO));
