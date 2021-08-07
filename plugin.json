@@ -118,6 +118,15 @@
         "Tuner",
         "Polyphonic"
       ]
+    },
+    {
+      "slug": "Y",
+      "name": "Y",
+      "description": "Triple sequencer.",
+      "tags": [
+        "Clock generator",
+        "Sequencer"
+      ]
     }
   ]
 }
