@@ -60,13 +60,13 @@ struct Y : Module {
 		float bps = params[TEMPO].getValue() / 60.f;
 		float beatSamp = bps / fs;//beats per sample
 		float beats = beatSamp * (float)sampleCounter;
-		outputs[RUN].setVoltage(beats);//test
+		outputs[ORUN].setVoltage(beats);//test
 
 		if(beats < 0.5f) {
-			outputs[RST].setVoltage(10.f);
+			outputs[ORST].setVoltage(10.f);
 			lights[LRST].setBrightness(1.f);
 		} else {
-			outputs[RST].setVoltage(0.f);
+			outputs[ORST].setVoltage(0.f);
 			lights[LRST].setBrightness(0.f);
 		}
 		sampleCounter++;
