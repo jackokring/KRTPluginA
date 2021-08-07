@@ -7,6 +7,7 @@ struct Y : Module {
 		ENUMS(TRIPS, 12),
 		RUN,
 		RST,
+		TEMPO,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -33,6 +34,7 @@ struct Y : Module {
 
 	Y() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(TEMPO, 0.f, 240.f, 120.f, "Tempo", " bpm");
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -91,7 +93,9 @@ struct YWidget : ModuleWidget {
 		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4), module, Y::RUN));
 
 		addParam(createParamCentered<LEDBezel>(loc(7, 4.75f), module, Y::RST));
-		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(7, 4), module, Y::RST));		
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(7, 4), module, Y::RST));
+
+		addParam(createParamCentered<RoundBlackKnob>(loc(7.5f, 3.5f), module, Y::TEMPO));		
 	}
 };
 
