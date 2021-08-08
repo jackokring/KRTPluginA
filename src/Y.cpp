@@ -39,20 +39,38 @@ struct Y : Module {
 		}
 	}
 
+	const char qNames[16][4] = {
+		"1/1", "2/1", "3/1", "4/1",
+		"1/2", "2/2", "3/2", "4/2",
+		"1/3", "2/3", "3/3", "4/3",
+		"1/4", "2/4", "3/4", "4/4"
+	};
+
+	const char tNames[12][5] = {
+		"1T/1", "2T/1", "3T/1",
+		"1T/2", "2T/2", "3T/2",
+		"1T/3", "2T/3", "3T/3",
+		"1T/4", "2T/4", "3T/4"
+	};
+
+	const char *mNames[4] = {
+		"Pattern", "Sequence", "Mute", "Now"
+	};
+
 	Y() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(TEMPO, 0.f, 480.f, 240.f, "Tempo", " bpm");
 		configParam(LEN, 0.f, 100.f, 50.f, "Gate Length", " %");
 		for(int i = 0; i < 16; i++) {
-			configParam(QUADS + i, 0.f, 1.f, 0.f, "Beat");
+			configParam(QUADS + i, 0.f, 1.f, 0.f, qNames[i]);
 		}
 		for(int i = 0; i < 12; i++) {
-			configParam(TRIPS + i, 0.f, 1.f, 0.f, "Beat");
+			configParam(TRIPS + i, 0.f, 1.f, 0.f, tNames[i]);
 		}
 		configParam(RUN, 0.f, 1.f, 0.f, "Run and Stop");
 		configParam(RST, 0.f, 1.f, 0.f, "Reset");
 		for(int i = 0; i < 4; i++) {
-			configParam(MODES + i, 0.f, 1.f, 0.f, "Mode");
+			configParam(MODES + i, 0.f, 1.f, 0.f, mNames[i]);
 		}
 		configParam(IS_RUN, 0.f, 1.f, 0.f);
 		configParam(MODE, 0.f, 3.f, 0.f);
@@ -62,6 +80,24 @@ struct Y : Module {
 	dsp::SchmittTrigger sRun;
 	dsp::SchmittTrigger sRst;
 	dsp::SchmittTrigger mode[4];
+	dsp::SchmittTrigger quads[16];
+	dsp::SchmittTrigger trips[12];
+
+	float light4(float beat, int light, int mode) {
+		return 0.5f;
+	}
+
+	void button4(int button, int mode) {
+
+	}
+
+	float light3(float beat, int light, int mode) {
+		return 0.5f;
+	}
+
+	void button3(int button, int mode) {
+
+	}
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -86,6 +122,24 @@ struct Y : Module {
 			lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
 		}
 		params[MODE].setValue(newMode);//change
+#pragma GCC ivdep
+		for(int i = 0; i < 16; i++) {
+			float but = params[QUADS + i].getValue();
+			bool trig = quads[i].process(but);
+			if(trig) {
+				button4(i, newMode);
+			}
+			lights[LQUADS + i].setBrightness(light4(beats, i, newMode));
+		}
+#pragma GCC ivdep
+		for(int i = 0; i < 12; i++) {
+			float but = params[TRIPS + i].getValue();
+			bool trig = trips[i].process(but);
+			if(trig) {
+				button3(i, newMode);
+			}
+			lights[LTRIPS + i].setBrightness(light3(tBeats, i, newMode));
+		}		
 		if(trigRun) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
 		}
