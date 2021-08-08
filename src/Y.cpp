@@ -33,6 +33,35 @@ struct Y : Module {
 		NUM_LIGHTS
 	};
 
+	const static int patNum = 16;
+	const static int stepsNum = 16 + 12;
+	const static int chanNum = 16;
+	const static int sized = patNum * stepsNum * chanNum;
+
+	bool patterns[patNum][stepsNum][chanNum];
+	char saves[sized + 1];
+
+	json_t* dataToJson() override {
+		json_t *rootJ = json_object();
+		for(int i = 0; i < sized; i++) {
+			saves[i] = *((bool *)patterns + i) ? 'T' : 'F';
+		}
+		saves[sized] = '\n';
+		json_object_set_new(rootJ, "save", json_string((char *)saves));
+		return rootJ;
+	}
+
+	void dataFromJson(json_t* rootJ) override {  
+		json_t* textJ = json_object_get(rootJ, "save");
+  		if (textJ) {
+			const char *str = json_string_value(textJ);
+			for(int i = 0; i < sized && str[i] != '\n'; i++) {
+				*((bool *)patterns + i) = (str[i] == 'T') ? true : false;
+				//limit buffer size hack
+			}
+		}
+	}
+
 	void maxPoly() {
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
 			outputs[o].setChannels(1);
