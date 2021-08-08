@@ -124,6 +124,12 @@ struct Y : Module {
 
 	}
 
+	char mod12[48] = {
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+	};
+
 	float out43(float beat, float tBeat, int out) {
 		//12 pattern quad for 64 mux
 		int pi = (int)beat >> 4;
@@ -133,7 +139,7 @@ struct Y : Module {
 		float l = params[LEN].getValue();
 		bool q = patterns[p][(int)beat & 15][out];
 		q &= onLen(beat, l);
-		bool t = patterns[p][(int)tBeat % 12 + 16][out];
+		bool t = patterns[p][mod12[(int)tBeat] + 16][out];
 		t &= onLen(tBeat, l);
 		t |= q;//is on?
 		return t ? 10.f : 0.f;//gate
