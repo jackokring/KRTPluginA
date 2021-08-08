@@ -331,13 +331,17 @@ Parameters
 ---
 * Tempo `TEMPO`
 * Gate Length `G.LEN`
+* Four Mode Buttons `PAT`, `SEQ`, `MUTE`, `NOW`
+* The Main Buttons (28 for notes and triples)
+* Run and Stop `RUN`
+* Reset `RST`
+* Copy Pattern `CPY`
+* Paste Pattern `PST`
 
 Ins
 ---
 * CV `CV`
 * Gate `GATE`
-* Four Mode Buttons `PAT`, `SEQ`, `MUTE`, `NOW`
-* The Main Buttons (28 for notes and triples)
 
 Outs
 ---
