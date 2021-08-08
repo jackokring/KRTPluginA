@@ -11,7 +11,7 @@ struct Y : Module {
 		LEN,
 		IS_RUN,
 		MODE,
-		PAT,
+		ENUMS(PAT, 16),
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -104,7 +104,9 @@ struct Y : Module {
 		}
 		configParam(IS_RUN, 0.f, 1.f, 0.f);
 		configParam(MODE, 0.f, 3.f, 0.f);
-		configParam(PAT, 0.f, patNum - 1.f, 0.f);//default pattern
+		for(int i = 0; i < 16; i++) {
+			configParam(PAT + i, 0.f, patNum - 1.f, 0.f);//default pattern
+		}
 	}
 
 	int sampleCounter = 0;
@@ -123,11 +125,15 @@ struct Y : Module {
 	}
 
 	float out43(float beat, float tBeat, int out) {
-		int p = params[PAT].getValue();
+		//12 pattern quad for 64 mux
+		int pi = (int)beat >> 4;
+		int p =	params[PAT + 12 + pi].getValue();//indirect on selected
+		p %= 3;//for next choice
+		p = params[PAT + p + 3 * pi].getValue();//indirect from choices
 		float l = params[LEN].getValue();
-		bool q = patterns[p][(int)beat][out];
+		bool q = patterns[p][(int)beat & 15][out];
 		q &= onLen(beat, l);
-		bool t = patterns[p][(int)tBeat + 16][out];
+		bool t = patterns[p][(int)tBeat % 12 + 16][out];
 		t &= onLen(tBeat, l);
 		t |= q;//is on?
 		return t ? 10.f : 0.f;//gate
@@ -168,7 +174,7 @@ struct Y : Module {
 			lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
 		}
 		params[MODE].setValue(newMode);//change
-		if(beats >= 16 || trigRst) {//sanity range before use
+		if(beats >= 64 || trigRst) {//sanity range before use
 			sampleCounter = 0;//beats long
 			beats = 0.f;//faster and sample accurate
 			tBeats = 0.f;
