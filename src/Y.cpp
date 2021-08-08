@@ -130,6 +130,11 @@ struct Y : Module {
 			lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
 		}
 		params[MODE].setValue(newMode);//change
+		if(beats >= 64 || trigRst) {//sanity range before use
+			sampleCounter = 0;//beats long
+			beats = 0.f;//faster and sample accurate
+			tBeats = 0.f;
+		}
 #pragma GCC ivdep
 		for(int i = 0; i < 16; i++) {
 			float but = params[QUADS + i].getValue();
