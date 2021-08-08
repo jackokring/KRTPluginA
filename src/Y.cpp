@@ -39,10 +39,10 @@ struct Y : Module {
 	const static int sized = patNum * stepsNum * chanNum;
 
 	bool patterns[patNum][stepsNum][chanNum];
-	char saves[sized + 1];
 
 	json_t* dataToJson() override {
 		json_t *rootJ = json_object();
+		char saves[sized + 1];//space
 		for(int i = 0; i < sized; i++) {
 			saves[i] = *((bool *)patterns + i) ? 'T' : 'F';
 		}
