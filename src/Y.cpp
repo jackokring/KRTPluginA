@@ -116,12 +116,42 @@ struct Y : Module {
 	dsp::SchmittTrigger quads[16];
 	dsp::SchmittTrigger trips[12];
 
+#define MODE_PAT 0
+#define MODE_SEQ 1
+#define MODE_MUT 2
+#define MODE_NOW 3
+
 	float light4(float beat, int light, int mode) {
+		if(mode > 1) {
+			if(mode > 2) {//MODE_NOW
+
+			} else {//MODE_MUT
+
+			}
+		} else {
+			if(mode < 1) {//MODE_PAT
+
+			} else {//MODE_SEQ
+
+			}
+		}
 		return 0.5f;
 	}
 
 	void button4(int button, int mode) {
+		if(mode > 1) {
+			if(mode > 2) {//MODE_NOW
 
+			} else {//MODE_MUT
+
+			}
+		} else {
+			if(mode < 1) {//MODE_PAT
+
+			} else {//MODE_SEQ
+
+			}
+		}
 	}
 
 	char mod12[48] = {
@@ -146,11 +176,36 @@ struct Y : Module {
 	}
 
 	float light3(float beat, int light, int mode) {
+		if(mode > 1) {
+			if(mode > 2) {//MODE_NOW
+
+			} else {//MODE_MUT
+
+			}
+		} else {
+			if(mode < 1) {//MODE_PAT
+
+			} else {//MODE_SEQ
+
+			}
+		}
 		return 0.5f;
 	}
 
 	void button3(int button, int mode) {
+		if(mode > 1) {
+			if(mode > 2) {//MODE_NOW
 
+			} else {//MODE_MUT
+
+			}
+		} else {
+			if(mode < 1) {//MODE_PAT
+
+			} else {//MODE_SEQ
+
+			}
+		}
 	}
 
 	bool onLen(float beats, float len) {
