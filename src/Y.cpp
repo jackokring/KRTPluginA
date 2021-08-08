@@ -11,6 +11,7 @@ struct Y : Module {
 		LEN,
 		IS_RUN,
 		MODE,
+		PAT,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -103,6 +104,7 @@ struct Y : Module {
 		}
 		configParam(IS_RUN, 0.f, 1.f, 0.f);
 		configParam(MODE, 0.f, 3.f, 0.f);
+		configParam(PAT, 0.f, patNum - 1.f, 0.f);//default pattern
 	}
 
 	int sampleCounter = 0;
@@ -121,7 +123,14 @@ struct Y : Module {
 	}
 
 	float out43(float beat, float tBeat, int out) {
-		return 10.f;
+		int p = params[PAT].getValue();
+		float l = params[LEN].getValue();
+		bool q = patterns[p][(int)beat][out];
+		q &= onLen(beat, l);
+		bool t = patterns[p][(int)tBeat + 16][out];
+		t &= onLen(tBeat, l);
+		t |= q;//is on?
+		return t ? 10.f : 0.f;//gate
 	}
 
 	float light3(float beat, int light, int mode) {
@@ -159,7 +168,7 @@ struct Y : Module {
 			lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
 		}
 		params[MODE].setValue(newMode);//change
-		if(beats >= 64 || trigRst) {//sanity range before use
+		if(beats >= 16 || trigRst) {//sanity range before use
 			sampleCounter = 0;//beats long
 			beats = 0.f;//faster and sample accurate
 			tBeats = 0.f;
@@ -185,11 +194,6 @@ struct Y : Module {
 		}		
 		if(trigRun) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
-		}
-		if(beats >= 64 || trigRst) {
-			sampleCounter = 0;//beats long
-			beats = 0.f;//faster and sample accurate
-			tBeats = 0.f;
 		}
 		if(onLen(beats, len)) {
 			outputs[ORUN].setVoltage(10.f);
