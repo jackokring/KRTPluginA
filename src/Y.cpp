@@ -59,7 +59,7 @@ struct Y : Module {
 
 	Y() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(TEMPO, 0.f, 480.f, 240.f, "Tempo", " bpm");
+		configParam(TEMPO, 0.f, 240.f, 120.f, "Tempo", " bpm");
 		configParam(LEN, 0.f, 100.f, 50.f, "Gate Length", " %");
 		for(int i = 0; i < 16; i++) {
 			configParam(QUADS + i, 0.f, 1.f, 0.f, qNames[i]);
@@ -91,6 +91,10 @@ struct Y : Module {
 
 	}
 
+	float out43(float beat, float tBeat, int out) {
+		return 10.f;
+	}
+
 	float light3(float beat, int light, int mode) {
 		return 0.5f;
 	}
@@ -99,11 +103,15 @@ struct Y : Module {
 
 	}
 
+	bool onLen(float beats, float len) {
+		return beats - (int)beats < len;
+	}
+
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		float len = params[LEN].getValue() / 100.f;
 		maxPoly();//1
-		float bps = params[TEMPO].getValue() / 60.f;
+		float bps = params[TEMPO].getValue() / 15.f;//beat per bar
 		float beatSamp = bps / fs;//beats per sample
 		float beats = beatSamp * (float)sampleCounter;
 		float tBeats = beats * 0.75f;//triples
@@ -130,6 +138,7 @@ struct Y : Module {
 				button4(i, newMode);
 			}
 			lights[LQUADS + i].setBrightness(light4(beats, i, newMode));
+			outputs[OUTS + i].setVoltage(out43(beats, tBeats, i));
 		}
 #pragma GCC ivdep
 		for(int i = 0; i < 12; i++) {
@@ -148,7 +157,7 @@ struct Y : Module {
 			beats = 0.f;//faster and sample accurate
 			tBeats = 0.f;
 		}
-		if(beats - (int)beats < len) {
+		if(onLen(beats, len)) {
 			outputs[ORUN].setVoltage(10.f);
 			lights[LRUN].setBrightness(1.f);
 		} else {
