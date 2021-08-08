@@ -1,7 +1,9 @@
 1.11.16
 ===
 
-* Potential `Ω` sharing of display bug fixed
+* Potential `Ω` sharing of display bug fixed (no effect on other function)
+* Added in `W` chromatic gate summator
+* Added in `Y` gate pattern sequencer
 
 1.9.15
 ===
