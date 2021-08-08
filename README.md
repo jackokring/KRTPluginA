@@ -22,6 +22,7 @@ Index - Demo
 8. [V](#v) - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 9. [F](#f) - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
 10. [W](#w) - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
+11. [Y](#y) - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -320,3 +321,31 @@ Outs
 * Output Subtract `-`
 
 To assist in turning patterned gates into CV chromatic sequences. Simple.
+
+Y
+===
+
+*The White Buttons One - Sequencer*
+
+Parameters
+---
+* Tempo `TEMPO`
+* Gate Length `G.LEN`
+
+Ins
+---
+* CV `CV`
+* Gate `GATE`
+* Four Mode Buttons `PAT`, `SEQ`, `MUTE`, `NOW`
+* The Main Buttons (28 for notes and triples)
+
+Outs
+---
+* Clock `CLK`
+* Reset `RST`
+
+A gate pattern sequencer. An obvious layout, but the modes might be complicated.
+* `PAT` a pattern edit mode similar to a standard drum machine.
+* `SEQ` triggers and selects various sequences. For performance play. Alters assigned pattern on pattern change controls of triples.
+* `MUTE` allows channel mutes while maintaining some pattern change control on triples.
+* `NOW` puts direct channel gates on the notes (also selects active channel last pressed channel), while maintaining some pattern change control on triples.
