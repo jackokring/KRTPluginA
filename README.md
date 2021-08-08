@@ -335,8 +335,8 @@ Parameters
 * The Main Buttons (28 for notes and triples)
 * Run and Stop `RUN`
 * Reset `RST`
-* Copy Pattern `CPY`
-* Paste Pattern `PST`
+* Copy Pattern `CPY` (makes note of active channel for `PAT` paste channel copies)
+* Paste Pattern `PST` (only pastes into current channel in `PAT` mode)
 
 Ins
 ---
