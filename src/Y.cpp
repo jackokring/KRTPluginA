@@ -15,6 +15,8 @@ struct Y : Module {
 		CPY,
 		PST,
 		CHAN,
+		CPAT,
+		CCHN,
 		ENUMS(MUTES, 16),
 		NUM_PARAMS
 	};
@@ -136,6 +138,8 @@ struct Y : Module {
 				}
 			}
 		}
+		configParam(CPAT, 0.f, 15.f, 0.f);
+		configParam(CCHN, 0.f, 15.f, 0.f);
 	}
 
 	int sampleCounter = 0;
@@ -319,11 +323,21 @@ struct Y : Module {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
 		}
 		if(trigCpy) {
-
+			params[CPAT].setValue(getPat(beats));
+			params[CCHN].setValue(params[CHAN].getValue());
 		}
+		lights[LCPY].setBrightness(getPat(beats) == (int)params[CPAT].getValue() ? 1.f : 0.f);
 		if(trigPst) {
-
+			if(newMode == MODE_PAT) {
+				//single chan
+			} else {
+				//full pattern
+			}
 		}
+		bool ok = newMode != MODE_PAT;
+		//light off if different channel in channel paste
+		ok |= (int)params[CCHN].getValue() == (int)params[CHAN].getValue();
+		lights[LPST].setBrightness(ok ? 1.f : 0.f);
 		if(onLen(beats, len)) {
 			outputs[ORUN].setVoltage(10.f);
 			lights[LRUN].setBrightness(1.f);
@@ -412,10 +426,10 @@ struct YWidget : ModuleWidget {
 		}
 
 		addParam(createParamCentered<LEDBezel>(loc(1, 4.75f), module, Y::CPY));
-		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4.75f), module, Y::LCPY));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(1, 4.75f), module, Y::LCPY));
 
 		addParam(createParamCentered<LEDBezel>(loc(2, 4.75f), module, Y::PST));
-		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4.75f), module, Y::LPST));	
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(2, 4.75f), module, Y::LPST));	
 	}
 };
 
