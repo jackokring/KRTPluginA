@@ -15,6 +15,7 @@ struct Y : Module {
 		CPY,
 		PST,
 		CHAN,
+		ENUMS(MUTES, 16),
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -111,6 +112,7 @@ struct Y : Module {
 		configParam(MODE, 0.f, 3.f, 0.f);
 		for(int i = 0; i < 16; i++) {
 			configParam(PAT + i, 0.f, patNum - 1.f, 0.f);//default pattern
+			configParam(MUTES + i, 0.f, 1.f, 1.f);
 		}
 		configParam(CPY, 0.f, 1.f, 0.f, "Copy");
 		configParam(PST, 0.f, 1.f, 0.f, "Paste");
@@ -155,7 +157,8 @@ struct Y : Module {
 				//directly done
 				params[CHAN].setValue(button);//set channel
 			} else {//MODE_MUT
-
+				float x = params[MUTES + button].getValue();
+				params[MUTES + button].setValue(1.f - x);//set mute
 			}
 		} else {
 			if(mode < 1) {//MODE_PAT
@@ -207,7 +210,7 @@ struct Y : Module {
 		if(mode == MODE_NOW) {
 			t |= params[QUADS + out].getValue() > 0.5f;//play now
 		}
-		return t ? 10.f : 0.f;//gate
+		return (t ? 10.f : 0.f) * params[MUTES + out].getValue();//gate
 	}
 
 	float light3(float beat, float tBeat, int light, int mode) {
