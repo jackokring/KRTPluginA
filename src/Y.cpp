@@ -1,5 +1,7 @@
 #include "plugin.hpp"
 
+//Z = C4 note ...
+
 struct Y : Module {
 	enum ParamIds {
 		ENUMS(QUADS, 16),
