@@ -216,7 +216,7 @@ struct Om : Module {
 			const char *str = json_string_value(textJ);
 			if(str) {
 				for(int i = 0; i < 64; i++) {
-					offsets[i] = (str[i] - '@') & 31;//limit buffer size hack
+					offsets[i] = str[i] - '@';//limit buffer size hack
 				}
 			}
 		}
