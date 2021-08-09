@@ -46,10 +46,11 @@ struct Y : Module {
 
 	bool patterns[patNum][stepsNum][chanNum];
 
+	const static int sized = chanNum * stepsNum * patNum;
+	char saves[sized + 1];//space
+
 	json_t* dataToJson() override {
 		json_t *rootJ = json_object();
-		int sized = chanNum * stepsNum * patNum;
-		char saves[sized + 1];//space
 		for(int p = 0; p < patNum; p++) {
 			for(int s = 0; s < stepsNum; s++) {
 				for(int c = 0; c < chanNum; c++) {
@@ -59,7 +60,7 @@ struct Y : Module {
 			}
 		}
 		saves[sized] = '\0';
-		json_object_set_new(rootJ, "save", json_string((char *)saves));
+		json_object_set_new(rootJ, "save", json_string(saves));
 		return rootJ;
 	}
 
@@ -67,11 +68,13 @@ struct Y : Module {
 		json_t* textJ = json_object_get(rootJ, "save");
   		if (textJ) {
 			const char *str = json_string_value(textJ);
-			for(int p = 0; p < patNum; p++) {
-				for(int s = 0; s < stepsNum; s++) {
-					for(int c = 0; c < chanNum; c++) {
-						int i = c + chanNum * (s + stepsNum * p);
-						patterns[p][s][c] = (str[i] == 'T') ? true : false;
+			if(str) {
+				for(int p = 0; p < patNum; p++) {
+					for(int s = 0; s < stepsNum; s++) {
+						for(int c = 0; c < chanNum; c++) {
+							int i = c + chanNum * (s + stepsNum * p);
+							patterns[p][s][c] = (str[i] == 'T') ? true : false;
+						}
 					}
 				}
 			}

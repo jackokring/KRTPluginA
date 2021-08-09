@@ -199,9 +199,15 @@ struct Om : Module {
 		return rem;
 	}
 
+	char saves[65];//pesistance?
+
 	json_t* dataToJson() override {
 		json_t *rootJ = json_object();
-		json_object_set_new(rootJ, "save", json_string((char *)offsets));
+		for(int i = 0; i < 64; i++) {
+			saves[i] = offsets[i];//limit buffer size hack
+		}
+		saves[64] = '\0';
+		json_object_set_new(rootJ, "save", json_string(saves));
 		return rootJ;
 	}
 
@@ -209,8 +215,10 @@ struct Om : Module {
 		json_t* textJ = json_object_get(rootJ, "save");
   		if (textJ) {
 			const char *str = json_string_value(textJ);
-			for(int i = 0; i < 64; i++) {
-				offsets[i] = str[i];//limit buffer size hack
+			if(str) {
+				for(int i = 0; i < 64; i++) {
+					offsets[i] = str[i];//limit buffer size hack
+				}
 			}
 		}
 	}
