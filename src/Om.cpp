@@ -258,7 +258,7 @@ struct Om : Module {
 			offsets[o] = 0;//calculation offsets
 		}
 		randomz[64] = randomz[0];//loop
-		offsets[64] = '\n';//end
+		offsets[64] = '\0';//end
 		for(int o = 0; o < 26; o++) {
 			birdLen[o] = strlen(birdTo[o]);//opt
 		}

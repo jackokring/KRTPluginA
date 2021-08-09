@@ -2,6 +2,7 @@
 ===
 
 * Potential `Ω` sharing of display bug fixed (no effect on other function)
+* Null terminal in data save `Ω`
 * Added in `W` chromatic gate summator
 * Added in `Y` gate pattern sequencer
 

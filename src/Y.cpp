@@ -58,7 +58,7 @@ struct Y : Module {
 				}
 			}
 		}
-		saves[sized] = '\n';
+		saves[sized] = '\0';
 		json_object_set_new(rootJ, "save", json_string((char *)saves));
 		return rootJ;
 	}
