@@ -12,6 +12,8 @@ struct Y : Module {
 		IS_RUN,
 		MODE,
 		ENUMS(PAT, 16),
+		CPY,
+		PST,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -31,6 +33,8 @@ struct Y : Module {
 		LRUN,
 		LRST,
 		ENUMS(LMODE, 4),
+		LCPY,
+		LPST,
 		NUM_LIGHTS
 	};
 
@@ -107,11 +111,15 @@ struct Y : Module {
 		for(int i = 0; i < 16; i++) {
 			configParam(PAT + i, 0.f, patNum - 1.f, 0.f);//default pattern
 		}
+		configParam(CPY, 0.f, 1.f, 0.f, "Copy");
+		configParam(PST, 0.f, 1.f, 0.f, "Paste");
 	}
 
 	int sampleCounter = 0;
 	dsp::SchmittTrigger sRun;
 	dsp::SchmittTrigger sRst;
+	dsp::SchmittTrigger sCpy;
+	dsp::SchmittTrigger sPst;
 	dsp::SchmittTrigger mode[4];
 	dsp::SchmittTrigger quads[16];
 	dsp::SchmittTrigger trips[12];
@@ -141,7 +149,7 @@ struct Y : Module {
 	void button4(int button, int mode) {
 		if(mode > 1) {
 			if(mode > 2) {//MODE_NOW
-
+				//directly done
 			} else {//MODE_MUT
 
 			}
@@ -160,18 +168,30 @@ struct Y : Module {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
 	};
 
-	float out43(float beat, float tBeat, int out) {
+	char mod3[15] = {
+		0, 1, 2, 0, 1, 2, 0, 1, 2,
+		0, 1, 2, 0, 1, 2
+	};
+
+	int getPat(float beat) {
 		//12 pattern quad for 64 mux
 		int pi = (int)beat >> 4;
 		int p =	params[PAT + 12 + pi].getValue();//indirect on selected
-		p %= 3;//for next choice
-		p = params[PAT + p + 3 * pi].getValue();//indirect from choices
+		p = mod3[p];//for next choice
+		return params[PAT + p + 3 * pi].getValue();//indirect from choices
+	}
+
+	float out43(float beat, float tBeat, int out, int mode) {
+		int p = getPat(beat);
 		float l = params[LEN].getValue();
 		bool q = patterns[p][(int)beat & 15][out];
 		q &= onLen(beat, l);
 		bool t = patterns[p][mod12[(int)tBeat] + 16][out];
 		t &= onLen(tBeat, l);
 		t |= q;//is on?
+		if(mode == MODE_NOW) {
+			t |= params[QUADS].getValue() > 0.5f;//play now
+		}
 		return t ? 10.f : 0.f;//gate
 	}
 
@@ -224,6 +244,10 @@ struct Y : Module {
 		bool trigRst = sRst.process(rst);
 		float run = params[RUN].getValue();
 		bool trigRun = sRun.process(run);
+		float cpy = params[CPY].getValue();
+		bool trigCpy = sCpy.process(cpy);
+		float pst = params[PST].getValue();
+		bool trigPst = sPst.process(pst);
 		int newMode = params[MODE].getValue();//old
 #pragma GCC ivdep
 		for(int i = 0; i < 4; i++) {
@@ -248,7 +272,7 @@ struct Y : Module {
 				button4(i, newMode);
 			}
 			lights[LQUADS + i].setBrightness(light4(beats, i, newMode));
-			outputs[OUTS + i].setVoltage(out43(beats, tBeats, i));
+			outputs[OUTS + i].setVoltage(out43(beats, tBeats, i, newMode));
 		}
 #pragma GCC ivdep
 		for(int i = 0; i < 12; i++) {
@@ -261,6 +285,12 @@ struct Y : Module {
 		}		
 		if(trigRun) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
+		}
+		if(trigCpy) {
+
+		}
+		if(trigPst) {
+			
 		}
 		if(onLen(beats, len)) {
 			outputs[ORUN].setVoltage(10.f);
@@ -329,11 +359,11 @@ struct YWidget : ModuleWidget {
 		}
 
 		addParam(createParamCentered<LEDBezel>(loc(8, 4.75f), module, Y::RUN));
-		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4.75f), module, Y::RUN));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4.75f), module, Y::LRUN));
 		addOutput(createOutputCentered<PJ301MPort>(loc(8, 2.5f), module, Y::ORUN));
 
 		addParam(createParamCentered<LEDBezel>(loc(7, 4.75f), module, Y::RST));
-		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(7, 4.75f), module, Y::RST));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(7, 4.75f), module, Y::LRST));
 		addOutput(createOutputCentered<PJ301MPort>(loc(7, 2.5f), module, Y::ORST));
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(7.5f, 3.5f), module, Y::TEMPO));
@@ -347,7 +377,13 @@ struct YWidget : ModuleWidget {
 			float y = 3.f;
 			addParam(createParamCentered<LEDBezel>(loc(x, y), module, Y::MODES + j));
 			addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(x, y), module, Y::LMODE + j));
-		}	
+		}
+
+		addParam(createParamCentered<LEDBezel>(loc(1, 4.75f), module, Y::CPY));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4.75f), module, Y::LCPY));
+
+		addParam(createParamCentered<LEDBezel>(loc(2, 4.75f), module, Y::PST));
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(8, 4.75f), module, Y::LPST));	
 	}
 };
 
