@@ -115,6 +115,9 @@ struct Y : Module {
 		configParam(CPY, 0.f, 1.f, 0.f, "Copy");
 		configParam(PST, 0.f, 1.f, 0.f, "Paste");
 		configParam(CHAN, 0.f, chanNum - 1.f, 0.f);
+		for(int i = 0; i < sized; i++) {
+			*((bool *)patterns + i) = false;//blank
+		}
 	}
 
 	int sampleCounter = 0;
@@ -146,18 +149,25 @@ struct Y : Module {
 		}
 	}
 
-	void button4(int button, int mode) {
+	void button4(float beat, int button, int mode) {
 		if(mode > 1) {
 			if(mode > 2) {//MODE_NOW
 				//directly done
+				params[CHAN].setValue(button);//set channel
 			} else {//MODE_MUT
 
 			}
 		} else {
 			if(mode < 1) {//MODE_PAT
-
+				int p = getPat(beat);
+				int chan = params[CHAN].getValue();
+				(patterns[p][button][chan]) ^= true;//flip
 			} else {//MODE_SEQ
-
+				//12 pattern quad for 64 mux
+				int pi = (int)beat >> 4;
+				int p =	params[PAT + 12 + pi].getValue();//indirect on selected
+				p = mod3[p];//for next choice
+				params[PAT + p + 3 * pi].setValue(button);
 			}
 		}
 	}
@@ -269,7 +279,7 @@ struct Y : Module {
 			float but = params[QUADS + i].getValue();
 			bool trig = quads[i].process(but);
 			if(trig) {
-				button4(i, newMode);
+				button4(beats, i, newMode);
 			}
 			lights[LQUADS + i].setBrightness(light4(beats, i, newMode));
 			outputs[OUTS + i].setVoltage(out43(beats, tBeats, i, newMode));
