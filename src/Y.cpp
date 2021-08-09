@@ -43,15 +43,20 @@ struct Y : Module {
 	const static int patNum = 16;
 	const static int stepsNum = 16 + 12;
 	const static int chanNum = 16;
-	const static int sized = patNum * stepsNum * chanNum;
 
 	bool patterns[patNum][stepsNum][chanNum];
 
 	json_t* dataToJson() override {
 		json_t *rootJ = json_object();
+		int sized = chanNum * stepsNum * patNum;
 		char saves[sized + 1];//space
-		for(int i = 0; i < sized; i++) {
-			saves[i] = *((bool *)patterns + i) ? 'T' : 'F';
+		for(int p = 0; p < patNum; p++) {
+			for(int s = 0; s < stepsNum; s++) {
+				for(int c = 0; c < chanNum; c++) {
+					int i = c + chanNum * (s + stepsNum * p);
+					saves[i] = patterns[p][s][c] ? 'T' : 'F';
+				}
+			}
 		}
 		saves[sized] = '\n';
 		json_object_set_new(rootJ, "save", json_string((char *)saves));
@@ -62,9 +67,13 @@ struct Y : Module {
 		json_t* textJ = json_object_get(rootJ, "save");
   		if (textJ) {
 			const char *str = json_string_value(textJ);
-			for(int i = 0; i < sized && str[i] != '\n'; i++) {
-				*((bool *)patterns + i) = (str[i] == 'T') ? true : false;
-				//limit buffer size hack
+			for(int p = 0; p < patNum; p++) {
+				for(int s = 0; s < stepsNum; s++) {
+					for(int c = 0; c < chanNum; c++) {
+						int i = c + chanNum * (s + stepsNum * p);
+						patterns[p][s][c] = (str[i] == 'T') ? true : false;
+					}
+				}
 			}
 		}
 	}
@@ -117,8 +126,12 @@ struct Y : Module {
 		configParam(CPY, 0.f, 1.f, 0.f, "Copy");
 		configParam(PST, 0.f, 1.f, 0.f, "Paste");
 		configParam(CHAN, 0.f, chanNum - 1.f, 0.f);
-		for(int i = 0; i < sized; i++) {
-			*((bool *)patterns + i) = false;//blank
+		for(int p = 0; p < patNum; p++) {
+			for(int s = 0; s < stepsNum; s++) {
+				for(int c = 0; c < chanNum; c++) {
+					patterns[p][s][c] = false;//blank
+				}
+			}
 		}
 	}
 
@@ -146,8 +159,10 @@ struct Y : Module {
 		} else {//rest
 			int p = getPat(beat);
 			bool on = (patterns[p][(int)beat & 15][light]) == true;
-			bool in = p == light;
-			return (on ? 0.5f : 0.f) + (in ? 0.5f : 0.f);
+			bool in = (p == light) && (mode == MODE_SEQ);
+			in |= (params[MUTES + light].getValue() < 0.5f) && (mode == MODE_MUT);
+			in |= ((int)params[CHAN].getValue() == light) && (mode == MODE_NOW);
+			return (on ? 0.75f : 0.f) + (in ? 0.25f : 0.f);
 		}
 	}
 
