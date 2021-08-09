@@ -328,10 +328,22 @@ struct Y : Module {
 		}
 		lights[LCPY].setBrightness(getPat(beats) == (int)params[CPAT].getValue() ? 1.f : 0.f);
 		if(trigPst) {
+			int pat = params[CPAT].getValue();
+			int chan = params[CCHN].getValue();
+			int nPat = getPat(beats);
+			int nChan = params[CHAN].getValue();
 			if(newMode == MODE_PAT) {
 				//single chan
+				for(int i = 0; i < stepsNum; i++) {
+					patterns[nPat][i][nChan] = patterns[pat][i][chan];
+				}
 			} else {
 				//full pattern
+				for(int j = 0; j < chanNum; j++) {
+					for(int i = 0; i < stepsNum; i++) {
+						patterns[nPat][i][j] = patterns[pat][i][j];
+					}
+				}
 			}
 		}
 		bool ok = newMode != MODE_PAT;
