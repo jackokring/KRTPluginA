@@ -14,6 +14,7 @@ struct Y : Module {
 		ENUMS(PAT, 16),
 		CPY,
 		PST,
+		CHAN,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -113,6 +114,7 @@ struct Y : Module {
 		}
 		configParam(CPY, 0.f, 1.f, 0.f, "Copy");
 		configParam(PST, 0.f, 1.f, 0.f, "Paste");
+		configParam(CHAN, 0.f, chanNum - 1.f, 0.f);
 	}
 
 	int sampleCounter = 0;
@@ -130,20 +132,18 @@ struct Y : Module {
 #define MODE_NOW 3
 
 	float light4(float beat, int light, int mode) {
-		if(mode > 1) {
-			if(mode > 2) {//MODE_NOW
-
-			} else {//MODE_MUT
-
-			}
-		} else {
-			if(mode < 1) {//MODE_PAT
-
-			} else {//MODE_SEQ
-
-			}
+		if(mode == MODE_PAT) {
+			int p = getPat(beat);
+			int chan = params[CHAN].getValue();
+			bool on = (patterns[p][light][chan]) == true;
+			bool in = ((int)beat & 15) == light;
+			return (on ? 0.75f : 0.f) + (in ? 0.25f : 0.f);
+		} else {//rest
+			int p = getPat(beat);
+			bool on = (patterns[p][(int)beat & 15][light]) == true;
+			bool in = p == light;
+			return (on ? 0.5f : 0.f) + (in ? 0.5f : 0.f);
 		}
-		return 0.5f;
 	}
 
 	void button4(int button, int mode) {
@@ -202,7 +202,11 @@ struct Y : Module {
 
 	float light3(float beat, float tBeat, int light, int mode) {
 		if(mode == MODE_PAT) {
-			return 0.5f;
+			int p = getPat(beat);
+			int chan = params[CHAN].getValue();
+			bool on = (patterns[p][light + 16][chan]) == true;
+			bool in = mod12[(int)tBeat] == light;
+			return (on ? 0.75f : 0.f) + (in ? 0.25f : 0.f);
 		} else {//rest
 			int r = mod3[light];//button in set
 			int q = div3[light];//div 3
@@ -212,9 +216,11 @@ struct Y : Module {
 		}
 	}
 
-	void button3(int button, int mode) {
+	void button3(float beat, int button, int mode) {
 		if(mode == MODE_PAT) {
-			
+			int p = getPat(beat);
+			int chan = params[CHAN].getValue();
+			(patterns[p][button + 16][chan]) ^= true;//flip
 		} else {//rest
 			int r = mod3[button];//button in set
 			int q = div3[button];//div 3
@@ -273,7 +279,7 @@ struct Y : Module {
 			float but = params[TRIPS + i].getValue();
 			bool trig = trips[i].process(but);
 			if(trig) {
-				button3(i, newMode);
+				button3(beats, i, newMode);
 			}
 			lights[LTRIPS + i].setBrightness(light3(beats, tBeats, i, newMode));
 		}		

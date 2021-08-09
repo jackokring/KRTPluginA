@@ -352,4 +352,4 @@ A gate pattern sequencer. An obvious layout, but the modes might be complicated.
 * `PAT` a pattern edit mode similar to a standard drum machine.
 * `SEQ` triggers and selects various sequences. For performance play. Alters assigned pattern on pattern change controls of triples.
 * `MUTE` allows channel mutes while maintaining some pattern change control on triples.
-* `NOW` puts direct channel gates on the notes (also selects active channel last pressed channel), while maintaining some pattern change control on triples.
+* `NOW` puts direct channel gates on the notes (also selects active channel via last pressed channel), while maintaining some pattern change control on triples.
