@@ -117,7 +117,7 @@ struct Om : Module {
 	int birdLen[26];
 
 	unsigned char randomz[65];
-	unsigned char offsets[65];
+	unsigned char offsets[64];
 	unsigned char store[5][65];//data temp store A-E
 	int storeLen[5];
 
@@ -199,15 +199,14 @@ struct Om : Module {
 		return rem;
 	}
 
-	char saves[65];//pesistance?
+	char saves[64];//pesistance?
 
 	json_t* dataToJson() override {
 		json_t *rootJ = json_object();
 		for(int i = 0; i < 64; i++) {
-			saves[i] = offsets[i];//limit buffer size hack
+			saves[i] = offsets[i] + '@';//limit buffer size hack
 		}
-		saves[64] = '\0';
-		json_object_set_new(rootJ, "save", json_string(saves));
+		json_object_set(rootJ, "save", json_stringn(saves, 64));
 		return rootJ;
 	}
 
@@ -217,7 +216,7 @@ struct Om : Module {
 			const char *str = json_string_value(textJ);
 			if(str) {
 				for(int i = 0; i < 64; i++) {
-					offsets[i] = str[i];//limit buffer size hack
+					offsets[i] = (str[i] - '@') & 31;//limit buffer size hack
 				}
 			}
 		}
@@ -266,7 +265,6 @@ struct Om : Module {
 			offsets[o] = 0;//calculation offsets
 		}
 		randomz[64] = randomz[0];//loop
-		offsets[64] = '\0';//end
 		for(int o = 0; o < 26; o++) {
 			birdLen[o] = strlen(birdTo[o]);//opt
 		}
