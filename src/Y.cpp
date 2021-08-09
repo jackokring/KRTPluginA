@@ -168,9 +168,14 @@ struct Y : Module {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
 	};
 
-	char mod3[15] = {
+	char mod3[16] = {
 		0, 1, 2, 0, 1, 2, 0, 1, 2,
-		0, 1, 2, 0, 1, 2
+		0, 1, 2, 0, 1, 2, 0
+	};
+
+	char div3[12] = {
+		0, 0, 0, 1, 1, 1, 2, 2, 2,
+		3, 3, 3
 	};
 
 	int getPat(float beat) {
@@ -190,41 +195,30 @@ struct Y : Module {
 		t &= onLen(tBeat, l);
 		t |= q;//is on?
 		if(mode == MODE_NOW) {
-			t |= params[QUADS].getValue() > 0.5f;//play now
+			t |= params[QUADS + out].getValue() > 0.5f;//play now
 		}
 		return t ? 10.f : 0.f;//gate
 	}
 
-	float light3(float beat, int light, int mode) {
-		if(mode > 1) {
-			if(mode > 2) {//MODE_NOW
-
-			} else {//MODE_MUT
-
-			}
-		} else {
-			if(mode < 1) {//MODE_PAT
-
-			} else {//MODE_SEQ
-
-			}
+	float light3(float beat, float tBeat, int light, int mode) {
+		if(mode == MODE_PAT) {
+			return 0.5f;
+		} else {//rest
+			int r = mod3[light];//button in set
+			int q = div3[light];//div 3
+			bool on = ((int)params[PAT + 12 + q].getValue() == r);//0 - 2
+			bool in = q == (int)beat >> 4;
+			return (on ? 0.75f : 0.f) + (in ? 0.25f : 0.f);
 		}
-		return 0.5f;
 	}
 
 	void button3(int button, int mode) {
-		if(mode > 1) {
-			if(mode > 2) {//MODE_NOW
-
-			} else {//MODE_MUT
-
-			}
-		} else {
-			if(mode < 1) {//MODE_PAT
-
-			} else {//MODE_SEQ
-
-			}
+		if(mode == MODE_PAT) {
+			
+		} else {//rest
+			int r = mod3[button];//button in set
+			int q = div3[button];//div 3
+			params[PAT + 12 + q].setValue(r);//0 - 2
 		}
 	}
 
@@ -281,7 +275,7 @@ struct Y : Module {
 			if(trig) {
 				button3(i, newMode);
 			}
-			lights[LTRIPS + i].setBrightness(light3(tBeats, i, newMode));
+			lights[LTRIPS + i].setBrightness(light3(beats, tBeats, i, newMode));
 		}		
 		if(trigRun) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
@@ -290,7 +284,7 @@ struct Y : Module {
 
 		}
 		if(trigPst) {
-			
+
 		}
 		if(onLen(beats, len)) {
 			outputs[ORUN].setVoltage(10.f);
