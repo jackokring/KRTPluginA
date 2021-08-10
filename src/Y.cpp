@@ -343,10 +343,25 @@ struct Y : Module {
 			if(trigM) {
 				newMode = i;//set new
 			}
+			if(actionCode >= PATA && actionCode <= NOWA) {
+				if(actionCode > SEQA) {
+					if(actionCode == MUTA) {
+						newMode = MODE_MUT;
+					} else {
+						newMode = MODE_NOW;
+					}
+				} else {
+					if(actionCode == PATA) {
+						newMode = MODE_PAT;
+					} else {
+						newMode = MODE_SEQ;
+					}
+				}
+			}
 			lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
 		}
 		params[MODE].setValue(newMode);//change
-		if(trigRst) {//sanity range before use
+		if(trigRst || actionCode == RSTA) {//sanity range before use
 			beatCounter = 0.f;//beats long
 			beats = 0.f;//faster and sample accurate
 			tBeats = 0.f;
@@ -355,7 +370,7 @@ struct Y : Module {
 		for(int i = 0; i < 16; i++) {
 			float but = params[QUADS + i].getValue();
 			bool trig = quads[i].process(but);
-			if(trig) {
+			if(trig || actionCode == QU(i)) {
 				button4(beats, i, newMode);
 			}
 			lights[LQUADS + i].setBrightness(light4(beats, i, newMode));
@@ -365,20 +380,20 @@ struct Y : Module {
 		for(int i = 0; i < 12; i++) {
 			float but = params[TRIPS + i].getValue();
 			bool trig = trips[i].process(but);
-			if(trig) {
+			if(trig || actionCode == TR(i)) {
 				button3(beats, i, newMode);
 			}
 			lights[LTRIPS + i].setBrightness(light3(beats, tBeats, i, newMode));
 		}		
-		if(trigRun) {
+		if(trigRun || actionCode == RUNA) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
 		}
-		if(trigCpy) {
+		if(trigCpy || actionCode == CPYA) {
 			params[CPAT].setValue(getPat(beats));
 			params[CCHN].setValue(params[CHAN].getValue());
 		}
 		lights[LCPY].setBrightness(getPat(beats) == (int)params[CPAT].getValue() ? 1.f : 0.f);
-		if(trigPst) {
+		if(trigPst || actionCode == PSTA) {
 			int pat = params[CPAT].getValue();
 			int chan = params[CCHN].getValue();
 			int nPat = getPat(beats);
