@@ -300,10 +300,11 @@ struct Y : Module {
 		return beats - (int)beats < len;
 	}
 
-	float modulo(float x, float m) {
-		float div = x / m;
+	//double bit error ?? time??
+	double modulo(double x, float m) {
+		double div = x / m;
 		long d = (long) div;
-		float rem = x - d * m;
+		double rem = x - d * m;
 		return rem;
 	}
 
