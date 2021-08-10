@@ -85,6 +85,7 @@ struct Y : Module {
 	}
 
 	void maxPoly() {
+#pragma GCC ivdep
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
 			outputs[o].setChannels(1);
 		}
@@ -335,11 +336,13 @@ struct Y : Module {
 			int nChan = params[CHAN].getValue();
 			if(newMode == MODE_PAT) {
 				//single chan
+#pragma GCC ivdep
 				for(int i = 0; i < stepsNum; i++) {
 					patterns[nPat][i][nChan] = patterns[pat][i][chan];
 				}
 			} else {
 				//full pattern
+#pragma GCC ivdep
 				for(int j = 0; j < chanNum; j++) {
 					for(int i = 0; i < stepsNum; i++) {
 						patterns[nPat][i][j] = patterns[pat][i][j];

@@ -353,3 +353,5 @@ A gate pattern sequencer. An obvious layout, but the modes might be complicated.
 * `SEQ` triggers and selects various sequences. For performance play. Alters assigned pattern on pattern change controls of triples.
 * `MUTE` allows channel mutes while maintaining some pattern change control on triples.
 * `NOW` puts direct channel gates on the notes (also selects active channel via last pressed channel), while maintaining some pattern change control on triples.
+
+The `CPY` light indicates when the copy source is the same as the paste source. The `PST` light indicates if the copy channel source is the same as the current paste channel. 
