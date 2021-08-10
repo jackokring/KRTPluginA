@@ -62,11 +62,11 @@ struct Y : Module {
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
-		0,	 CPYA, 	 	0,	 PSTA,		0,	QU(0),	TR(0),	QU(1),	TR(1),	QU(2),	TR(2),	QU(3),
-		0,	 PATA, 	 	0, 	 SEQA,		0,	QU(4),	TR(3),	QU(5),	TR(4),	QU(6),	TR(5),	QU(7),
+	TR(0),	 CPYA, 	TR(1),	 PSTA,	TR(2),	QU(0),	TR(0),	QU(1),	TR(1),	QU(2),	TR(2),	QU(3),
+	TR(3),	 PATA, 	TR(4), 	 SEQA,	TR(5),	QU(4),	TR(3),	QU(5),	TR(4),	QU(6),	TR(5),	QU(7),
 		//C4 starts next row
-		0,	 MUTA, 	 	0, 	 NOWA,		0,	QU(8),	TR(6),	QU(9),	TR(7), QU(10),	TR(8), QU(11),
-		0,	 RSTA, 	 	0, 	 RUNA,		0, QU(12),	TR(9), QU(13), TR(10), QU(14), TR(11), QU(15),
+	TR(6),	 MUTA, 	TR(7), 	 NOWA,	TR(8),	QU(8),	TR(6),	QU(9),	TR(7), QU(10),	TR(8), QU(11),
+	TR(9),	 RSTA, TR(10), 	 RUNA,	TR(11), QU(12),	TR(9), QU(13), TR(10), QU(14), TR(11), QU(15),
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
@@ -173,7 +173,7 @@ struct Y : Module {
 		configParam(CCHN, 0.f, 15.f, 0.f);
 	}
 
-	float beatCounter = 0;
+	double beatCounter = 0;
 	dsp::SchmittTrigger sRun;
 	dsp::SchmittTrigger sRst;
 	dsp::SchmittTrigger sCpy;
@@ -311,8 +311,8 @@ struct Y : Module {
 		float fs = args.sampleRate;
 		float len = params[LEN].getValue() / 100.f;
 		maxPoly();//1
-		float bps = params[TEMPO].getValue() / 15.f;//beat per bar
-		float beatSamp = bps / fs;//beats per sample
+		double bps = params[TEMPO].getValue() / 15.f;//beat per bar
+		double beatSamp = bps / fs;//beats per sample
 		float beats = beatCounter;
 		float tBeats = beats * 0.75f;//triples
 		float rst = params[RST].getValue();
@@ -328,7 +328,12 @@ struct Y : Module {
 		bool trigGate = sGate.process(rescale(gate, 0.1f, 2.f, 0.f, 1.f));
 		int actionCode = 0;
 		if(trigGate) {//set action code
-			
+			float tcv = cv * 12.f;
+			tcv += 0.5f + 60.f;
+			int icv = (int)tcv;
+			if(icv >= 0 && icv <= 127) {
+				actionCode = noteProcess[icv];
+			}
 		}
 		int newMode = params[MODE].getValue();//old
 #pragma GCC ivdep
