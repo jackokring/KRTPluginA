@@ -337,7 +337,7 @@ Parameters
 * Reset `RST`
 * Copy Pattern `CPY` (makes note of active channel for `PAT` paste channel copies)
 * Paste Pattern `PST` (only pastes into current channel in `PAT` mode)
-* Shuffle Jazz `JAZZ` (three)
+* Shuffle Jazz `JAZZ` (three altering micro timings)
 
 Ins
 ---
