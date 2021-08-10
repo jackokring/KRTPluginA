@@ -20,6 +20,9 @@ struct Y : Module {
 		CPAT,
 		CCHN,
 		ENUMS(MUTES, 16),
+		JAZZ35,
+		JAZZ47,
+		JAZZ27,
 		NUM_PARAMS
 	};
 	enum InputIds {
