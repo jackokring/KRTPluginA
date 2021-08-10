@@ -58,6 +58,7 @@ struct Y : Module {
 #define Q(x) QU + x	
 
 	const int noteProcess[128] = {
+	//	C				D				E		F				G				A				B		
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
