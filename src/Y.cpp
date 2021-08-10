@@ -312,7 +312,7 @@ struct Y : Module {
 		float fs = args.sampleRate;
 		float len = params[LEN].getValue() / 100.f;
 		maxPoly();//1
-		double bps = params[TEMPO].getValue() / 15.f;//beat per bar
+		double bps = (double)params[TEMPO].getValue() / 15.f;//beat per bar
 		double beatSamp = bps / fs;//beats per sample
 		float beats = beatCounter;
 		float tBeats = beats * 0.75f;//triples
