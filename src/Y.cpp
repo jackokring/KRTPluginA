@@ -174,9 +174,9 @@ struct Y : Module {
 		}
 		configParam(CPAT, 0.f, 15.f, 0.f);
 		configParam(CCHN, 0.f, 15.f, 0.f);
-		configParam(JAZZ27, -1.f, 1.f, 0.f);
-		configParam(JAZZ47, -1.f, 1.f, 0.f);
-		configParam(JAZZ35, -1.f, 1.f, 0.f);
+		configParam(JAZZ27, -1.f, 1.f, 0.f, "Double Jazz");
+		configParam(JAZZ47, -1.f, 1.f, 0.f, "Quad Jazz");
+		configParam(JAZZ35, -1.f, 1.f, 0.f, "Triple Jazz");
 	}
 
 	double beatCounter = 0;
