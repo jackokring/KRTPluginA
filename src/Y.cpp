@@ -174,9 +174,9 @@ struct Y : Module {
 		}
 		configParam(CPAT, 0.f, 15.f, 0.f);
 		configParam(CCHN, 0.f, 15.f, 0.f);
-		configParam(JAZZ27, 0.f, 1.f, 0.f);
-		configParam(JAZZ47, 0.f, 1.f, 0.f);
-		configParam(JAZZ35, 0.f, 1.f, 0.f);
+		configParam(JAZZ27, -1.f, 1.f, 0.f);
+		configParam(JAZZ47, -1.f, 1.f, 0.f);
+		configParam(JAZZ35, -1.f, 1.f, 0.f);
 	}
 
 	double beatCounter = 0;
@@ -341,6 +341,21 @@ struct Y : Module {
 			if(icv >= 0 && icv <= 127) {
 				actionCode = noteProcess[icv];
 			}
+		}
+		//jazz
+		float mBeats = modulo(beats, 4);
+		if(mBeats > 0.25f && mBeats < 3.75f) {//not first or middle
+			float jazz47 = params[JAZZ47].getValue();
+			beats -= (mBeats - 2.f) * jazz47 * 0.1f;//half beat on 2 and 4
+		}
+		if(mBeats > 1.75f && mBeats < 2.25f) {//middle
+			float jazz27 = params[JAZZ27].getValue();
+			beats -= jazz27 * 0.1f;//beat on 2
+		}
+		mBeats = modulo(tBeats, 3);
+		if(mBeats > 0.25f && mBeats < 3.75f) {//not first
+			float jazz35 = params[JAZZ35].getValue();
+			tBeats -= (mBeats - 1.5f) * jazz35 * 0.1f;//half beat on 2 and 4
 		}
 		int newMode = params[MODE].getValue();//old
 #pragma GCC ivdep
