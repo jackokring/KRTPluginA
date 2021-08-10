@@ -44,6 +44,19 @@ struct Y : Module {
 		NUM_LIGHTS
 	};
 
+#define TR 16
+#define QU 32
+#define CPYA 64
+#define PSTA 128
+#define RUNA 256
+#define RSTA 512
+#define PATA 1024
+#define SEQA 2048
+#define MUTA 4096
+#define NOWA 8192
+#define T(x) TR + x
+#define Q(x) QU + x	
+
 	const int noteProcess[128] = {
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
@@ -309,6 +322,13 @@ struct Y : Module {
 		bool trigCpy = sCpy.process(cpy);
 		float pst = params[PST].getValue();
 		bool trigPst = sPst.process(pst);
+		float gate = inputs[IGATE_BUT].getVoltage();
+		float cv = inputs[ICV_BUT].getVoltage();
+		bool trigGate = sGate.process(rescale(gate, 0.1f, 2.f, 0.f, 1.f));
+		int actionCode = 0;
+		if(trigGate) {//set action code
+			
+		}
 		int newMode = params[MODE].getValue();//old
 #pragma GCC ivdep
 		for(int i = 0; i < 4; i++) {
@@ -395,13 +415,7 @@ struct Y : Module {
 		if(beats >= 64) {//sanity range before use
 			beatCounter = modulo(beatCounter, 64);//beats long
 		}
-		float gate = inputs[IGATE_BUT].getVoltage();
-		float cv = inputs[ICV_BUT].getVoltage();
-		bool trigGate = sGate.process(rescale(gate, 0.1f, 2.f, 0.f, 1.f));
-		if(trigGate) {
-			
-		}
-	}
+	}	
 };
 
 //geometry edit
