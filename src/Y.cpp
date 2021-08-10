@@ -344,7 +344,7 @@ struct Y : Module {
 		}
 		//jazz
 		float mBeats = modulo(beats, 4);
-		if(mBeats > 0.25f && mBeats < 3.75f) {//not first or middle
+		if(mBeats > 0.5f && mBeats < 3.5f) {//not first or middle
 			float jazz47 = params[JAZZ47].getValue();
 			beats -= (mBeats - 2.f) * jazz47 * 0.1f;//half beat on 2 and 4
 		}
@@ -353,7 +353,7 @@ struct Y : Module {
 			beats -= jazz27 * 0.1f;//beat on 2
 		}
 		mBeats = modulo(tBeats, 3);
-		if(mBeats > 0.25f && mBeats < 3.75f) {//not first
+		if(mBeats > 0.5f && mBeats < 3.5f) {//not first
 			float jazz35 = params[JAZZ35].getValue();
 			tBeats -= (mBeats - 1.5f) * jazz35 * 0.1f;//half beat on 2 and 4
 		}
