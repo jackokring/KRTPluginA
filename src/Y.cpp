@@ -44,8 +44,8 @@ struct Y : Module {
 		NUM_LIGHTS
 	};
 
-#define TR 16
-#define QU 32
+#define T 16
+#define Q 32
 #define CPYA 64
 #define PSTA 128
 #define RUNA 256
@@ -54,19 +54,19 @@ struct Y : Module {
 #define SEQA 2048
 #define MUTA 4096
 #define NOWA 8192
-#define T(x) TR + x
-#define Q(x) QU + x	
+#define TR(x) T + x
+#define QU(x) Q + x	
 
 	const int noteProcess[128] = {
 	//	C				D				E		F				G				A				B		
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
-		0,	 CPYA, 	 PSTA, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
-		0,	 PATA, 	 SEQA, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
+		0,	 CPYA, 	 	0,	 PSTA,		0,	QU(0),	TR(0),	QU(1),	TR(1),	QU(2),	TR(2),	QU(3),
+		0,	 PATA, 	 	0, 	 SEQA,		0,	QU(4),	TR(3),	QU(5),	TR(4),	QU(6),	TR(5),	QU(7),
 		//C4 starts next row
-		0,	 MUTA, 	 NOWA, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
-		0,	 RSTA, 	 RUNA, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
+		0,	 MUTA, 	 	0, 	 NOWA,		0,	QU(8),	TR(6),	QU(9),	TR(7), QU(10),	TR(8), QU(11),
+		0,	 RSTA, 	 	0, 	 RUNA,		0, QU(12),	TR(9), QU(13), TR(10), QU(14), TR(11), QU(15),
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
