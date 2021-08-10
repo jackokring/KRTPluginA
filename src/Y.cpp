@@ -517,6 +517,10 @@ struct YWidget : ModuleWidget {
 
 		addParam(createParamCentered<LEDBezel>(loc(2, 4.75f), module, Y::PST));
 		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(2, 4.75f), module, Y::LPST));	
+
+		addParam(createParamCentered<RoundBlackKnob>(loc(3.5f, 3.75f), module, Y::JAZZ27));
+		addParam(createParamCentered<RoundBlackKnob>(loc(5.5f, 3.75f), module, Y::JAZZ47));
+		addParam(createParamCentered<RoundBlackKnob>(loc(4.5f, 4.75f), module, Y::JAZZ35));
 	}
 };
 
