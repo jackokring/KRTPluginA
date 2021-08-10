@@ -144,7 +144,7 @@ struct Y : Module {
 		configParam(CCHN, 0.f, 15.f, 0.f);
 	}
 
-	int sampleCounter = 0;
+	float beatCounter = 0;
 	dsp::SchmittTrigger sRun;
 	dsp::SchmittTrigger sRst;
 	dsp::SchmittTrigger sCpy;
@@ -270,13 +270,20 @@ struct Y : Module {
 		return beats - (int)beats < len;
 	}
 
+	float modulo(float x, float m) {
+		float div = x / m;
+		long d = (long) div;
+		float rem = x - d * m;
+		return rem;
+	}
+
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		float len = params[LEN].getValue() / 100.f;
 		maxPoly();//1
 		float bps = params[TEMPO].getValue() / 15.f;//beat per bar
 		float beatSamp = bps / fs;//beats per sample
-		float beats = beatSamp * (float)sampleCounter;
+		float beats = beatCounter;
 		float tBeats = beats * 0.75f;//triples
 		float rst = params[RST].getValue();
 		bool trigRst = sRst.process(rst);
@@ -297,8 +304,8 @@ struct Y : Module {
 			lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
 		}
 		params[MODE].setValue(newMode);//change
-		if(beats >= 64 || trigRst) {//sanity range before use
-			sampleCounter = 0;//beats long
+		if(trigRst) {//sanity range before use
+			beatCounter = 0.f;//beats long
 			beats = 0.f;//faster and sample accurate
 			tBeats = 0.f;
 		}
@@ -368,7 +375,10 @@ struct Y : Module {
 			outputs[ORST].setVoltage(0.f);
 			lights[LRST].setBrightness(0.f);
 		}
-		if(params[IS_RUN].getValue() > 0.5f) sampleCounter++;
+		if(params[IS_RUN].getValue() > 0.5f) beatCounter += beatSamp;
+		if(beats >= 64) {//sanity range before use
+			beatCounter = modulo(beatCounter, 64);//beats long
+		}
 	}
 };
 
