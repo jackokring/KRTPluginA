@@ -50,6 +50,7 @@ struct Y : Module {
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
+		//C4 starts next row
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
@@ -166,6 +167,7 @@ struct Y : Module {
 	dsp::SchmittTrigger mode[4];
 	dsp::SchmittTrigger quads[16];
 	dsp::SchmittTrigger trips[12];
+	dsp::SchmittTrigger sGate;
 
 #define MODE_PAT 0
 #define MODE_SEQ 1
@@ -392,6 +394,12 @@ struct Y : Module {
 		if(params[IS_RUN].getValue() > 0.5f) beatCounter += beatSamp;
 		if(beats >= 64) {//sanity range before use
 			beatCounter = modulo(beatCounter, 64);//beats long
+		}
+		float gate = inputs[IGATE_BUT].getVoltage();
+		float cv = inputs[ICV_BUT].getVoltage();
+		bool trigGate = sGate.process(rescale(gate, 0.1f, 2.f, 0.f, 1.f));
+		if(trigGate) {
+			
 		}
 	}
 };
