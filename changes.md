@@ -1,3 +1,9 @@
+1.12.16
+===
+
+* Added oscillator `O`
+* `F` Bessel coefficients from different source (breaks patch)
+
 1.11.16
 ===
 
