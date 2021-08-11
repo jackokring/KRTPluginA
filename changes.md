@@ -2,6 +2,7 @@
 ===
 
 * `F` k cancels
+* `O` maybe became an FM/PM module
 
 1.12.16
 ===
