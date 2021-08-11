@@ -23,6 +23,7 @@ Index - Demo
 9. [F](#f) - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
 10. [W](#w) - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
 11. [Y](#y) - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
+12. [O](#o) - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
