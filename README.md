@@ -325,7 +325,7 @@ To assist in turning patterned gates into CV chromatic sequences. Simple.
 Y
 ===
 
-*The White Buttons One - Sequencer*
+*The White Buttons One - Gate sequencer*
 
 Parameters
 ---
@@ -362,3 +362,23 @@ The `C2` to `B5` keyboard MIDI range on `CV` triggered by `GATE` operate the but
 * `C`, `D`, `E` operate triple buttons.
 * `F#`, `G#`, `A#` also operate triple buttons for utility.
 * `F`, `G`, `A`, `B` operate quater buttons.
+
+O
+===
+
+*The Beigish One - Triple parabolic skew feedback oscillator*
+
+Parameters
+---
+* Frequency `FRQ` (three)
+* Feedback `FBK` (three)
+
+Ins
+---
+* CV `CV`
+
+Outs
+---
+* Output `OUT`
+
+An algorithm for sound. Simple to use.

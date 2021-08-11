@@ -1,7 +1,7 @@
 {
   "slug": "KRTPluginA",
   "name": "KRTPluginA",
-  "version": "1.11.16",
+  "version": "1.12.16",
   "license": "MIT",
   "brand": "KRT",
   "author": "Jacko",
@@ -126,6 +126,15 @@
       "tags": [
         "Clock generator",
         "Sequencer"
+      ]
+    },
+    {
+      "slug": "O",
+      "name": "O",
+      "description": "Triple parabolic skew feedback oscillator.",
+      "tags": [
+        "Polyphonic",
+        "Oscillator"
       ]
     }
   ]
