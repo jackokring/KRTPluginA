@@ -3,6 +3,7 @@
 
 * Added oscillator `O`
 * `F` Bessel coefficients from different source (breaks patch)
+* `F` frequency fix
 
 1.11.16
 ===

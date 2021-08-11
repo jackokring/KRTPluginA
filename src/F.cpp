@@ -61,12 +61,14 @@ struct F : Module {
 		//s^2
 		float s2 = 1.f / kk[filt][1];//divide through
 		return sqrtf(s2);//root for s multiplier
+		//so natural multiple and freq must be inverse multiplied to be 1
 	}
 
 	float findK(int filt) {
 		//s
 		float s = kk[filt][0] / freqMul(filt);
 		return s;//damping effective given frequecy shift
+		//inverse multiply cancels this for correct damping
 	}
 
 	float freqMul(float spd, float skw, int add) {//add == 0 or 1
@@ -150,11 +152,11 @@ struct F : Module {
 			float ispd = inputs[ISPD].getPolyVoltage(p) * 0.1f + spd;
 			float iskw = inputs[ISKW].getPolyVoltage(p) * 0.1f + skw;
 			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
-			float flo0 = freqMul(ispd, iskw, 0);//first
+			float flo0 = freqMul(ispd, iskw, 0);//first as inverse mul
 			float ilah = inputs[ILAH].getPolyVoltage(p) * 0.1f + lah;
-			flo0 = powf(flo0, -ilah);
+			flo0 = powf(flo0, ilah);
 			float flo1 = freqMul(ispd, iskw, 1);//second
-			flo1 = powf(flo1, -ilah);
+			flo1 = powf(flo1, ilah);
 			float damp0 = findK(ispd, iskw, 0);//first
 			float damp1 = findK(ispd, iskw, 1);//second
 
