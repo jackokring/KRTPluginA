@@ -66,7 +66,7 @@ struct F : Module {
 
 	float findK(int filt) {
 		//s
-		float s = kk[filt][0] * freqMul(filt);
+		float s = kk[filt][0] / freqMul(filt);
 		return s;//damping effective given frequecy shift
 		//inverse multiply cancels this for correct damping
 	}
