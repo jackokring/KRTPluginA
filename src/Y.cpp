@@ -20,9 +20,8 @@ struct Y : Module {
 		CPAT,
 		CCHN,
 		ENUMS(MUTES, 16),
-		JAZZ35,
-		JAZZ47,
-		JAZZ27,
+		JAZZ3,
+		JAZZ4,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -174,9 +173,8 @@ struct Y : Module {
 		}
 		configParam(CPAT, 0.f, 15.f, 0.f);
 		configParam(CCHN, 0.f, 15.f, 0.f);
-		configParam(JAZZ27, -1.f, 1.f, 0.f, "Double Jazz");
-		configParam(JAZZ47, -1.f, 1.f, 0.f, "Quad Jazz");
-		configParam(JAZZ35, -1.f, 1.f, 0.f, "Triple Jazz");
+		configParam(JAZZ4, -1.f, 1.f, 0.f, "Quad Jazz");
+		configParam(JAZZ3, -1.f, 1.f, 0.f, "Triple Jazz");
 	}
 
 	double beatCounter = 0;
@@ -262,7 +260,7 @@ struct Y : Module {
 
 	float out43(float beat, float tBeat, int out, int mode) {
 		int p = getPat(beat);
-		float l = params[LEN].getValue();
+		float l = params[LEN].getValue() * 0.01f;
 		bool q = patterns[p][(int)beat & 15][out];
 		q &= onLen(beat, l);
 		bool t = patterns[p][mod12[(int)tBeat] + 16][out];
@@ -316,7 +314,6 @@ struct Y : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
-		float len = params[LEN].getValue() / 100.f;
 		maxPoly();//1
 		double bps = (double)params[TEMPO].getValue() / 15.f;//beat per bar
 		double beatSamp = bps / fs;//beats per sample
@@ -342,21 +339,13 @@ struct Y : Module {
 				actionCode = noteProcess[icv];
 			}
 		}
-		//jazz
-		float mBeats = modulo(beats, 4);
-		if(mBeats > 0.5f && mBeats < 3.5f) {//not first or middle
-			float jazz47 = params[JAZZ47].getValue();
-			beats -= (mBeats - 2.f) * jazz47 * 0.1f;//half beat on 2 and 4
-		}
-		if(mBeats > 1.75f && mBeats < 2.25f) {//middle
-			float jazz27 = params[JAZZ27].getValue();
-			beats -= jazz27 * 0.1f;//beat on 2
-		}
-		mBeats = modulo(tBeats, 3);
-		if(mBeats > 0.5f && mBeats < 2.5f) {//not first
-			float jazz35 = params[JAZZ35].getValue();
-			tBeats -= (mBeats - 1.5f) * jazz35 * 0.1f;//half beat on 2 and 4
-		}
+		//jazz (parabolic if free)
+		float jazz3 = params[JAZZ3].getValue();
+		float mBeats = modulo(tBeats, 3);
+		tBeats += jazz3 * 0.32f * mBeats * (mBeats - 3.f);//parabolic retiming
+		float jazz4 = params[JAZZ4].getValue();
+		float nBeats = modulo(beats, 2);
+		beats += jazz4 * 0.49f * nBeats * (nBeats - 2.f);//parabolic retiming
 		int newMode = params[MODE].getValue();//old
 #pragma GCC ivdep
 		for(int i = 0; i < 4; i++) {
@@ -440,6 +429,7 @@ struct Y : Module {
 		//light off if different channel in channel paste
 		ok |= (int)params[CCHN].getValue() == (int)params[CHAN].getValue();
 		lights[LPST].setBrightness(ok ? 1.f : 0.f);
+		float len = params[LEN].getValue() * 0.01f;
 		if(onLen(beats, len)) {
 			outputs[ORUN].setVoltage(10.f);
 			lights[LRUN].setBrightness(1.f);
@@ -536,9 +526,9 @@ struct YWidget : ModuleWidget {
 		addParam(createParamCentered<LEDBezel>(loc(2, 4.75f), module, Y::PST));
 		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(2, 4.75f), module, Y::LPST));	
 
-		addParam(createParamCentered<RoundBlackKnob>(loc(3.5f, 3.75f), module, Y::JAZZ27));
-		addParam(createParamCentered<RoundBlackKnob>(loc(5.5f, 3.75f), module, Y::JAZZ47));
-		addParam(createParamCentered<RoundBlackKnob>(loc(4.5f, 4.75f), module, Y::JAZZ35));
+		addParam(createParamCentered<RoundBlackKnob>(loc(3.5f, 3.75f), module, Y::JAZZ3));
+		addParam(createParamCentered<RoundBlackKnob>(loc(5.5f, 3.75f), module, Y::JAZZ4));
+		//addParam(createParamCentered<RoundBlackKnob>(loc(4.5f, 4.75f), module, Y::JAZZ35));
 	}
 };
 
