@@ -74,7 +74,8 @@ struct Mu : Module {
 	float f12, f22, b2[PORT_MAX_CHANNELS];
 
 	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
-		f1   = tanf(M_PI * fc / fs);
+		//f1   = tanf(M_PI * fc / fs);
+		f1	 = tanpif(fc / fs);
 		f2   = 1 / (1 + f1);
 	}
 
@@ -85,7 +86,8 @@ struct Mu : Module {
 	}
 
 	void setFK3(float fc, float fs) {//fb feedback not k*s denominator
-		f12   = tanf(M_PI * fc / fs);
+		//f12   = tanf(M_PI * fc / fs);
+		f12	  = tanpif(fc / fs);
 		f22   = 1 / (1 + f12);
 	}
 

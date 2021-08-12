@@ -78,7 +78,8 @@ struct A : Module {
      */
     //TWO POLE FILTER
 	void setFK2(float fc, float q, float fs) {
-		f   = tanf(M_PI * fc / fs);
+		//f   = tanf(M_PI * fc / fs);
+		f	= tanpif(fc / fs);
 		k   = qk(q);
 		t   = 1 / (1 + k * f);
 		u   = 1 / (1 + t * f * f);
@@ -99,7 +100,8 @@ struct A : Module {
 	float f1, f2, b[PORT_MAX_CHANNELS], b2[PORT_MAX_CHANNELS];
 
 	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
-		f1   = tanf(M_PI * fc / fs);
+		//f1   = tanf(M_PI * fc / fs);
+		f1	 = tanpif(fc / fs);
 		f2   = 1 / (1 + f1);
 	}
 

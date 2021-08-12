@@ -94,7 +94,8 @@ struct F : Module {
      */
     //TWO POLE FILTER
 	void setFK2(float fc, float kd, float fs) {
-		f   = tanf(M_PI * fc / fs);
+		//f   = tanf(M_PI * fc / fs);
+		f	= tanpif(fc / fs);
 		k   = kd;
 		t   = 1 / (1 + k * f);
 		u   = 1 / (1 + t * f * f);

@@ -1,3 +1,8 @@
+1.x.19
+===
+
+* Faster `tanf` called `tanpif`
+
 1.12.18
 ===
 
