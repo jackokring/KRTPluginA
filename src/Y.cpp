@@ -372,7 +372,7 @@ struct Y : Module {
 					}
 				}
 			}
-			if((mux & 1023)  == 0) lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
+			if((mux & 1023) == 0) lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
 		}
 		params[MODE].setValue(newMode);//change
 		if(trigRst || actionCode == RSTA) {//sanity range before use
@@ -387,7 +387,7 @@ struct Y : Module {
 			if(trig || actionCode == QU(i)) {
 				button4(beats, i, newMode);
 			}
-			if((mux & 1023)  == 0) lights[LQUADS + i].setBrightness(light4(beats, i, newMode));
+			if((mux & 1023) == 1) lights[LQUADS + i].setBrightness(light4(beats, i, newMode));
 			outputs[OUTS + i].setVoltage(out43(beats, tBeats, i, newMode));
 		}
 #pragma GCC ivdep
@@ -397,7 +397,7 @@ struct Y : Module {
 			if(trig || actionCode == TR(i)) {
 				button3(beats, i, newMode);
 			}
-			if((mux & 1023)  == 0) lights[LTRIPS + i].setBrightness(light3(beats, tBeats, i, newMode));
+			if((mux & 1023) == 2) lights[LTRIPS + i].setBrightness(light3(beats, tBeats, i, newMode));
 		}		
 		if(trigRun || actionCode == RUNA) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
@@ -428,7 +428,7 @@ struct Y : Module {
 				}
 			}
 		}
-		if((mux & 1023)  == 0) {
+		if((mux & 1023) == 3) {
 			bool ok = newMode != MODE_PAT;
 			//light off if different channel in channel paste
 			ok |= (int)params[CCHN].getValue() == (int)params[CHAN].getValue();
@@ -437,17 +437,17 @@ struct Y : Module {
 		float len = params[LEN].getValue() * 0.01f;
 		if(onLen(beats, len)) {
 			outputs[ORUN].setVoltage(10.f);
-			if((mux & 1023)  == 0) lights[LRUN].setBrightness(1.f);
+			if((mux & 1023) == 4) lights[LRUN].setBrightness(1.f);
 		} else {
 			outputs[ORUN].setVoltage(0.f);
-			if((mux & 1023)  == 0) lights[LRUN].setBrightness(0.f);
+			if((mux & 1023) == 5) lights[LRUN].setBrightness(0.f);
 		}
 		if(beats < len) {
 			outputs[ORST].setVoltage(10.f);
-			if((mux & 1023)  == 0) lights[LRST].setBrightness(1.f);
+			if((mux & 1023) == 6) lights[LRST].setBrightness(1.f);
 		} else {
 			outputs[ORST].setVoltage(0.f);
-			if((mux & 1023)  == 0) lights[LRST].setBrightness(0.f);
+			if((mux & 1023) == 7) lights[LRST].setBrightness(0.f);
 		}
 		if(params[IS_RUN].getValue() > 0.5f) beatCounter += beatSamp;
 		if(beats >= 64) {//sanity range before use
