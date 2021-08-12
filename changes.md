@@ -1,8 +1,8 @@
 1.12.18
 ===
 
-* `F` k cancels
-* `O` maybe became an FM/PM module
+* `F` k cancels (breaks patch but is functioning as designed)
+* `O` works
 
 1.12.16
 ===

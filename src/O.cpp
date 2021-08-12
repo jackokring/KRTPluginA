@@ -34,8 +34,9 @@ struct O : Module {
 	O() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
-		for(int i = 0; i < 3; i++) {
-			if(i > 0) configParam(FRQ + i, -1.f, 1.f, 0.f, "Relative Frequency", " Oct");
+		configParam(FBK, 0.f, 100.f, 50.f, "Feedback", " %");
+		for(int i = 1; i < 3; i++) {
+			configParam(FRQ + i, -2.f, 2.f, 0.f, "Relative Frequency", " Oct");
 			configParam(FBK + i, 0.f, 100.f, 50.f, "Feedback", " %");
 		}
 	}
@@ -74,7 +75,7 @@ struct O : Module {
 			float loop = 0.f;
 			for(int i = 0; i < 3; i++) {
 				float xtra = i > 0 ? frq[i] : 0.f;
-				float freq = log(xtra + cv + frq[1]) * dsp::FREQ_C4;
+				float freq = log(xtra + cv + frq[0]) * dsp::FREQ_C4;
 				float step = freq * 2.f / fs;
 				wave[p][i] += step;
 				wave[p][i] = modulo(wave[p][i], 2.f);
@@ -82,7 +83,7 @@ struct O : Module {
 				float tmp3 = modulo(wf, 2.f);
 				float tmp = modulo(wf, 1.f);
 				float tmp2 = tmp * (tmp - 1.f) * (tmp3 - 1.f);
-				out += 7.f * tmp2;
+				out += 10.f * (1.0f - fbk[i]) * tmp2;
 				loop += fbk[i] * tmp2 * 0.3f;
 			}
 			feed[p] = loop;//feedback

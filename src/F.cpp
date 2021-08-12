@@ -66,7 +66,7 @@ struct F : Module {
 
 	float findK(int filt) {
 		//s
-		float s = kk[filt][0] / freqMul(filt);
+		float s = kk[filt][0];// / freqMul(filt);
 		return s;//damping effective given frequecy shift
 		//inverse multiply cancels this for correct damping
 	}
@@ -149,12 +149,13 @@ struct F : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float ispd = inputs[ISPD].getPolyVoltage(p) * 0.1f + spd;
-			float iskw = inputs[ISKW].getPolyVoltage(p) * 0.1f + skw;
+			float mag = 0.25f;
+			float ispd = inputs[ISPD].getPolyVoltage(p) * mag + spd;
+			float iskw = inputs[ISKW].getPolyVoltage(p) * mag + skw;
 			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
 			float flo0 = freqMul(ispd, iskw, 0);//first as inverse mul
-			float ilah = inputs[ILAH].getPolyVoltage(p) * 0.1f + lah;
-			flo0 = powf(flo0, ilah);
+			float ilah = inputs[ILAH].getPolyVoltage(p) * mag + lah;
+			flo0 = powf(flo0, ilah);//invert again at LPF
 			float flo1 = freqMul(ispd, iskw, 1);//second
 			flo1 = powf(flo1, ilah);
 			float damp0 = findK(ispd, iskw, 0);//first
@@ -164,8 +165,8 @@ struct F : Module {
 			flo1 = clamp(ifrq * flo1, 0.f, fs * 0.5f);
 			//calm max change
 			
-			float idrv = inputs[IDRV].getPolyVoltage(p) * 0.1f + drv;
-			float iinv = inputs[IINV].getPolyVoltage(p) * 0.1f + inv;
+			float idrv = inputs[IDRV].getPolyVoltage(p) * mag + drv;
+			float iinv = inputs[IINV].getPolyVoltage(p) * mag + inv;
 			idrv = log(idrv, 5.f);//normal magnitude
 
 			// IN
