@@ -36,8 +36,8 @@ struct Y : Module {
 		NUM_OUTPUTS
 	};
 	enum LightIds {
-		ENUMS(LQUADS, 16),
-		ENUMS(LTRIPS, 12),
+		ENUMS(LQUADS, 16 * 2),
+		ENUMS(LTRIPS, 12 * 2),
 		LRUN,
 		LRST,
 		ENUMS(LMODE, 4),
@@ -194,20 +194,20 @@ struct Y : Module {
 
 	int mux = 0;
 
-	float light4(float beat, int light, int mode) {
+	void light4(float beat, int light, int mode) {
 		if(mode == MODE_PAT) {
 			int p = getPat(beat);
 			int chan = params[CHAN].getValue();
 			bool on = (patterns[p][light][chan]) == true;
 			bool in = ((int)beat & 15) == light;
-			return (on ? 0.75f : 0.f) + (in ? 0.25f : 0.f);
+			GRLed(LQUADS, light, in, on);//red set, green tick
 		} else {//rest
 			int p = getPat(beat);
-			bool on = (patterns[p][(int)beat & 15][light]) == true;
-			bool in = (p == light) && (mode == MODE_SEQ);
-			in |= (params[MUTES + light].getValue() < 0.5f) && (mode == MODE_MUT);
-			in |= ((int)params[CHAN].getValue() == light) && (mode == MODE_NOW);
-			return (on ? 0.75f : 0.f) + (in ? 0.25f : 0.f);
+			bool in = (patterns[p][(int)beat & 15][light]) == true;
+			bool on = (p == light) && (mode == MODE_SEQ);
+			on |= (params[MUTES + light].getValue() < 0.5f) && (mode == MODE_MUT);
+			on |= ((int)params[CHAN].getValue() == light) && (mode == MODE_NOW);
+			GRLed(LQUADS, light, in, on);//red set, green tick
 		}
 	}
 
@@ -274,19 +274,19 @@ struct Y : Module {
 		return (t ? 10.f : 0.f) * params[MUTES + out].getValue();//gate
 	}
 
-	float light3(float beat, float tBeat, int light, int mode) {
+	void light3(float beat, float tBeat, int light, int mode) {
 		if(mode == MODE_PAT) {
 			int p = getPat(beat);
 			int chan = params[CHAN].getValue();
 			bool on = (patterns[p][light + 16][chan]) == true;
 			bool in = mod12[(int)tBeat] == light;
-			return (on ? 0.75f : 0.f) + (in ? 0.25f : 0.f);
+			GRLed(LTRIPS, light, in, on);//red set, green tick
 		} else {//rest
 			int r = mod3[light];//button in set
 			int q = div3[light];//div 3
 			bool on = ((int)params[PAT + 12 + q].getValue() == r);//0 - 2
 			bool in = q == (int)beat >> 4;
-			return (on ? 0.75f : 0.f) + (in ? 0.25f : 0.f);
+			GRLed(LTRIPS, light, in, on);//red set, green tick
 		}
 	}
 
@@ -312,6 +312,11 @@ struct Y : Module {
 		long d = (long) div;
 		double rem = x - d * m;
 		return rem;
+	}
+
+	void GRLed(int base, int id, bool g, bool r) {
+		lights[base + 2 * id].setBrightness(g ? 1.f : 0.f);
+		lights[base + 2 * id + 1].setBrightness(r ? 1.f : 0.f);
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -387,7 +392,7 @@ struct Y : Module {
 			if(trig || actionCode == QU(i)) {
 				button4(beats, i, newMode);
 			}
-			if((mux & 1023) == 1) lights[LQUADS + i].setBrightness(light4(beats, i, newMode));
+			if((mux & 1023) == 1) light4(beats, i, newMode);
 			outputs[OUTS + i].setVoltage(out43(beats, tBeats, i, newMode));
 		}
 #pragma GCC ivdep
@@ -397,7 +402,7 @@ struct Y : Module {
 			if(trig || actionCode == TR(i)) {
 				button3(beats, i, newMode);
 			}
-			if((mux & 1023) == 2) lights[LTRIPS + i].setBrightness(light3(beats, tBeats, i, newMode));
+			if((mux & 1023) == 2) light3(beats, tBeats, i, newMode);
 		}		
 		if(trigRun || actionCode == RUNA) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
@@ -406,7 +411,7 @@ struct Y : Module {
 			params[CPAT].setValue(getPat(beats));
 			params[CCHN].setValue(params[CHAN].getValue());
 		}
-		lights[LCPY].setBrightness(getPat(beats) == (int)params[CPAT].getValue() ? 1.f : 0.f);
+		if((mux & 1023) == 8) lights[LCPY].setBrightness(getPat(beats) == (int)params[CPAT].getValue() ? 1.f : 0.f);
 		if(trigPst || actionCode == PSTA) {
 			int pat = params[CPAT].getValue();
 			int chan = params[CCHN].getValue();
@@ -488,8 +493,8 @@ struct YWidget : ModuleWidget {
 			addParam(createParamCentered<LEDBezel>(loc(i + 1, 6), module, Y::QUADS + i));
 			addParam(createParamCentered<LEDBezel>(loc(i + 1, 7), module, Y::QUADS + i + 8));
 
-			addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(i + 1, 6), module, Y::LQUADS + i));
-			addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(i + 1, 7), module, Y::LQUADS + i + 8));
+			addChild(createLightCentered<LEDBezelLight<GreenRedLight>>(loc(i + 1, 6), module, Y::LQUADS + i * 2));
+			addChild(createLightCentered<LEDBezelLight<GreenRedLight>>(loc(i + 1, 7), module, Y::LQUADS + i * 2 + 16));
 
 			addOutput(createOutputCentered<PJ301MPort>(loc(i + 1, 1), module, Y::OUTS + i));
 			addOutput(createOutputCentered<PJ301MPort>(loc(i + 1, 1.75f), module, Y::OUTS + i + 8));
@@ -500,7 +505,7 @@ struct YWidget : ModuleWidget {
 				float x = i + 1.5f + (j % 2) * 4;
 				float y = 6 - 0.5f + (j / 2);
 				addParam(createParamCentered<LEDBezel>(loc(x, y), module, Y::TRIPS + i + j * 3));
-				addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(x, y), module, Y::LTRIPS + i + j * 3));
+				addChild(createLightCentered<LEDBezelLight<GreenRedLight>>(loc(x, y), module, Y::LTRIPS + i * 2 + j * 6));
 			}
 		}
 
