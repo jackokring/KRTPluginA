@@ -22,3 +22,23 @@ extern Model *modelF;
 extern Model *modelW;
 extern Model *modelY;
 extern Model *modelO;
+
+#define M_PI_F float(M_PI)
+#define M_PI_POW_2 M_PI * M_PI
+#define M_PI_POW_3 M_PI_POW_2 * M_PI
+#define M_PI_POW_5 M_PI_POW_3 * M_PI_POW_2
+#define M_PI_POW_7 M_PI_POW_5 * M_PI_POW_2
+#define M_PI_POW_9 M_PI_POW_7 * M_PI_POW_2
+#define M_PI_POW_11 M_PI_POW_9 * M_PI_POW_2
+
+static inline float tanpif(float f) {
+    // These coefficients don't need to be tweaked for the audio range.
+    // Include f multiplication by PI for 0->1 frequency normal %fs
+    const float a = 3.333314036e-01 * M_PI_POW_3;
+    const float b = 1.333923995e-01 * M_PI_POW_5;
+    const float c = 5.33740603e-02 * M_PI_POW_7;
+    const float d = 2.900525e-03 * M_PI_POW_9;
+    const float e = 9.5168091e-03 * M_PI_POW_11;
+    float f2 = f * f;
+    return f * (M_PI_F + f2 * (a + f2 * (b + f2 * (c + f2 * (d + f2 * e)))));
+}
