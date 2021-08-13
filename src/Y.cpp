@@ -27,6 +27,7 @@ struct Y : Module {
 	enum InputIds {
 		ICV_BUT,
 		IGATE_BUT,
+		IPOS,
 		NUM_INPUTS
 	};
 	enum OutputIds {
@@ -325,7 +326,8 @@ struct Y : Module {
 		maxPoly();//1
 		double bps = (double)params[TEMPO].getValue() / 15.f;//beat per bar
 		double beatSamp = bps / fs;//beats per sample
-		float beats = beatCounter;
+		float pos = inputs[IPOS].getVoltage() / 10.f * 64.f;
+		float beats = modulo(beatCounter + abs(pos), 64);
 		float tBeats = beats * 0.75f;//triples
 		float rst = params[RST].getValue();
 		bool trigRst = sRst.process(rst);
@@ -538,7 +540,7 @@ struct YWidget : ModuleWidget {
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(3.5f, 3.75f), module, Y::JAZZ3));
 		addParam(createParamCentered<RoundBlackKnob>(loc(5.5f, 3.75f), module, Y::JAZZ4));
-		//addParam(createParamCentered<RoundBlackKnob>(loc(4.5f, 4.75f), module, Y::JAZZ35));
+		addInput(createInputCentered<PJ301MPort>(loc(4.5f, 4.75f), module, Y::IPOS));
 	}
 };
 

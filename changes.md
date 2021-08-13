@@ -3,6 +3,7 @@
 
 * Faster `tanf` called `tanpif`
 * Color lights on `Y`
+* Jazz position input on `Y`
 * Added MIDI `S` and ENV/VCA `E`
 
 1.12.18
