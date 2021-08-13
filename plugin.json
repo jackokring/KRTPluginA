@@ -143,7 +143,8 @@
       "description": "Clock to CV generator. (Needs MIDI clk, cont, stop, start).",
       "tags": [
         "MIDI",
-        "Clock modulator"
+        "Clock modulator",
+        "Low-frequency oscillator"
       ]
     },
     {
