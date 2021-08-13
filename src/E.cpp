@@ -39,13 +39,64 @@ struct E : Module {
 		configParam(ATK, -27.f, 9.f, -9.f, "Attack Time", " dBs");
 		configParam(REL, -27.f, 9.f, -9.f, "Release Time", " dBs");
 		configParam(MOD, -6.f, 6.f, 0.f, "Modulation Level", " Center dB (rel 6)");
+		for(int j = 0; j < PORT_MAX_CHANNELS; j++) {
+			env[j] = 0.f;//silence
+			envA[j] = false;//not triggered
+		}
 	}
 
 	float dBMid(float val) {
 		return powf(2.f, val)-powf(2.f, -val);
 	}
 
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
+	dsp::SchmittTrigger trig[PORT_MAX_CHANNELS];
+	float env[PORT_MAX_CHANNELS];
+	bool envA[PORT_MAX_CHANNELS];
+
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+		int maxPort = maxPoly();
+
+		float atk = params[ATK].getValue()/3.f;
+		float rel = params[REL].getValue()/3.f;
+		float mod = dBMid(params[REL].getValue()/6.f);
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float a = 1.f / log(atk, fs);
+			float r = 1.f / log(rel, fs);
+
+			// OUTS
+			float trigIn = inputs[TRIG].getPolyVoltage(p);
+			float inOsc = inputs[IN].getPolyVoltage(p);
+			bool trigger = trig[p].process(rescale(trigIn, 0.1f, 2.f, 0.f, 1.f));
+
+			float expEnv;
+			if(trigger) {
+				envA[p] = true;//attack
+				env[p] = 1.f;
+			}
+			if(envA[p]) {
+				env[p] -= a * env[p];
+				expEnv = (1.f - env[p]);
+				if(expEnv > 0.95f) {//almost
+					envA[p] = false;//decay
+					env[p] = 1.f;
+				}
+			} else {
+				env[p] -= r * env[p];
+				expEnv = env[p];
+			}
+
+			outputs[OUT].setVoltage(inOsc * expEnv, p);
+			outputs[OMOD].setVoltage(mod * expEnv, p);//add in normalized
+		}
 	}
 };
 
