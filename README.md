@@ -402,7 +402,7 @@ Ins
 * Clock `CLK`
 * Start `STRT`
 * Stop `STOP`
-* Continue `CONT`
+* Continue `CONT` (suitable for `Y` module `JAZZ` input)
 
 Outs
 ---
