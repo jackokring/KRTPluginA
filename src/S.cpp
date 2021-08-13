@@ -22,13 +22,75 @@ struct S : Module {
 		NUM_LIGHTS
 	};
 
+	double beatCounter = 0;
+	int beatIn = 0;
+	int divider = 0;
+	bool running = false;
+
+	dsp::SchmittTrigger tClk;
+	dsp::SchmittTrigger tStrt;
+	dsp::SchmittTrigger tStop;
+	dsp::SchmittTrigger tCont;
+
 	S() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BPM, 0.f, 240.f, 120.f, "Estimated Tempo", " bpm");
 		configParam(DIV, 1.f, 16.f, 1.f, "Division Ratio");
 	}
 
+	//double bit error ?? time??
+	double modulo(double x, float m) {
+		double div = x / m;
+		long d = (long) div;
+		double rem = x - d * m;
+		return rem;
+	}
+
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+
+		double bps = (double)params[BPM].getValue() / 15.f;//beat per bar
+		double beatSamp = bps / fs;//beats per sample
+		float beats = beatCounter;
+		int div = (int)params[DIV].getValue();
+
+		float trigClk = inputs[CLK].getVoltage();
+		bool triggerClk = tClk.process(rescale(trigClk, 0.1f, 2.f, 0.f, 1.f));
+		float trigStrt = inputs[STRT].getVoltage();
+		bool triggerStrt = tStrt.process(rescale(trigStrt, 0.1f, 2.f, 0.f, 1.f));
+		float trigStop = inputs[STOP].getVoltage();
+		bool triggerStop = tStop.process(rescale(trigStop, 0.1f, 2.f, 0.f, 1.f));
+		float trigCont = inputs[CONT].getVoltage();
+		bool triggerCont = tCont.process(rescale(trigCont, 0.1f, 2.f, 0.f, 1.f));
+
+		if(triggerStrt) {
+			beatCounter = 0.f;
+			beatIn = 0;
+			running = true;
+		}
+		if(triggerCont) {
+			running = true;
+		}
+		if(triggerStop) {
+			running = false;
+		}
+		if(triggerClk) {
+			div++;
+			if(divider >= div) {
+				div = 0;
+				beatIn++;
+				beatIn &= 63;
+				beatCounter = 0.f;
+			}
+		}
+
+		if(running) beatCounter += beatSamp;
+		if(beats >= 1) {//sanity range before use
+			beatCounter = modulo(beatCounter, 1);//beats long
+		}
+
+		outputs[OUT].setVoltage((beatIn + beatCounter) * 10.f / 64.f);
+
 	}
 };
 
