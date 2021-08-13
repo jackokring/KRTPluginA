@@ -346,6 +346,7 @@ Ins
 ---
 * CV `CV`
 * Gate `GATE`
+* Position Jazz `JAZZ` (later versions)
 
 Outs
 ---
