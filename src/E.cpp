@@ -95,7 +95,7 @@ struct E : Module {
 			}
 
 			outputs[OUT].setVoltage(inOsc * expEnv, p);
-			outputs[OMOD].setVoltage(mod * expEnv, p);//add in normalized
+			outputs[OMOD].setVoltage(5.f * mod * expEnv, p);//add in normalized
 		}
 	}
 };
