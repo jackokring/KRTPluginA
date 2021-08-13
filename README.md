@@ -24,6 +24,8 @@ Index - Demo
 10. [W](#w) - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
 11. [Y](#y) - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
 12. [O](#o) - [parabolic](https://github.com/jackokring/KRTPluginADemo/blob/master/parabolic.vcv)
+13. [S](#s)
+14. [E](#e)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -383,3 +385,49 @@ Outs
 * Output `OUT`
 
 An algorithm for sound. Simple to use.
+
+S
+===
+
+*A 30% Grey One - MIDI clock signalling to position CV*
+
+Parameters
+---
+* BPM Estimate `BPM`
+* Divide `DIV`
+
+Ins
+---
+* Clock `CLK`
+* Start `STRT`
+* Stop `STOP`
+* Continue `CONT`
+
+Outs
+---
+* Out `OUT`
+
+For interfacing with a MIDI clock provided as an output by the MIDI-CV system module. 64 beats equals 10V and reset back to 0V unipolar signal.
+
+E
+===
+
+*Another 30% Grey One - Envelope and VCA*
+
+Parameters
+---
+* Attack `ATK`
+* Release `REL`
+* Modulation Level `MOD`
+
+Ins
+---
+* In `IN`
+* Trigger `TRIG`
+
+Outs
+---
+* Modulation `MOD`
+* Out `OUT`
+
+A simple AR envelope with a VCA. The `MOD` control is a **centred dB scaling** gainuverter.
