@@ -25,5 +25,8 @@ void init(Plugin* p) {
 	p->addModel(modelW);
 	p->addModel(modelY);
 	p->addModel(modelO);
+
+	p->addModel(modelS);
+	p->addModel(modelE);
 	
 }

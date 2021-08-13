@@ -1,7 +1,9 @@
-1.x.19
+1.14.19
 ===
 
 * Faster `tanf` called `tanpif`
+* Color lights on `Y`
+* Added MIDI `S` and ENV/VCA `E`
 
 1.12.18
 ===
