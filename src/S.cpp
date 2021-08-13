@@ -3,12 +3,19 @@
 
 struct S : Module {
 	enum ParamIds {
+		BPM,
+		DIV,
 		NUM_PARAMS
 	};
 	enum InputIds {
+		CLK,
+		STRT,
+		STOP,
+		CONT,
 		NUM_INPUTS
 	};
 	enum OutputIds {
+		OUT,
 		NUM_OUTPUTS
 	};
 	enum LightIds {
@@ -17,6 +24,8 @@ struct S : Module {
 
 	S() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(BPM, 0.f, 240.f, 120.f, "Estimated Tempo", " bpm");
+		configParam(DIV, 1.f, 16.f, 1.f, "Division Ratio");
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -50,6 +59,16 @@ struct SWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 1), module, S::BPM));
+		addParam(createParamCentered<RoundBlackSnapKnob>(loc(1, 2), module, S::DIV));
+
+		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, S::CLK));
+		addInput(createInputCentered<PJ301MPort>(loc(1, 4), module, S::STRT));
+		addInput(createInputCentered<PJ301MPort>(loc(1, 5), module, S::STOP));
+		addInput(createInputCentered<PJ301MPort>(loc(1, 6), module, S::CONT));
+
+		addOutput(createOutputCentered<PJ301MPort>(loc(1, 7), module, S::OUT));
 	}
 };
 
