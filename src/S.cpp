@@ -74,7 +74,7 @@ struct S : Module {
 		if(triggerStop) {
 			running = false;
 		}
-		if(triggerClk) {
+		if(triggerClk && running) {//running check
 			div++;
 			if(divider >= div) {
 				div = 0;
