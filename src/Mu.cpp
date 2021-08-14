@@ -1,9 +1,5 @@
 #include "plugin.hpp"
 
-//f_x1 = (1.5265105587276737e+48*f[i-9]-1.3668387579017067e+49*f[i-8]+5.431248343252391e+49*f[i-7]-1.2560580881508727e+50*f[i-6]+1.8604974291269024e+50*f[i-5]-1.825112874436707e+50*f[i-4]+1.1774257443584765e+50*f[i-3]-4.70911457297244e+49*f[i-2]+9.245318227649387e+48*f[i-1])/(5.61659602207866e+47*1.0*h**1)
-//f_x2 = (8.145411592862319e+40*f[i-9]-7.24075814611475e+41*f[i-8]+2.8505272093785156e+42*f[i-7]-6.511132716988107e+42*f[i-6]+9.479167232763678e+42*f[i-5]-9.062466169644141e+42*f[i-4]+5.604592622540067e+42*f[i-3]-2.0690575636637124e+42*f[i-2]+3.50991084293707e+41*f[i-1])/(1.3901620164136395e+40*1.0*h**2)
-//f_x3 = (4.768402943555988e+41*f[i-9]-4.198496441152479e+42*f[i-8]+1.6329646901392421e+43*f[i-7]-3.6714916748050246e+43*f[i-6]+5.231749630181975e+43*f[i-5]-4.851706129693572e+43*f[i-4]+2.866756706165198e+43*f[i-3]-9.882480374551996e+42*f[i-2]+1.5214043014568113e+42*f[i-1])/(4.762449890092781e+40*1.0*h**3)
-
 struct Mu : Module {
 	enum ParamIds {
 		DB,
@@ -98,53 +94,33 @@ struct Mu : Module {
 	}
 
 	float future(float* input) {
-		float co1[] = {1, -9, 36, -84, 126, -126, 84, -36, 9};//0th differential in the future
+		//f_ = (-1*f[i-4]+4*f[i-3]-6*f[i-2]+4*f[i-1])/(1*1.0*h**0)
+		float co1[] = {-1.f, 4.f, -6.f, 4.f };//0th differential in the future
 		return sum(co1, input, idx + 1);
 	}
 
 	float dif1(float* input) {
+		//f_x = (-11*f[i-4]+42*f[i-3]-57*f[i-2]+26*f[i-1])/(6*1.0*h**1)
 		float co1[] = {
-			1.5265105587276737e+1f,
-			-1.3668387579017067e+2f,
-			+5.431248343252391e+2f,
-			-1.2560580881508727e+3f,
-			+1.8604974291269024e+3f,
-			-1.825112874436707e+3f,
-			+1.1774257443584765e+3f,
-			-4.70911457297244e+2f,
-			+9.245318227649387e+1f
+			-11.f, 42.f, -57.f, 26.f
 		};
-		return sum(co1, input, idx + 1)/5.61659602207866f;
+		return sum(co1, input, idx + 1)/6.f;
 	}
 
 	float dif2(float* input) {
+		//f_xx = (-2*f[i-4]+7*f[i-3]-8*f[i-2]+3*f[i-1])/(1*1.0*h**2)
 		float co1[] = {
-			8.145411592862319f,
-			-7.24075814611475e+1f,
-			+2.8505272093785156e+2f,
-			-6.511132716988107e+2f,
-			+9.479167232763678e+2f,
-			-9.062466169644141e+2f,
-			+5.604592622540067e+2f,
-			-2.0690575636637124e+2f,
-			+3.50991084293707e+1f
+			-2.f, 7.f, -8.f, 3.f
 		};
-		return sum(co1, input, idx + 1)/1.3901620164136395f;
+		return sum(co1, input, idx + 1)/1.f;
 	}
 
 	float dif3(float* input) {
+		//f_xxx = (-1*f[i-4]+3*f[i-3]-3*f[i-2]+1*f[i-1])/(1*1.0*h**3)
 		float co1[] = {
-			4.768402943555988e+1f,
-			-4.198496441152479e+2f,
-			+1.6329646901392421e+3f,
-			-3.6714916748050246e+3f,
-			+5.231749630181975e+3f,
-			-4.851706129693572e+3f,
-			+2.866756706165198e+3f,
-			-9.882480374551996e+2f,
-			+1.5214043014568113e+2f
+			-1.f, 3.f, -3.f, 1.f
 		};
-		return sum(co1, input, idx + 1)/4.762449890092781f;
+		return sum(co1, input, idx + 1)/1.f;
 	}
 
 	float int1(float in, float a, float b, float c, float l) {
@@ -202,16 +178,14 @@ struct Mu : Module {
 		return out;
 	}
 
-	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-
-	float pre[5*PORT_MAX_CHANNELS][9];// pre buffer
+	float pre[5*PORT_MAX_CHANNELS][4];// pre buffer
 	int idx = 0;// buffer current
 
-	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
+	float sum(float* c, float* input, int begin = 0, int cycle = 4) {
 		float add = 0.f;
 #pragma GCC ivdep		
 		for(int co = 0; co < cycle; co ++) {//right is most recent
-			int idx = mod9[begin + co];
+			int idx = (begin + co) & 3;
 			add += c[co] * input[idx];
 		}
 		return add;
@@ -336,7 +310,7 @@ struct Mu : Module {
 			outputs[I2].setVoltage(cbrtf(i2), p);
 			outputs[I3].setVoltage(cbrtf(i3), p);
 		}
-		idx = mod9[idx + 1];//buffer modulo
+		idx = (idx + 1) & 3;//buffer modulo
 	}
 };
 

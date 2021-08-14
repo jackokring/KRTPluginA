@@ -5,6 +5,7 @@
 * Color lights on `Y`
 * Jazz position input on `Y`
 * Added MIDI `S` and ENV/VCA `E`
+* Altered `μ` differential calculations to 4th order for less susceptability to Gibbs oscillations
 
 1.12.18
 ===
