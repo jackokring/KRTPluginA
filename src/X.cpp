@@ -37,6 +37,10 @@ struct X : Module {
 	//{ 0.46338f, 0.947669f },//L4/2
 	//{ 1.09948f, 0.430787f },//L4/2
 
+	//cheby 3 and 5
+	//4x^3-3x
+	//16x^5-20x^3+5x
+
 	float f, t, u, k, tf, bl[PORT_MAX_CHANNELS], bb[PORT_MAX_CHANNELS];
 
     /* 2P
@@ -89,14 +93,29 @@ struct X : Module {
 		return add;
 	}
 
+	float modulo(float x, float m) {
+		float div = x / m;
+		long d = (long) div;
+		float rem = x - d * m;
+		return rem;
+	}
+
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
 
+		float fold = params[FOLD].getValue() * 0.01f;
+		float kind = params[KIND].getValue();
+		float mash = params[MASH].getValue();
+		float wet = params[WET].getValue() * 0.01f;
+
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
+			float in = inputs[IN].getPolyVoltage(p);
+			float mod = inputs[M_FOLD].getPolyVoltage(p);
 
+			outputs[OUT].setVoltage(0.f, p);
 		}
 		idx = (idx + 1) & 3;//buffer modulo
 	}
