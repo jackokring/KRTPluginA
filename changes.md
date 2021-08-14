@@ -6,6 +6,7 @@
 * Jazz position input on `Y`
 * Added MIDI `S` and ENV/VCA `E`
 * Altered `μ` differential calculations to 4th order for less susceptability to Gibbs oscillations
+* Altered `D` estimation calculation to 4th order
 
 1.12.18
 ===

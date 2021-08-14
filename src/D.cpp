@@ -66,30 +66,21 @@ struct D : Module {
 	}
 
 	float future2(float* input) {
+		//f_ = (-4*f[i-5]+15*f[i-4]-20*f[i-3]+10*f[i-2])/(1*1.0*h**0)
 		float co1[] = {
-			2.0620112372482157e+4f,
-			-1.832898878564529e+5f,
-			+7.217039339343297e+5f,
-			-1.6496089933227736e+6f,
-			+2.4056797847951367e+6f,
-			-2.3094525972362604e+6f,
-			+1.443407876801168e+6f,
-			-5.498696694805404e+5f,
-			+1.0310056373750902e+5f
+			-4.f, 15.f, -20.f, 10.f
 		};//0th differential in the future
-		return sum(co1, input, idx + 1) / 2.2911237200293967e+3;
+		return sum(co1, input, idx + 1) / 1.f;
 	}
 
-	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-
-	float pre[PORT_MAX_CHANNELS][9];// pre buffer
+	float pre[PORT_MAX_CHANNELS][4];// pre buffer
 	int idx = 0;// buffer current
 
-	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
+	float sum(float* c, float* input, int begin = 0, int cycle = 4) {
 		float add = 0.f;
 #pragma GCC ivdep		
 		for(int co = 0; co < cycle; co ++) {//right is most recent
-			int idx = mod9[begin + co];
+			int idx = (begin + co) & 3;
 			add += c[co] * input[idx];
 		}
 		return add;
@@ -125,7 +116,7 @@ struct D : Module {
 			// OUTS
 			outputs[OUT].setVoltage(out, p);
 		}
-		idx = mod9[idx + 1];//buffer modulo
+		idx = (idx + 1) & 3;//buffer modulo
 	}
 };
 
