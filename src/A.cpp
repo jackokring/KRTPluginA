@@ -118,20 +118,18 @@ struct A : Module {
 	}
 
 	float future(float* input) {
-		float co1[] = {1, -9, 36, -84, 126, -126, 84, -36, 9};//0th differential in the future
+		float co1[] = {-1.f, 4.f, -6.f, 4.f };//0th differential in the future
 		return sum(co1, input, idx + 1);
 	}
 
-	const int mod9[18] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-
-	float pre[PORT_MAX_CHANNELS][9];// pre buffer
+	float pre[PORT_MAX_CHANNELS][4];// pre buffer
 	int idx = 0;// buffer current
 
-	float sum(float* c, float* input, int begin = 0, int cycle = 9) {
+	float sum(float* c, float* input, int begin = 0, int cycle = 4) {
 		float add = 0.f;
 #pragma GCC ivdep		
 		for(int co = 0; co < cycle; co ++) {//right is most recent
-			int idx = mod9[begin + co];
+			int idx = (begin + co) & 3;
 			add += c[co] * input[idx];
 		}
 		return add;
@@ -196,7 +194,7 @@ struct A : Module {
 			outputs[AM1].setVoltage(qPlate, p);
 			outputs[XP12].setVoltage(in18 - mainOut, p);//inverse HP?
 		}
-		idx = mod9[idx + 1];//buffer modulo
+		idx = (idx + 1) & 3;//buffer modulo
 	}
 };
 

@@ -3,6 +3,7 @@
 
 * Added `X` oversampled wave folder
 * Deleted `O` **.svg** component layer
+* Alter `A` estimator to 4th order
 
 1.14.19
 ===
