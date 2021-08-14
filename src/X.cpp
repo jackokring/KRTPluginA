@@ -113,9 +113,19 @@ struct X : Module {
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
 			float in = inputs[IN].getPolyVoltage(p);
-			float mod = inputs[M_FOLD].getPolyVoltage(p);
+			float mod = inputs[M_FOLD].getPolyVoltage(p) * 0.1f;
+			float folded = in * 0.1f * (fold + mod);//folded range
+			float folded2 = folded * folded;//square
+			float ch3 = (4.f * folded2 - 3.f) * folded;
+			float ch5 = ((16.f * folded2 - 20.f) * folded2 + 5.f) * folded;
+			float ch = (ch3 * (1.f - kind) + ch5 * (1.f + kind)) * 0.25f;//mixed
 
-			outputs[OUT].setVoltage(0.f, p);
+
+
+			float out = 10.f * ch;//no oversampled test
+
+
+			outputs[OUT].setVoltage(wet * out + (1.f - wet) * in, p);
 		}
 		idx = (idx + 1) & 3;//buffer modulo
 	}
