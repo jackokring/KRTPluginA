@@ -34,9 +34,6 @@ struct X : Module {
 		return poly;
 	}
 
-	//{ 0.46338f, 0.947669f },//L4/2
-	//{ 1.09948f, 0.430787f },//L4/2
-
 	//cheby 3 and 5
 	//4x^3-3x
 	//16x^5-20x^3+5x
@@ -119,10 +116,14 @@ struct X : Module {
 			float ch3 = (4.f * folded2 - 3.f) * folded;
 			float ch5 = ((16.f * folded2 - 20.f) * folded2 + 5.f) * folded;
 			float ch = (ch3 * (1.f - kind) + ch5 * (1.f + kind)) * 0.25f;//mixed
+			setFK2(fs * 0.5f, sqrtf(2), fs * 4.f);
+			float ret = process2(ch * 16.f, p);
+			ret = process2(0.f, p);
+			ret = process2(0.f, p);
+			ret = process2(0.f, p);//four times oversampling
 
 
-
-			float out = 10.f * ch;//no oversampled test
+			float out = 10.f * ret;//oversampled test
 
 
 			outputs[OUT].setVoltage(wet * out + (1.f - wet) * in, p);
