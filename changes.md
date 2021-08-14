@@ -1,3 +1,9 @@
+1.15.19
+===
+
+* Added `X` oversampled wave folder
+* Deleted `O` **.svg** component layer
+
 1.14.19
 ===
 

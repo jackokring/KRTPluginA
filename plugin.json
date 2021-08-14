@@ -1,7 +1,7 @@
 {
   "slug": "KRTPluginA",
   "name": "KRTPluginA",
-  "version": "1.14.19",
+  "version": "1.15.19",
   "license": "MIT",
   "brand": "KRT",
   "author": "Jacko",
@@ -154,6 +154,15 @@
       "tags": [
         "Envelope generator",
         "Voltage-controlled amplifier",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "X",
+      "name": "X",
+      "description": "Oversampled wave-folder.",
+      "tags": [
+        "Waveshaper",
         "Polyphonic"
       ]
     }

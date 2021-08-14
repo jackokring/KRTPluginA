@@ -26,6 +26,7 @@ Index - Demo
 12. [O](#o) - [parabolic](https://github.com/jackokring/KRTPluginADemo/blob/master/parabolic.vcv)
 13. [S](#s) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
 14. [E](#e) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
+15. [X](#x)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -432,3 +433,26 @@ Outs
 * Out `OUT`
 
 A simple AR envelope with a VCA. The `MOD` control is a **centred dB scaling** gainuverter.
+
+X
+===
+
+*Another 30% Grey One - Wave-folder*
+
+Parameters
+---
+* Fold `FOLD`
+* Kind `KIND`
+* Mash Noise `MASH`
+* Wet Mix `WET`
+
+Ins
+---
+* In `IN`
+* Modulate Fold `MFLD`
+
+Outs
+---
+* Out `OUT`
+
+An oversampled wave-folder based on Chebychev polynomials and some extras for a bit of a difference.
