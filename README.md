@@ -26,7 +26,7 @@ Index - Demo
 12. [O](#o) - [parabolic](https://github.com/jackokring/KRTPluginADemo/blob/master/parabolic.vcv)
 13. [S](#s) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
 14. [E](#e) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
-15. [X](#x)
+15. [X](#x) - [wave](https://github.com/jackokring/KRTPluginADemo/blob/master/wave.vcv)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
