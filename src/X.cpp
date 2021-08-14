@@ -86,6 +86,7 @@ struct X : Module {
 		float fold = params[FOLD].getValue() * 0.01f;
 		float kind = params[KIND].getValue();
 		float mash = params[MASH].getValue();
+		mash = powf(2.f, -mash);
 		float wet = params[WET].getValue() * 0.01f;
 
 		// PARAMETERS (AND IMPLICIT INS)
@@ -99,11 +100,14 @@ struct X : Module {
 			float ch5 = ((16.f * folded2 - 20.f) * folded2 + 5.f) * folded;
 			float ch = (ch3 * (1.f - kind) + ch5 * (1.f + kind)) * 0.25f;//mixed
 			setFK2(fs * 0.5f, sqrtf(2), fs * 4.f);
+			float err = modulo(ch, mash);
+			ch -= err;
+			err *= 16.f;
 			//implicit future
 			float ret = -process2(ch * 16.f, p);
-			ret += 4.f * process2(0.f, p);
-			ret -= 6.f * process2(0.f, p);
-			ret += 4.f * process2(0.f, p);//four times oversampling
+			ret += 4.f * process2(err, p);
+			ret -= 6.f * process2(-err, p);
+			ret += 4.f * process2(err, p);//four times oversampling
 			float out = 10.f * ret;//oversampled test
 			outputs[OUT].setVoltage(wet * out + (1.f - wet) * in, p);
 		}
