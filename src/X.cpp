@@ -72,24 +72,6 @@ struct X : Module {
 		configParam(WET, 0.f, 100.f, 50.f, "Wet Mix", " %");
 	}
 
-	float future(float* input) {
-		float co1[] = {-1.f, 4.f, -6.f, 4.f };//0th differential in the future
-		return sum(co1, input, idx + 1);
-	}
-
-	float pre[PORT_MAX_CHANNELS][4];// pre buffer
-	int idx = 0;// buffer current
-
-	float sum(float* c, float* input, int begin = 0, int cycle = 4) {
-		float add = 0.f;
-#pragma GCC ivdep		
-		for(int co = 0; co < cycle; co ++) {//right is most recent
-			int idx = (begin + co) & 3;
-			add += c[co] * input[idx];
-		}
-		return add;
-	}
-
 	float modulo(float x, float m) {
 		float div = x / m;
 		long d = (long) div;
@@ -117,18 +99,14 @@ struct X : Module {
 			float ch5 = ((16.f * folded2 - 20.f) * folded2 + 5.f) * folded;
 			float ch = (ch3 * (1.f - kind) + ch5 * (1.f + kind)) * 0.25f;//mixed
 			setFK2(fs * 0.5f, sqrtf(2), fs * 4.f);
-			float ret = process2(ch * 16.f, p);
-			ret = process2(0.f, p);
-			ret = process2(0.f, p);
-			ret = process2(0.f, p);//four times oversampling
-
-
+			//implicit future
+			float ret = -process2(ch * 16.f, p);
+			ret += 4.f * process2(0.f, p);
+			ret -= 6.f * process2(0.f, p);
+			ret += 4.f * process2(0.f, p);//four times oversampling
 			float out = 10.f * ret;//oversampled test
-
-
 			outputs[OUT].setVoltage(wet * out + (1.f - wet) * in, p);
 		}
-		idx = (idx + 1) & 3;//buffer modulo
 	}
 };
 
