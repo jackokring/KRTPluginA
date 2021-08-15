@@ -27,6 +27,7 @@ Index - Demo
 13. [S](#s) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
 14. [E](#e) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
 15. [X](#x) - [wave](https://github.com/jackokring/KRTPluginADemo/blob/master/wave.vcv)
+16. [M](#m)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -456,3 +457,29 @@ Outs
 * Out `OUT`
 
 An oversampled wave-folder based on Chebychev polynomials and some extras for a bit of a difference.
+
+M
+===
+
+*Another 30% Grey One - Emphisis filter*
+
+Parameters
+---
+* Center `CNTR` (the center of the slope)
+* Low Boost `LOW` (lower the low break and boost bass)
+* High Boost `HIGH` (raise the high break and boost treble)
+* Top Drop `TOP` (a low pass filter to place on energetic limits)
+
+Ins
+---
+* In `IN`
+* Return `RTN`
+* CV Center `CNTR`
+* CV Top `TOP`
+
+Outs
+---
+* Send `SEND`
+* Out `OUT`
+
+An equilazation filter to decrease the effect of non-linear signal processing on high frequencies throwing them into alias distortion. A return filter removes the emphisis.
