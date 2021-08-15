@@ -329,6 +329,7 @@ To assist in turning patterned gates into CV chromatic sequences. Simple.
 
 Y
 ===
+[Y extra details](Y.md)
 
 *The White Buttons One - Gate sequencer*
 
