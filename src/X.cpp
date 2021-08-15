@@ -79,6 +79,15 @@ struct X : Module {
 		return rem;
 	}
 
+	float shape(float in, float fmod, float kind) {
+		float folded = in * 0.1f * fmod;//folded range
+		float folded2 = folded * folded;//square
+		float ch3 = (4.f * folded2 - 3.f) * folded;
+		float ch5 = ((16.f * folded2 - 20.f) * folded2 + 5.f) * folded;
+		float ch = (ch3 * (1.f - kind) + ch5 * (1.f + kind)) * 0.25f;//mixed
+		return ch;
+	}
+
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
@@ -94,21 +103,16 @@ struct X : Module {
 		for(int p = 0; p < maxPort; p++) {
 			float in = inputs[IN].getPolyVoltage(p);
 			float mod = inputs[M_FOLD].getPolyVoltage(p) * 0.1f;
-			float folded = in * 0.1f * (fold + mod);//folded range
-			float folded2 = folded * folded;//square
-			float ch3 = (4.f * folded2 - 3.f) * folded;
-			float ch5 = ((16.f * folded2 - 20.f) * folded2 + 5.f) * folded;
-			float ch = (ch3 * (1.f - kind) + ch5 * (1.f + kind)) * 0.25f;//mixed
+			mod += fold;
 			setFK2(fs * 0.5f, sqrtf(2), fs * 4.f);
-			float err = modulo(ch, mash);
-			ch -= err;
-			err *= 16.f;
+			float err = modulo(in, mash);
+			in -= err;
 			//implicit future
-			float ret = -process2(ch * 16.f, p);
-			ret += 4.f * process2(err, p);
-			ret -= 6.f * process2(-err, p);
-			ret += 4.f * process2(err, p);//four times oversampling
-			float out = 10.f * ret;//oversampled test
+			float ret = -shape(process2(in, p), mod, kind);
+			ret += 4.f * shape(process2(err, p), mod, kind);
+			ret -= 6.f * shape(process2(-err, p), mod, kind);
+			ret += 4.f * shape(process2(err, p), mod, kind);//four times oversampling
+			float out = 80.f * ret;
 			outputs[OUT].setVoltage(wet * out + (1.f - wet) * in, p);
 		}
 	}
