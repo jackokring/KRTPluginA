@@ -65,34 +65,7 @@ struct D : Module {
 		return powf(2.f, val)-powf(2.f, -val);
 	}
 
-	float future2(float* input) {
-		//f_ = (-4*f[i-5]+15*f[i-4]-20*f[i-3]+10*f[i-2])/(1*1.0*h**0)
-		float co1[] = {
-			-4.f, 15.f, -20.f, 10.f
-		};//0th differential in the future
-		return sum(co1, input, idx + 1) / 1.f;
-	}
-
-	float pre[PORT_MAX_CHANNELS][4];// pre buffer
-	int idx = 0;// buffer current
-
-	float sum(float* c, float* input, int begin = 0, int cycle = 4) {
-		float add = 0.f;
-#pragma GCC ivdep		
-		for(int co = 0; co < cycle; co ++) {//right is most recent
-			int idx = (begin + co) & 3;
-			add += c[co] * input[idx];
-		}
-		return add;
-	}
-
 	void process(const ProcessArgs& args) override {
-		// For inputs intended to be used solely for audio, sum the voltages of all channels
-		// (e.g. with Port::getVoltageSum())
-		// For inputs intended to be used for CV or hybrid audio/CV, use the first channel’s
-		// voltage (e.g. with Port::getVoltage())
-		// POLY: Port::getPolyVoltage(c)
-		//float fs = args.sampleRate;
 		int maxPort = maxPoly();
 		float fs = args.sampleRate;
 
@@ -100,6 +73,8 @@ struct D : Module {
 		float db = params[DB].getValue()/6.f;
 		float cvdb = dBMid(params[CVDB].getValue()/6.f);
 		float hz = log(params[FRQ].getValue(), dsp::FREQ_C4);
+		hz = clamp(hz, 0.f, fs * 2.f);
+		setFK1(hz, fs * 4.f);
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
@@ -108,15 +83,14 @@ struct D : Module {
 			cv *= cvdb;
 			cv = log(db + cv, inputs[IN].getPolyVoltage(p));
 
-			pre[p][idx] = cv;
-			float out = future2(pre[p]);
-			hz = clamp(hz, 0.f, fs * 0.5f);
-			setFK1(hz, fs);
-			out = process1(out, p);//add future for low pass
+			//f_ = (-120*f[i-11]+396*f[i-10]-440*f[i-9]+165*f[i-8])/(1*1.0*h**0)
+			float out = -120.f * process1(4.f * cv, p);//add future for low pass
+			out += 396.f * process1(0.f, p);
+			out -= 440.f * process1(0.f, p);
+			out += 165.f * process1(0.f, p);
 			// OUTS
 			outputs[OUT].setVoltage(out, p);
 		}
-		idx = (idx + 1) & 3;//buffer modulo
 	}
 };
 

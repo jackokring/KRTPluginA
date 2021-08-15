@@ -1,3 +1,9 @@
+1.15.20
+===
+
+* Fixed `Y` jazz for negative inputs giving better scratching behaviour
+* Fixed `D` to use oversampling
+
 1.15.19
 ===
 

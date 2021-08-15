@@ -327,7 +327,7 @@ struct Y : Module {
 		double bps = (double)params[TEMPO].getValue() / 15.f;//beat per bar
 		double beatSamp = bps / fs;//beats per sample
 		float pos = inputs[IPOS].getVoltage() / 10.f * 64.f;
-		float beats = modulo(beatCounter + abs(pos), 64);
+		float beats = modulo(beatCounter + abs(pos + 64.f), 64);
 		float tBeats = beats * 0.75f;//triples
 		float rst = params[RST].getValue();
 		bool trigRst = sRst.process(rst);
