@@ -15,7 +15,7 @@ You can select any of the 16 to be any of the stored 12, but `SEQ` mode will onl
 
 Want to copy a sequence. Find it and `RUN` (stop) on it, then press `CPY` and a reference to it will be made note of. Even changing the pattern will change the copy as it is a reference to one of the 16. Then use `SEQ` mode and find the pattern of the 16 (by the hot selects or replacing a hot select by being on it and pressing the wanted pattern number). Button `PST` will paste a copy. There is one exception to this rule, and that is in `PAT` mode (so for whole patterns don't be in `PAT` mode on a `PST`), or only the channel last selected in `NOW` mode is overwritten by the channel selected when `CPY` was pressed. The indicators on `CPY` and `PST` indicate same pattern and same channel.
 
-Notes: When not in `PAT` mode the triples are the hot selects (alter the quarter of 64 when they occur). Changing a hot select HAS to be when you are within the quarter of 64 and in `SEQ` mode, as you otherwise would be changing the pattern for the hot select that is currently in play.
+**Notes:** When not in `PAT` mode the triples are the hot selects (alter the quarter of 64 when they occur). Changing a hot select HAS to be when you are within the quarter of 64 and in `SEQ` mode, as you otherwise would be changing the pattern for the hot select that is currently in play.
 
 ## "MIDI?"
 Yes, connect `MIDI-CV` gate and CV in (green for fill that socket no spark). Now the 4 octaves around `C4` should activate all the buttons as the mouse is so slow. The pairs of black notes do the MAIN buttons and so change mode, start and stop etc., left to right. The black note groups of three do the triple buttons, and the white group of four around them do the quarters. The white group of three do the triples too, as that was just a logical convienience.
@@ -24,3 +24,5 @@ Look mum, no mouse! Try a channel 10 MIDI selection as that's conventional.
 
 ## "What no CV?"
 Try the [W](README.md#w) module and use a few channels for some chromatic CV addition or subtraction. This definately made the operation of `Y` simpler and more elegant in design.
+
+**Notes:** The keyboard interface is **monophonic** so don't expect to hot swap and stutter `RUN` at the same time.
