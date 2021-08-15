@@ -17,7 +17,7 @@ Want to copy a sequence. Find it and `RUN` (stop) on it, then press `CPY` and a 
 
 **Notes:** When not in `PAT` mode the triples are the hot selects (alter the quarter of 64 when they occur). Changing a hot select HAS to be when you are within the quarter of 64 and in `SEQ` mode, as you otherwise would be changing the pattern for the hot select that is currently in play.
 
-The `CPY` buffer does **NOT** save your work as you edit the "copied" pattern. The edits **WILL** be pasted, as in actuality it is the pattern number that is copied, and used as the source for a paste `PST`.
+The `CPY` buffer does **NOT** save your work as you edit the "copied" pattern. The edits **WILL** be pasted, as in actuality it is the pattern number that is copied, and used as the source for a paste `PST`. Right click `Save Preset` for more digital.
 
 In `SEQ` mode the pattern will immediately change on pressing a quarter note (assuming different pattern content here), as that will become the new pattern for the hot swap indicated in the active quarter of the 64.
 
