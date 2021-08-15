@@ -30,3 +30,7 @@ Look mum, no mouse! Try a channel 10 MIDI selection as that's conventional.
 Try the [W](README.md#w) module and use a few channels for some chromatic CV addition or subtraction. This definately made the operation of `Y` simpler and more elegant in design.
 
 **Notes:** The keyboard interface is **monophonic** so don't expect to hot swap and stutter `RUN` at the same time.
+
+## "Will I become Colin?"
+![Colin Bender](Screenshot%20from%202021-08-15%2022-43-19.png)
+
