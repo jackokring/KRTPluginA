@@ -34,3 +34,5 @@ Try the [W](README.md#w) module and use a few channels for some chromatic CV add
 ## "Will I become Colin?"
 ![Colin Bender](https://github.com/jackokring/KRTPluginADemo/tree/master/docs/Pictures/Screenshot%20from%202021-08-15%2022-43-19.png)
 
+![Y in use](https://github.com/jackokring/KRTPluginADemo/tree/master/docs/Pictures/Screenshot%20from%202021-08-15%2023-15-31.png)
+
