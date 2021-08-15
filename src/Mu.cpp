@@ -227,6 +227,12 @@ struct Mu : Module {
 			float cheat = cvlam + lam;
 			//low pass add
 			setFK2(cvhz, fs);
+			/* JUST DOCS.
+			To bring upon the elimination of audiable measure of Gibbs stream Hz measure?
+			Counter? Inductives? Yes, to chop top makes a sense. To "cool" a choice?
+			Ands of three ands of sampling settings in the compute out of space?
+			Hence this is correct for Mu.
+			*/
 			cheat = process2(cheat, p, 0);//LPF
 			cheat = process2(cheat, p, 1);//LPF
 			cvlam = log(cheat, 1.f);
