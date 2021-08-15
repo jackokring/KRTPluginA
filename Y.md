@@ -32,5 +32,5 @@ Try the [W](README.md#w) module and use a few channels for some chromatic CV add
 **Notes:** The keyboard interface is **monophonic** so don't expect to hot swap and stutter `RUN` at the same time.
 
 ## "Will I become Colin?"
-![Colin Bender](https://github.com/jackokring/KRTPluginADemo/tree/master/docs/Screenshot%20from%202021-08-15%2022-43-19.png)
+![Colin Bender](https://github.com/jackokring/KRTPluginADemo/tree/master/docs/Pictures/Screenshot%20from%202021-08-15%2022-43-19.png)
 
