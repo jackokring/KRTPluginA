@@ -3,6 +3,8 @@
 
 * Fixed `Y` jazz for negative inputs giving better scratching behaviour
 * Fixed `D` to use oversampling
+* Fixed `X` oversampling
+* Calmed some of the high sizzle on `μ` (breaks compatibility in a good way) by a 4th order Butterworth
 
 1.15.19
 ===

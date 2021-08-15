@@ -64,33 +64,30 @@ struct Mu : Module {
 		return powf(2.f, val)-powf(2.f, -val);
 	}
 
-    /* 1P H(s) = 1 / (s + fb) */
-    //ONE POLE FILTER
-	float f1, f2, b[PORT_MAX_CHANNELS];
-	float f12, f22, b2[PORT_MAX_CHANNELS];
+	float f, t, u, k, tf, bl[PORT_MAX_CHANNELS][4], bb[PORT_MAX_CHANNELS][4];
 
-	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
-		//f1   = tanf(M_PI * fc / fs);
-		f1	 = tanpif(fc / fs);
-		f2   = 1 / (1 + f1);
+    /* 2P
+           Ghigh * s^2 + Gband * s + Glow
+    H(s) = ------------------------------
+                 s^2 + k * s + 1
+     */
+    //TWO POLE FILTER
+	void setFK2(float fc, float fs) {
+		//f   = tanf(M_PI * fc / fs);
+		f	= tanpif(fc / fs);
+		k   = sqrtf(2.f);//butterworth
+		t   = 1 / (1 + k * f);
+		u   = 1 / (1 + t * f * f);
+		tf  = t * f;
 	}
 
-	float process1(float in, int p) {
-		float out = (f1 * in + b[p]) * f2;
-		b[p] = f1 * (in - out) + out;
-		return out;//lpf default
-	}
-
-	void setFK3(float fc, float fs) {//fb feedback not k*s denominator
-		//f12   = tanf(M_PI * fc / fs);
-		f12	  = tanpif(fc / fs);
-		f22   = 1 / (1 + f12);
-	}
-
-	float process3(float in, int p) {
-		float out = (f12 * in + b2[p]) * f22;
-		b2[p] = f12 * (in - out) + out;
-		return out;//lpf default
+	float process2(float in, int p, int i) {
+		float low = (bl[p][i] + tf * (bb[p][i] + f * in)) * u;
+		float band = (bb[p][i] + f * (in - low)) * t;
+		float high = in - low - k * band;
+		bb[p][i] = band + f * high;
+		bl[p][i] = low  + f * band;
+		return low;//lpf default
 	}
 
 	float future(float* input) {
@@ -100,17 +97,17 @@ struct Mu : Module {
 	}
 
 	float dif1(float* input) {
-		//f_x = (-11*f[i-4]+42*f[i-3]-57*f[i-2]+26*f[i-1])/(6*1.0*h**1)
+		//f_x = (-2*f[i-3]+9*f[i-2]-18*f[i-1]+11*f[i+0])/(6*1.0*h**1)
 		float co1[] = {
-			-11.f, 42.f, -57.f, 26.f
+			-2.f, 9.f, -18.f, 11.f
 		};
 		return sum(co1, input, idx + 1)/6.f;
 	}
 
 	float dif2(float* input) {
-		//f_xx = (-2*f[i-4]+7*f[i-3]-8*f[i-2]+3*f[i-1])/(1*1.0*h**2)
+		//f_xx = (-1*f[i-3]+4*f[i-2]-5*f[i-1]+2*f[i+0])/(1*1.0*h**2)
 		float co1[] = {
-			-2.f, 7.f, -8.f, 3.f
+			-1.f, 4.f, -5.f, 2.f
 		};
 		return sum(co1, input, idx + 1)/1.f;
 	}
@@ -229,8 +226,9 @@ struct Mu : Module {
 			cvhz = log(cvhz + hz, dsp::FREQ_C4);
 			float cheat = cvlam + lam;
 			//low pass add
-			setFK3(cvhz, fs);
-			cheat = process3(cheat, p);//LPF
+			setFK2(cvhz, fs);
+			cheat = process2(cheat, p, 0);//LPF
+			cheat = process2(cheat, p, 1);//LPF
 			cvlam = log(cheat, 1.f);
 			if(outputs[I1].isConnected() || outputs[I2].isConnected()
 				|| outputs[I3].isConnected() || outputs[D2].isConnected()
@@ -247,8 +245,8 @@ struct Mu : Module {
 			cvhz = clamp(cvhz, 0.f, fs * 0.5f);//limit max filter
 
 			in *= cvdb;//gain
-			setFK1(cvhz, fs);
-			in = process1(in, p);//LPF
+			in = process2(in, p, 2);//LPF
+			in = process2(in, p, 3);//LPF
 
 			if(inputs[IN1].isConnected() || inputs[IN2].isConnected()
 				|| inputs[IN3].isConnected()) {
