@@ -21,3 +21,6 @@ Notes: When not in `PAT` mode the triples are the hot selects (alter the quarter
 Yes, connect `MIDI-CV` gate and CV in (green for fill that socket no spark). Now the 4 octaves around `C4` should activate all the buttons as the mouse is so slow. The pairs of black notes do the MAIN buttons and so change mode, start and stop etc., left to right. The black note groups of three do the triple buttons, and the white group of four around them do the quarters. The white group of three do the triples too, as that was just a logical convienience.
 
 Look mum, no mouse! Try a channel 10 MIDI selection as that's conventional.
+
+## "What no CV?"
+Try the [W](README.md#w) module and use a few channels for some chromatic CV addition or subtraction. This definately made the operation of `Y` simpler and more elegant in design.
