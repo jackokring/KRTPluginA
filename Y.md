@@ -18,6 +18,6 @@ Want to copy a sequence. Find it and `RUN` (stop) on it, then press `CPY` and a 
 Notes: When not in `PAT` mode the triples are the hot selects (alter the quarter of 64 when they occur). Changing a hot select HAS to be when you are within the quarter of 64 and in `SEQ` mode, as you otherwise would be changing the pattern for the hot select that is currently in play.
 
 ## "MIDI?"
-Yes, connect `MIDI-CV` gate and CV in (green for fill that socket no spark). Now the 4 octaves around `C4` should activae all the buttons as the mouse is so slow. The pairs of black notes do the MAIN buttons and so change mode, start and stop etc., left to right. The black note groups of three do the triple buttons, and the white group of four around them do the quarters. The white group of three do the triples too, as that was just a logical convienience.
+Yes, connect `MIDI-CV` gate and CV in (green for fill that socket no spark). Now the 4 octaves around `C4` should activate all the buttons as the mouse is so slow. The pairs of black notes do the MAIN buttons and so change mode, start and stop etc., left to right. The black note groups of three do the triple buttons, and the white group of four around them do the quarters. The white group of three do the triples too, as that was just a logical convienience.
 
 Look mum, no mouse! Try a channel 10 MIDI selection as that's conventional.
