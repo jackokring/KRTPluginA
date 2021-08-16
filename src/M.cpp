@@ -73,9 +73,12 @@ struct M : Module {
 
 		float cent = params[CNTR].getValue();//a relative measure
 		float low = log(params[LOW].getValue() + cent, 50.f);//gain 10 = 1 decade
+		//low = clamp(ff, 0.f, fs * 0.5f);
 		float high = log(params[HIGH].getValue() + cent, 500.f);
+		float decade = high / low;
 		float top = log(params[TOP].getValue() + cent, 2122.f);
 		float chop = 21000.f;//top boost chop corner
+		float duck = chop / high;
 		
 		int maxPort = maxPoly();
 #pragma GCC ivdep
@@ -83,11 +86,27 @@ struct M : Module {
 			float in = inputs[IN].getPolyVoltage(p);
 			float rtn = inputs[RTN].getPolyVoltage(p);
 
-			//ff = clamp(ff, 0.f, fs * 0.5f);
+			//forward "play" curve
+			setFK1(top, fs);//top cut
+			float mid = process1(in, p, 0);
+			setFK1(high, fs);//low cut for add
+			mid -= process1(mid, p, 1);//HPF
+			setFK1(low, fs);
+			mid += process1(in, p, 2) * decade;//gained low
+
+			//reverse "record" curve
+			setFK1(top, fs);//top boost => cut for add
+			float mid2 = process1(rtn, p, 3);
+			setFK1(high, fs);//low cut for add
+			mid2 -= process1(mid2, p, 4);//HPF
+			setFK1(low, fs);
+			mid2 += process1(rtn, p, 5) / decade;//dropped low
+			setFK1(chop, fs);//chopper high pass
+			mid2 += (mid2 - process1(rtn, p, 6)) * duck;//high shelf add 
 
 			// OUTS
-			outputs[SEND].setVoltage(0.f, p);
-			outputs[OUT].setVoltage(0.f, p);//inverse HP?
+			outputs[SEND].setVoltage(mid, p);
+			outputs[OUT].setVoltage(mid2, p);//inverse HP?
 		}
 	}
 };
