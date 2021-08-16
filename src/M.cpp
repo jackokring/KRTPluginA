@@ -56,6 +56,7 @@ struct M : Module {
 	}
 
 	void setHBL(float hs, float bs, float ls) {//second gains from unit filter
+		//remove frequency correction for HBL equivelent G 
 		h = hs / (fm * fm);
 		b = bs / fm;
 		l = ls;
@@ -132,12 +133,13 @@ struct M : Module {
 			//forward "play" curve
 			setPDQ(mul(low, hmid), sum(low, hmid), 1.f);//poles
 			setHBL(mul(lmid, high), sum(lmid, high), 1.f);//zeros
-			setFK2(1.f, 1.f, fs);//unit filter moded
+			//omega 1 => f = 1 / 2*pi
+			setFK2(1.f / PI_2, 1.f, fs);//unit filter moded
 			float send = process2(in, p, 0);
 			//reverse "record" curve
 			setPDQ(mul(lmid, high), sum(lmid, high), 1.f);//poles
 			setHBL(mul(low, hmid), sum(low, hmid), 1.f);//zeros
-			setFK2(1.f, 1.f, fs);//unit filter moded
+			setFK2(1.f / PI_2, 1.f, fs);//unit filter moded
 			float out = process2(rtn, p, 1);
 
 			// OUTS
