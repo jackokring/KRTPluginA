@@ -46,7 +46,7 @@ struct M : Module {
                  s^2 + k * s + 1
      */
     //TWO POLE FILTER
-	void setFK2(float fc, float kd, float fs) {
+	void setFK2(float fc, float kd, float fs) {//1,1 for normal
 		//f   = tanf(M_PI * fc / fs);
 		f	= tanpif(fm * fc / fs);
 		k   = kd * km;
@@ -94,17 +94,7 @@ struct M : Module {
         return powf(10.f, val * 0.05f);//dB scaling V??
     }
 
-	float slopeGainL(float hz, float gain) {
-		//as 20dB per decade or 10 times
-		if(gain >= 1.f)	return hz * gain;
-		return hz / gain;
-	}
-
-	float slopeGainH(float hz, float gain) {
-		//as 20dB per decade or 10 times
-		if(gain >= 1.f)	return hz / gain;
-		return hz * gain;
-	}
+	
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -130,21 +120,14 @@ struct M : Module {
 			float hmid = slopeGainH(high, hgain);//decade
 
 			//forward "play" curve
-			
+
 			float mid = process1(in, p, 0);
 			
 			float send = mid;
 
 			//reverse "record" curve
-			setFK1(hmid, fs);//top cut
-			mid = process1(rtn, p, 4);
-			setFK1(lmid, fs);//low cut
-			mid = process1(mid, p, 5);//HPF
-
-			setFK1(low, fs);
-			mid += process1(rtn, p, 6) / lgain;//gained low
-			setFK1(high, fs);
-			mid += (rtn - process1(rtn, p, 7)) / hgain;//gained high
+			
+			mid = process1(rtn, p, 1);
 
 			// OUTS
 			outputs[SEND].setVoltage(send, p);
