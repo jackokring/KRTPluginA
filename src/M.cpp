@@ -144,7 +144,7 @@ struct M : Module {
 
 			// OUTS
 			outputs[SEND].setVoltage(send * lgain, p);
-			outputs[OUT].setVoltage(out * lgain, p);//DC gain
+			outputs[OUT].setVoltage(out / lgain, p);//DC gain
 		}
 	}
 };
