@@ -466,15 +466,15 @@ M
 
 Parameters
 ---
-* Low Boost `LOW` (lower the low break and boost bass)
-* High Boost `HIGH` (raise the high break and boost treble)
-* Center Master 0 dB `CNTR` (the center gain of the slope)
-* Top Drop `TOP` (a low pass filter to place some energetic limits)
+* Low Frequency `LOW`
+* Low Gain `LOdB`
+* High Frequency `HIGH`
+* High Gain `HIdB`
 
 Ins
 ---
-* CV Center `CTR`
-* CV Top `TOP`
+* CV Low `LO`
+* CV High `HI`
 * In `IN`
 * Return `RTN`
 

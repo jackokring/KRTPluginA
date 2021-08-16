@@ -37,21 +37,44 @@ struct M : Module {
 		return poly;
 	}
 
-	/* 1P H(s) = 1 / (s + fb) */
-    //ONE POLE FILTER
-	float f1, f2, b[PORT_MAX_CHANNELS][8];
+	float f, t, u, k, tf, bl[PORT_MAX_CHANNELS][2], bb[PORT_MAX_CHANNELS][2];
 
-	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
-		//f1   = tanf(M_PI * fc / fs);
-		f1	 = tanpif(fc / fs);
-		f2   = 1 / (1 + f1);
+	float h, b, l, fm, km;
+    /* 2P
+           Ghigh * s^2 + Gband * s + Glow
+    H(s) = ------------------------------
+                 s^2 + k * s + 1
+     */
+    //TWO POLE FILTER
+	void setFK2(float fc, float kd, float fs) {
+		//f   = tanf(M_PI * fc / fs);
+		f	= tanpif(fm * fc / fs);
+		k   = kd * km;
+		t   = 1 / (1 + k * f);
+		u   = 1 / (1 + t * f * f);
+		tf  = t * f;
 	}
 
-	float process1(float in, int p, int i) {
-		float out = (f1 * in + b[p][i]) * f2;
-		b[p][i] = f1 * (in - out) + out;
-		return out;//lpf default
+	void setHBL(float hs, float bs, float ls) {
+		h = hs / (fm * fm);
+		b = bs / fm;
+		l = ls;
 	}
+
+	void setPDQ(float p, float d, float q) {
+		fm = sqrtf(q) / sqrt(p);
+		km = 1.f / sqrt(p);
+		//unit form
+	}
+
+	float process2(float in, int p, int i) {
+		float low = (bl[p][i] + tf * (bb[p][i] + f * in)) * u;
+		float band = (bb[p][i] + f * (in - low)) * t;
+		float high = in - low - k * band;
+		bb[p][i] = band + f * high;
+		bl[p][i] = low  + f * band;
+		return high * h + band * b + low * l;
+	}	
 
 	M() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -107,15 +130,9 @@ struct M : Module {
 			float hmid = slopeGainH(high, hgain);//decade
 
 			//forward "play" curve
-			setFK1(hmid, fs);//top cut
+			
 			float mid = process1(in, p, 0);
-			setFK1(lmid, fs);//low cut
-			mid = process1(mid, p, 1);//HPF
-
-			setFK1(low, fs);
-			mid += process1(in, p, 2) * lgain;//gained low
-			setFK1(high, fs);
-			mid += (in - process1(in, p, 3)) * hgain;//gained high
+			
 			float send = mid;
 
 			//reverse "record" curve
