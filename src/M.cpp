@@ -25,6 +25,35 @@ struct M : Module {
 		NUM_LIGHTS
 	};
 
+
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		for(int o = 0; o < NUM_OUTPUTS; o++) {
+			outputs[o].setChannels(poly);
+		}
+		return poly;
+	}
+
+	/* 1P H(s) = 1 / (s + fb) */
+    //ONE POLE FILTER
+	float f1, f2, b[PORT_MAX_CHANNELS][7];
+
+	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
+		//f1   = tanf(M_PI * fc / fs);
+		f1	 = tanpif(fc / fs);
+		f2   = 1 / (1 + f1);
+	}
+
+	float process1(float in, int p, int i) {
+		float out = (f1 * in + b[p][i]) * f2;
+		b[p][i] = f1 * (in - out) + out;
+		return out;//lpf default
+	}
+
 	M() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(LOW, -2.f, 2.f, 0.f, "Low Frequency", " Oct (rel 50 Hz)");
@@ -34,7 +63,32 @@ struct M : Module {
 		//21kHz break on high boost
 	}
 
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+
+		float cent = params[CNTR].getValue();//a relative measure
+		float low = log(params[LOW].getValue() + cent, 50.f);//gain 10 = 1 decade
+		float high = log(params[HIGH].getValue() + cent, 500.f);
+		float top = log(params[TOP].getValue() + cent, 2122.f);
+		float chop = 21000.f;//top boost chop corner
+		
+		int maxPort = maxPoly();
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float in = inputs[IN].getPolyVoltage(p);
+			float rtn = inputs[RTN].getPolyVoltage(p);
+
+			//ff = clamp(ff, 0.f, fs * 0.5f);
+
+			// OUTS
+			outputs[SEND].setVoltage(0.f, p);
+			outputs[OUT].setVoltage(0.f, p);//inverse HP?
+		}
 	}
 };
 
