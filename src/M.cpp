@@ -141,8 +141,8 @@ struct M : Module {
 			float out = process2(rtn, p, 1);
 
 			// OUTS
-			outputs[SEND].setVoltage(send * lgain, p);
-			outputs[OUT].setVoltage(out / lgain, p);//DC gain
+			outputs[SEND].setVoltage(send, p);
+			outputs[OUT].setVoltage(out, p);//DC gain
 		}
 	}
 };
