@@ -135,12 +135,14 @@ struct M : Module {
 			setFK2(1.f, 1.f, fs);//unit filter moded
 			float send = process2(in, p, 0);
 			//reverse "record" curve
-			
-			mid = process1(rtn, p, 1);
+			setPDQ(mul(lmid, high), sum(lmid, high), 1.f);//poles
+			setHBL(mul(low, hmid), sum(low, hmid), 1.f);//zeros
+			setFK2(1.f, 1.f, fs);//unit filter moded
+			float out = process2(rtn, p, 1);
 
 			// OUTS
 			outputs[SEND].setVoltage(send * lgain, p);
-			outputs[OUT].setVoltage(mid / lgain, p);//DC gain
+			outputs[OUT].setVoltage(out / lgain, p);//DC gain
 		}
 	}
 };
