@@ -62,9 +62,9 @@ struct M : Module {
 	}
 
 	void setPDQ(float p, float d, float q) {//1st to unit filter
-		fm = sqrtf(q) / sqrtf(p);
-		km = 1.f / sqrtf(p);
-		//unit form
+		fm = sqrtf(p) / sqrtf(q);//--> `F` 
+		km = 1.f / sqrtf(p * q);//so p cancels and q divides
+		//unit form but correct quadratic
 	}
 
 	float process2(float in, int p, int i) {
@@ -94,7 +94,7 @@ struct M : Module {
         return powf(10.f, val * 0.05f);//dB scaling V??
     }
 
-	const float PI_2 = M_1_PI * 2.f;
+	const float PI_2 = M_PI * 2.f;
 
 	float mul(float f1, float f2) {
 		//time constants
@@ -132,17 +132,17 @@ struct M : Module {
 			//forward "play" curve
 			setPDQ(mul(low, hmid), sum(low, hmid), 1.f);//poles
 			setHBL(mul(lmid, high), sum(lmid, high), 1.f);//zeros
-			setFK2(1.f / PI_2, 1.f, fs);//unit filter moded
+			setFK2(1.f, 1.f, fs);//unit filter moded
 			float send = process2(in, p, 0);
 			//reverse "record" curve
 			setPDQ(mul(lmid, high), sum(lmid, high), 1.f);//poles
 			setHBL(mul(low, hmid), sum(low, hmid), 1.f);//zeros
-			setFK2(1.f / PI_2, 1.f, fs);//unit filter moded
+			setFK2(1.f, 1.f, fs);//unit filter moded
 			float out = process2(rtn, p, 1);
 
 			// OUTS
-			outputs[SEND].setVoltage(send, p);
-			outputs[OUT].setVoltage(out, p);//DC gain
+			outputs[SEND].setVoltage(send * lgain, p);
+			outputs[OUT].setVoltage(out * lgain, p);//DC gain
 		}
 	}
 };

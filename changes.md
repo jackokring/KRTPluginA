@@ -1,7 +1,7 @@
 1.18.20
 ===
 
-
+* Fixed `F` damping as sqrt*sqrt gives correct evaluation
 
 
 1.15.20
