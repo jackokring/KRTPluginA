@@ -72,19 +72,26 @@ struct M : Module {
 		float fs = args.sampleRate;
 
 		float cent = params[CNTR].getValue();//a relative measure
-		float low = log(params[LOW].getValue() + cent, 50.f);//gain 10 = 1 decade
-		//low = clamp(ff, 0.f, fs * 0.5f);
-		float high = log(params[HIGH].getValue() + cent, 500.f);
-		float decade = high / low;
-		float top = log(params[TOP].getValue() + cent, 2122.f);
+		float low = params[LOW].getValue() + cent;
+		float high = params[HIGH].getValue() + cent;
+		float top = params[TOP].getValue() + cent;
 		float chop = 21000.f;//top boost chop corner
-		float duck = chop / high;
 		
 		int maxPort = maxPoly();
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
 			float in = inputs[IN].getPolyVoltage(p);
 			float rtn = inputs[RTN].getPolyVoltage(p);
+
+			low = log(low + inputs[ICTR].getPolyVoltage(p), 50.f);//gain 10 = 1 decade
+			low = clamp(low, 0.f, fs * 0.5f);
+			high = log(high + inputs[ICTR].getPolyVoltage(p), 500.f);
+			high = clamp(high, 0.f, fs * 0.5f);
+			top = log(top + inputs[ITOP].getPolyVoltage(p), 2122.f);
+			top = clamp(top, 0.f, fs * 0.5f);
+
+			float decade = high / low;
+			float duck = chop / high;
 
 			//forward "play" curve
 			setFK1(top, fs);//top cut
