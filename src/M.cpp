@@ -4,8 +4,8 @@
 struct M : Module {
 	enum ParamIds {
 		LOW,
-		CNTR,
 		HIGH,
+		CNTR,
 		TOP,
 		NUM_PARAMS
 	};
@@ -28,8 +28,8 @@ struct M : Module {
 	M() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(LOW, -2.f, 2.f, 0.f, "Low Frequency", " Oct (rel 50 Hz)");
-		configParam(CNTR, -2.f, 2.f, 0.f, "Center Master Frequency", " Oct (rel 1 kHz)");
 		configParam(HIGH, -2.f, 2.f, 0.f, "High Frequency", " Oct (rel 500 Hz");
+		configParam(CNTR, -2.f, 2.f, 0.f, "Center Master Frequency", " Oct (rel 1 kHz)");
 		configParam(TOP, -2.f, 2.f, 0.f, "Top Frequency", " Oct (rel 2.122 kHz");
 		//21kHz break on high boost
 	}
@@ -67,8 +67,8 @@ struct MWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 1), module, M::LOW));
-		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, M::CNTR));
-		addParam(createParamCentered<RoundBlackKnob>(loc(1, 3), module, M::HIGH));
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, M::HIGH));
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 3), module, M::CNTR));
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 4), module, M::TOP));
 	
 		addInput(createInputCentered<PJ301MPort>(loc(0.75f, 5), module, M::ICTR));
