@@ -55,15 +55,15 @@ struct M : Module {
 		tf  = t * f;
 	}
 
-	void setHBL(float hs, float bs, float ls) {
+	void setHBL(float hs, float bs, float ls) {//second gains from unit filter
 		h = hs / (fm * fm);
 		b = bs / fm;
 		l = ls;
 	}
 
-	void setPDQ(float p, float d, float q) {
-		fm = sqrtf(q) / sqrt(p);
-		km = 1.f / sqrt(p);
+	void setPDQ(float p, float d, float q) {//1st to unit filter
+		fm = sqrtf(q) / sqrtf(p);
+		km = 1.f / sqrtf(p);
 		//unit form
 	}
 
@@ -94,7 +94,17 @@ struct M : Module {
         return powf(10.f, val * 0.05f);//dB scaling V??
     }
 
-	
+	const float PI_2 = M_1_PI * 2.f;
+
+	float mul(float f1, float f2) {
+		//time constants
+		return 1.f / (PI_2 * PI_2 * f1 * f2);
+	}
+
+	float sum(float f1, float f2) {
+		//time constants
+		return 1.f / (PI_2 * f1) + 1.f / (PI_2 * f2);
+	}
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -116,8 +126,8 @@ struct M : Module {
 			high = clamp(high, 0.f, fs * 0.5f);
 			
 			//extra constructed poles/zeros for actual
-			float lmid = slopeGainL(low, lgain);//decade
-			float hmid = slopeGainH(high, hgain);//decade
+			float lmid = low * 10.f;//decade
+			float hmid = high * 0.1f;//decade
 
 			//forward "play" curve
 
