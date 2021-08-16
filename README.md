@@ -466,21 +466,21 @@ M
 
 Parameters
 ---
-* Center `CNTR` (the center of the slope)
 * Low Boost `LOW` (lower the low break and boost bass)
+* Center `CNTR` (the center of the slope)
 * High Boost `HIGH` (raise the high break and boost treble)
-* Top Drop `TOP` (a low pass filter to place on energetic limits)
+* Top Drop `TOP` (a low pass filter to place some energetic limits)
 
 Ins
 ---
+* CV Center `CTR`
+* CV Top `TOP`
 * In `IN`
 * Return `RTN`
-* CV Center `CNTR`
-* CV Top `TOP`
 
 Outs
 ---
-* Send `SEND`
+* Send `SND`
 * Out `OUT`
 
 An equilazation filter to decrease the effect of non-linear signal processing on high frequencies throwing them into alias distortion. A return filter removes the emphisis.
