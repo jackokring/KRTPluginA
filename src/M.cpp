@@ -132,12 +132,12 @@ struct M : Module {
 			//forward "play" curve
 			setPDQ(mul(low, hmid), sum(low, hmid), 1.f);//poles
 			setHBL(mul(lmid, high), sum(lmid, high), 1.f);//zeros
-			setFK2(1.f, 1.f, fs);//unit filter moded
+			setFK2(1.f / PI_2, 1.f, fs);//unit filter moded
 			float send = process2(in, p, 0);
 			//reverse "record" curve
 			setPDQ(mul(lmid, high), sum(lmid, high), 1.f);//poles
 			setHBL(mul(low, hmid), sum(low, hmid), 1.f);//zeros
-			setFK2(1.f, 1.f, fs);//unit filter moded
+			setFK2(1.f / PI_2, 1.f, fs);//unit filter moded
 			float out = process2(rtn, p, 1);
 
 			// OUTS
