@@ -79,9 +79,9 @@ struct M : Module {
 	M() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(LOW, -3.f, 4.f, 0.f, "Low Frequency", " Oct (rel 50 Hz)");//800
-		configParam(LGAIN, -20.f, 20.f, 20.f, "Low Gain", " dB");
+		configParam(LGAIN, 0.f, 20.f, 20.f, "Low Gain", " dB");
 		configParam(HIGH, -4.f, 0.f, 0.f, "High Frequency", " Oct (rel 21.22 kHz");
-		configParam(HGAIN, -20.f, 20.f, -20.f, "High Gain", " dB");
+		configParam(HGAIN, -20.f, 0.f, -20.f, "High Gain", " dB");
 		//21kHz break on high boost
 	}
 
@@ -126,22 +126,21 @@ struct M : Module {
 			high = clamp(high, 0.f, fs * 0.5f);
 			
 			//extra constructed poles/zeros for actual
-			float lmid = low * 10.f;//decade
-			float hmid = high * 0.1f;//decade
+			float lmid = low * lgain;//decade
+			float hmid = high * hgain;//decade
 
 			//forward "play" curve
-
-			float mid = process1(in, p, 0);
-			
-			float send = mid;
-
+			setPDQ(mul(low, hmid), sum(low, hmid), 1.f);//poles
+			setHBL(mul(lmid, high), sum(lmid, high), 1.f);//zeros
+			setFK2(1.f, 1.f, fs);//unit filter moded
+			float send = process2(in, p, 0);
 			//reverse "record" curve
 			
 			mid = process1(rtn, p, 1);
 
 			// OUTS
-			outputs[SEND].setVoltage(send, p);
-			outputs[OUT].setVoltage(mid, p);//inverse HP?
+			outputs[SEND].setVoltage(send * lgain, p);
+			outputs[OUT].setVoltage(mid / lgain, p);//DC gain
 		}
 	}
 };
