@@ -37,45 +37,21 @@ struct M : Module {
 		return poly;
 	}
 
-	float f, t, u, k, tf, bl[PORT_MAX_CHANNELS][2], bb[PORT_MAX_CHANNELS][2];
+    /* 1P H(s) = 1 / (s + fb) */
+    //ONE POLE FILTER
+	float f1, f2, b[PORT_MAX_CHANNELS][4];
 
-	float h, b, l, fm, km;
-    /* 2P
-           Ghigh * s^2 + Gband * s + Glow
-    H(s) = ------------------------------
-                 s^2 + k * s + 1
-     */
-    //TWO POLE FILTER
-	void setFK2(float fc, float kd, float fs) {//1,1 for normal
-		//f   = tanf(M_PI * fc / fs);
-		f	= tanpif(fm * fc / fs);
-		k   = kd * km;
-		t   = 1 / (1 + k * f);
-		u   = 1 / (1 + t * f * f);
-		tf  = t * f;
+	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
+		//f1   = tanf(M_PI * fc / fs);
+		f1	 = tanpif(fc / fs);
+		f2   = 1 / (1 + f1);
 	}
 
-	void setHBL(float hs, float bs, float ls) {//second gains from unit filter
-		//remove frequency correction for HBL equivelent G 
-		h = hs / (fm * fm);
-		b = bs / fm;
-		l = ls;
+	float process1(float in, int p, int i) {
+		float out = (f1 * in + b[p][i]) * f2;
+		b[p][i] = f1 * (in - out) + out;
+		return out;//lpf default
 	}
-
-	void setPDQ(float p, float d, float q) {//1st to unit filter
-		fm = sqrtf(p) / sqrtf(q);//--> `F` 
-		km = 1.f / sqrtf(p * q);//so p cancels and q divides
-		//unit form but correct quadratic
-	}
-
-	float process2(float in, int p, int i) {
-		float low = (bl[p][i] + tf * (bb[p][i] + f * in)) * u;
-		float band = (bb[p][i] + f * (in - low)) * t;
-		float high = in - low - k * band;
-		bb[p][i] = band + f * high;
-		bl[p][i] = low  + f * band;
-		return high * h + band * b + low * l;
-	}	
 
 	M() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -131,20 +107,22 @@ struct M : Module {
 			float hmid = high * hgain;//decade
 
 			//forward "play" curve
-			setPDQ(mul(low, hmid), sum(low, hmid), 1.f);//poles
-			setHBL(mul(lmid, high), sum(lmid, high), 1.f);//zeros
-			//omega 1 => f = 1 / 2*pi
-			setFK2(1.f / PI_2, 1.f, fs);//unit filter moded
-			float send = process2(in, p, 0);
+			setFK1(hmid, fs);
+			float send = process1(in, p, 0);
+			setFK1(low, fs);
+			send += (lgain - 1.f) * process1(in, p, 1);
 			//reverse "record" curve
-			setPDQ(mul(lmid, high), sum(lmid, high), 1.f);//poles
-			setHBL(mul(low, hmid), sum(low, hmid), 1.f);//zeros
-			setFK2(1.f / PI_2, 1.f, fs);//unit filter moded
-			float out = process2(rtn, p, 1);
+			float out = rtn / lgain;
+			setFK1(lmid, fs);
+			float hp = rtn - process1(rtn, p, 2);
+			out += (1.f - 1.f / lgain) * hp;
+			setFK1(high, fs);
+			hp = rtn - process1(rtn, p, 3);
+			out += (1.f / hgain - 1.f) * hp;
 
 			// OUTS
-			outputs[SEND].setVoltage(send * lgain, p);
-			outputs[OUT].setVoltage(out / lgain, p);//DC gain
+			outputs[SEND].setVoltage(send, p);
+			outputs[OUT].setVoltage(out, p);//DC gain
 		}
 	}
 };

@@ -1,7 +1,7 @@
 1.18.20
 ===
 
-* Fixed `F` damping as sqrt*sqrt gives correct evaluation
+* Fixed `F` damping as sqrt*sqrt gives correct evaluation of damping and also introduces a sample and hold behaviour on high modulation levels in the "full on" corner (slightly breaks patch)
 
 
 1.15.20
