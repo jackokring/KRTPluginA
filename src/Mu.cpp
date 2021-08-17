@@ -157,6 +157,10 @@ struct Mu : Module {
 		return b*k*x*kin-c*x*l*kin*k2;
 	}
 
+	/* JUST DOCS
+		And on the second better than first of the equality
+		of the current avaerage? Guys "n girls?
+	*/
 	float int3(float in, float a, float b, float c, float l, float ll) {
 		//quite complicated as the 1/X has to be integrated to a log
 		//so simplification on the multiply defers complexity
