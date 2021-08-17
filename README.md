@@ -494,3 +494,4 @@ Q
 ===
 
 *Another Whiyte One - Quantum Gravimitator*
+[The Big Manual?](Q.md)
