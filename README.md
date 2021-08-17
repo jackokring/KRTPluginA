@@ -475,13 +475,13 @@ Ins
 ---
 * CV Low `LO`
 * CV High `HI`
-* In `IN`
-* Return `RTN`
+* In `IN` (send filter input)
+* Return `RTN` (return filter input)
 
 Outs
 ---
-* Send `SND`
-* Out `OUT`
+* Send `SND` (send filter output)
+* Out `OUT` (return filter output)
 
 An equilazation filter to decrease the effect of non-linear signal processing on high frequencies throwing them into alias distortion. A return filter removes the emphisis. So the base is amplified and treble reduced on the forward send filter, and the opposite for the return filter. It may make interfacing a "phono" deck easier, but does not amplify the tiny signals from a deck.
 
