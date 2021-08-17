@@ -486,3 +486,5 @@ Outs
 An equilazation filter to decrease the effect of non-linear signal processing on high frequencies throwing them into alias distortion. A return filter removes the emphisis. So the base is amplified and treble reduced on the forward send filter, and the opposite for the return filter. It may make interfacing a "phono" deck easier, but does not amplify the tiny signals from a deck.
 
 It reduces the non-linear shaping of high frequencies in the send return path from injecting harmonics into the alias band above the sampling Nyquist frequency. So good for base harmonic generation. The headroom of VCV rack should support the +/- 50V peak to peak. But you might need a bit of gain reduction before this module.
+
+**WARNING** The default gain settings are good for RIAA equalization, but could be reduced closer to 0 dB for general use. As the return filter is the opposite, that `HIdB` value can be misleading on what the return filter is doing. Under some circumstances it could **destroy tweeter speakers** just as the send filter could wobble the neighbourhood walls. 
