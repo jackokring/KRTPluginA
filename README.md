@@ -28,6 +28,7 @@ Index - Demo
 14. [E](#e) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
 15. [X](#x) - [wave](https://github.com/jackokring/KRTPluginADemo/blob/master/wave.vcv)
 16. [M](#m) - [M](https://github.com/jackokring/KRTPluginADemo/blob/master/M.vcv)
+17. [Q](#q) - 
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -487,4 +488,7 @@ An equilazation filter to decrease the effect of non-linear signal processing on
 
 It reduces the non-linear shaping of high frequencies in the send return path from injecting harmonics into the alias band above the sampling Nyquist frequency. So good for base harmonic generation. The headroom of VCV rack should support the +/- 50V peak to peak. But you might need a bit of gain reduction before this module.
 
-**WARNING** The default gain settings are good for RIAA equalization, but could be reduced closer to 0 dB for general use. As the return filter is the opposite, that `HIdB` value can be misleading on what the return filter is doing. Under some circumstances it could **destroy tweeter speakers** just as the send filter could wobble the neighbourhood walls. 
+**WARNING** The default gain settings are good for RIAA equalization, but could be reduced closer to 0 dB for general use. As the return filter is the opposite, that `HIdB` value can be misleading on what the return filter is doing. Under some circumstances it could **destroy tweeter speakers** just as the send filter could wobble the neighbourhood walls.
+
+Q
+===

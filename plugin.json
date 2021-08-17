@@ -176,6 +176,12 @@
         "Effect",
         "Utility"
       ]
+    },
+    {
+      "slug": "Q",
+      "name": "Q",
+      "description": "",
+      "tags": []
     }
   ]
 }
