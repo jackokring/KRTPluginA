@@ -2,6 +2,7 @@
 ===
 
 * Fixed `F` damping as sqrt*sqrt gives correct evaluation of damping and also introduces a sample and hold behaviour on high modulation levels in the "full on" corner (slightly breaks patch)
+* Added `M` module for base pre-emphisis or RIAA deck preamp with inverse "cutting metal" filter
 
 
 1.15.20
