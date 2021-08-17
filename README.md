@@ -483,4 +483,6 @@ Outs
 * Send `SND`
 * Out `OUT`
 
-An equilazation filter to decrease the effect of non-linear signal processing on high frequencies throwing them into alias distortion. A return filter removes the emphisis.
+An equilazation filter to decrease the effect of non-linear signal processing on high frequencies throwing them into alias distortion. A return filter removes the emphisis. So the base is amplified and treble reduced on the forward send filter, and the opposite for the return filter. It may make interfacing a "phono" deck easier, but does not amplify the tiny signals from a deck.
+
+It reduces the non-linear shaping of high frequencies in the send return path from injecting harmonics into the alias band above the sampling Nyquist frequency. So good for base harmonic generation. The headroom of VCV rack should support the +/- 50V peak to peak. But you might need a bit of gain reduction before this module.
