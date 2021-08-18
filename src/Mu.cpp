@@ -127,7 +127,7 @@ struct Mu : Module {
 		b *= x*l/6.f;
 		c *= -x*x/24.f;
 		in *= l;
-		return (accel(in, a, b)+accel(a+in, b, c))*0.5f;
+		return avg(accel(in, a, b), accel(a+in, b, c));
 	}
 
 	float accel(float a, float b, float c) {
@@ -147,7 +147,7 @@ struct Mu : Module {
 		b *= x*x;
 		c *= -x*x*l;
 		in *= x;
-		return (accel(in, a, b)+accel(a+in, b, c))*0.5f;
+		return avg(accel(in, a, b), accel(a+in, b, c));
 	}
 
 	float terms2(float k, float k2, float b, float c, float l, float kin) {//float predicate
@@ -190,6 +190,13 @@ struct Mu : Module {
 			add += c[co] * input[idx];
 		}
 		return add;
+	}
+
+	float avg(float a, float b) {
+		float x = (2 * a + b) / 3.f;
+		float y = (a + b) * 0.5f;
+		float z = (a + 2 * b) / 3.f;
+		return accel(x, y, z);//a trick of the light?
 	}
 
 	void process(const ProcessArgs& args) override {

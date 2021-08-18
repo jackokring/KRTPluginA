@@ -4,7 +4,7 @@
 * Fixed `F` damping as sqrt*sqrt gives correct evaluation of damping and also introduces a sample and hold behaviour on high modulation levels in the "full on" corner (slightly breaks patch)
 * Added `M` module for base pre-emphisis or RIAA deck preamp with inverse "cutting metal" filter
 * Added `Q` module for some effect of a "quantum gravity following" of a source signal
-
+* Added `μ` weighted average drift acceleration algorithm
 
 1.15.20
 ===
