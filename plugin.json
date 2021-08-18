@@ -180,8 +180,11 @@
     {
       "slug": "Q",
       "name": "Q",
-      "description": "",
-      "tags": []
+      "description": "Quantum gravimitator. Imitates a coupled gravity quantum idea.",
+      "tags": [
+        "Polyphonic",
+        "Effect"
+      ]
     }
   ]
 }
