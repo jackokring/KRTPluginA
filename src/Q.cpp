@@ -3,6 +3,12 @@
 
 struct Q : Module {
 	enum ParamIds {
+		OMEGA,//master uncertainty mass frequency
+		SINGULAR_HYSTERISIS,//avoid div zero range
+		PLANK,//quantum constant
+		NEWTON,//gravity constant
+		MASS_RATIO,//mass ratio of driver to driven
+		ANGLE,//radial to tangential
 		NUM_PARAMS
 	};
 	enum InputIds {
