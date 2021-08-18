@@ -107,8 +107,9 @@ struct M : Module {
 			float hmid = high * hgain;//decade
 
 			//forward "play" curve
+			float send = in * hgain;//minor end bit but tracking??
 			setFK1(hmid, fs);
-			float send = process1(in, p, 0);
+			send += (1.f - hgain) * process1(in, p, 0);
 			setFK1(low, fs);
 			send += (lgain - 1.f) * process1(in, p, 1);
 			//reverse "record" curve
