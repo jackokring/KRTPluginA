@@ -53,14 +53,6 @@ struct M : Module {
 		return out;//lpf default
 	}
 
-	float process4(float in, int p, int i) {
-		float out = -process1(in * 4.f, p, i);
-		out += 4.f * process1(0.f, p, i);
-		out -= 6.f * process1(0.f, p, i);
-		out += 4.f * process1(0.f, p, i);
-		return out;
-	}
-
 	M() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(LOW, -3.f, 4.f, 0.f, "Low Frequency", " Oct (rel 50 Hz)");//800
@@ -92,7 +84,7 @@ struct M : Module {
 	}
 
 	void process(const ProcessArgs& args) override {
-		float fs = args.sampleRate * 4.f;//oversample
+		float fs = args.sampleRate;
 
 		float low = params[LOW].getValue();
 		float lgain = dB(params[LGAIN].getValue());
@@ -117,16 +109,18 @@ struct M : Module {
 			//forward "play" curve
 			float send = in * hgain;//minor end bit but tracking??
 			setFK1(hmid, fs);
-			send += (1.f - hgain) * process4(in, p, 0);
+			send += (1.f - hgain) * process1(in, p, 0);
 			setFK1(low, fs);
-			send += (lgain - 1.f) * process4(in, p, 1);
+			send += (lgain - 1.f) * process1(in, p, 1);
 			//reverse "record" curve
 			float out = rtn / lgain;
 			setFK1(lmid, fs);
-			float hp = rtn - process4(rtn, p, 2);
+			float hp = rtn - process1(rtn, p, 2);
 			out += (1.f - 1.f / lgain) * hp;
-			setFK1(high, fs);
-			hp = rtn - process4(rtn, p, 3);
+			setFK1(high, fs);//oversampling makes worse
+			//but it's the tracking of high and high pass
+			//so close to Nyquist
+			hp = rtn - process1(rtn, p, 3);
 			out += (1.f / hgain - 1.f) * hp;
 
 			// OUTS
