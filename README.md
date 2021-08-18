@@ -495,3 +495,28 @@ Q
 
 *A Green One - Quantum Gravimitator*
 [The Big Manual?](Q.md)
+
+Parameters
+---
+* Omega Frequency `OM`
+* Sigularity Management `SING`
+* Plank `PLK`
+* Newton `NTN`
+* Mass Ratio `MASS`
+* Radial Tangential Angle `ANG`
+
+Ins
+---
+* Omega Frequency Modulation `OM`
+* Sigularity Management Modulation `SING`
+* Plank Modulation `PLK`
+* Newton Modulation `NTN`
+* Mass Ratio Modulation `MASS`
+* Radial Tangential Angle Modulation `ANG`
+* Input `IN`
+
+Outs
+---
+* Output `OUT`
+
+A physical model simulation. Treats the input as a driven mass and calculates the position of the connected mass using a quantum and gravity connection.
