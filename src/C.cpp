@@ -102,8 +102,12 @@ struct C : Module {
 			outputs[OUT1].setVoltage(out1, p);
 			outputs[OUT2].setVoltage(out2, p);
 			outputs[OUT3].setVoltage(out3, p);
+			float mix = 0.f;
+			if(!outputs[OUT1].isConnected()) mix += out1;
+			if(!outputs[OUT2].isConnected()) mix += out2;
+			if(!outputs[OUT3].isConnected()) mix += out3;
 			//SD normed mix
-			float mix = (out1 + out2 + out3) / sqrtf(3.f);
+			mix /= sqrtf(3.f);
 			mix += link;
 			outputs[MIX].setVoltage(mix, p);
 		}
