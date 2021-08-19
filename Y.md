@@ -36,3 +36,20 @@ Try the [W](README.md#w) module and use a few channels for some chromatic CV add
 
 ![Y in use](https://github.com/jackokring/KRTPluginADemo/tree/master/docs/Pictures/Screenshot%20from%202021-08-15%2023-15-31.png)
 
+# Scenario 2
+## "Looks a bit like a drum machine"
+Sure does but just produces gate outputs on the top 2 rows of jacks. 16 channels of gate outputs. Now the buttons have multicolored lights, you can go into `NOW` mode and tap the gates manually. See the red light? That's your currently selected channel for edits in `SEQ` mode. Push the `RUN` button/light for some motion. `TEMPO` away.
+
+## "The pattern is too complex"
+Try a bit of `MUTE` mode where red is for muted and gating comes as green. The mutes are global though and are not saved with a pattern change, but remain in place.
+
+## "This machine looks like it is doing some kind of 64 pattern"
+No, but yes. Try `SEQ` mode and the red light on the quarter note buttons indicates the active pattern in each of the four groups of 16. Push the button to the left of the lit red button on the bottom row. Did quarter notes 32 to 47 disappear? Have you just accidentally just put pattern 2 somewhere in the 64 sequence?
+
+Just press the button next to the left most red button in the second to last row (in the group of 3). Looks like you hot switched back to pattern 1. Can you guess how to hot switch back? Can you guess how to set any of the 16 patterns in any of the 12 hot swaps?
+
+## "So I can switch edit channels and patterns"
+The module saves state and keep going. `CPY` and `PST` can copy and paste patterns (and just a channel to a channel in `SEQ` `PST`). Try the `W` (red) module. Add a few gates as musical intervals onto a CV?
+
+## "So shuffles are controls 3 and 4"
+Yes, and `G.LEN` sets the relative length of a gate in its time interval. The pico-drum module from the library is quite a nice drum sound set.
