@@ -74,15 +74,38 @@ struct C : Module {
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 
-		//float low = params[LOW].getValue();
+		float g1 = dBMid(params[G1].getValue()/6.f);
+		float g2 = dBMid(params[G2].getValue()/6.f);
+		float g3 = dBMid(params[G3].getValue()/6.f);
+
+		float f1 = log(params[F1].getValue(), dsp::FREQ_C4);
+		float f2 = log(params[F2].getValue(), dsp::FREQ_C4);
+		float f3 = log(params[F3].getValue(), dsp::FREQ_C4);
 		
 		int maxPort = maxPoly();
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			//float in = inputs[IN].getPolyVoltage(p);
+			float in1 = inputs[IN1].getPolyVoltage(p);
+			float in2 = inputs[IN2].getPolyVoltage(p);
+			float in3 = inputs[IN3].getPolyVoltage(p);
+
+			float link = inputs[LINK].getPolyVoltage(p);
+
+			setFK1(f1, fs);
+			float out1 = g1 * process1(in1, p, 0);
+			setFK1(f2, fs);
+			float out2 = g2 * process1(in2, p, 1);
+			setFK1(f3, fs);
+			float out3 = g3 * process1(in3, p, 2);
 
 			// OUTS
-			//outputs[OUT].setVoltage(out, p);
+			outputs[OUT1].setVoltage(out1, p);
+			outputs[OUT2].setVoltage(out2, p);
+			outputs[OUT3].setVoltage(out3, p);
+			//SD normed mix
+			float mix = (out1 + out2 + out3) / sqrtf(3.f);
+			mix += link;
+			outputs[MIX].setVoltage(mix, p);
 		}
 	}
 };
