@@ -183,7 +183,19 @@
       "description": "Quantum gravimitator. Imitates a coupled gravity quantum idea.",
       "tags": [
         "Polyphonic",
-        "Effect"
+        "Effect",
+        "Physical modeling"
+      ]
+    },
+    {
+      "slug": "C",
+      "name": "C",
+      "description": "A set of three attenuverters with mixing.",
+      "tags": [
+        "Attenuator",
+        "Mixer",
+        "Utility",
+        "Polyphonic"
       ]
     }
   ]

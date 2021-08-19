@@ -28,7 +28,8 @@ Index - Demo
 14. [E](#e) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
 15. [X](#x) - [wave](https://github.com/jackokring/KRTPluginADemo/blob/master/wave.vcv)
 16. [M](#m) - [M](https://github.com/jackokring/KRTPluginADemo/blob/master/M.vcv)
-17. [Q](#q) - 
+17. [Q](#q) - [Q](https://github.com/jackokring/KRTPluginADemo/blob/master/Q.vcv)
+18. [C](#c) - No demo required
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -493,7 +494,7 @@ It reduces the non-linear shaping of high frequencies in the send return path fr
 Q
 ===
 
-*A Green One - Quantum Gravimitator*
+*A Green One - Quantum gravimitator*
 [The Big Manual?](Q.md)
 
 Parameters
@@ -520,3 +521,34 @@ Outs
 * Output `OUT`
 
 A physical model simulation. Treats the input as a driven mass and calculates the position of the connected mass using a quantum and gravity connection.
+
+C
+===
+
+*A Purple One - Mixer sixer*
+
+Parameters
+---
+* Channel 1 Polarity `G1`
+* Channel 1 Low Pass `F1`
+* Channel 2 Polarity `G2`
+* Channel 2 Low Pass `F2`
+* Channel 3 Polarity `G3`
+* Channel 3 Low Pass `F3`
+
+
+Ins
+---
+* Channel 1 In `IN1`
+* Channel 2 In `IN2`
+* Channel 3 In `IN3`
+* Input `LINK`
+
+Outs
+---
+* Channel 1 Out `OUT1`
+* Channel 2 Out `OUT2`
+* Channel 3 Out `OUT3`
+* Output Mix `MIX`
+
+The `G1`, `G2` and `G3` controls are **centred dB scaling** gainuverters. Each channel has a low pass single pole filter and an independent output. The `LINK` input is combined with all the outputs to make the `MIX` output.
