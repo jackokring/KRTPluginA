@@ -55,20 +55,15 @@ struct Q : Module {
 
 	Q() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(OMEGA, -5.f, 5.f, 0.f, "Omega Mass Frequency", " Oct (rel C4)");
+		configParam(OMEGA, -4.f, 4.f, 0.f, "Omega Mass Frequency", " Oct (rel C4)");
 		configParam(SINGULAR_HYSTERISIS, -12.f, 12.f, 0.f, "Sigularity Hysterisis", " dB");
 		configParam(PLANK, 0.f, 2.f, 1.f, "Uncertainty Plank Magnifier");
 		configParam(NEWTON, -2.f, 2.f, 0.f, "Gravity Newton Magnifier");
-		configParam(MASS_RATIO, -2.f, 2.f, 0.f, "Mass Magnifier");
-		configParam(ANGLE, 0.f, 90.f, 0.f, "Angle of Dark Energy");
-		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
-			x[i] = 0.f;//initial follower
-			//v[i] = 0.f;
-		}
+		configParam(MASS_RATIO, -2.f, -0.f, -2.f, "Mass Magnifier");
+		configParam(ANGLE, -4.f, 4.f, 0.f, "Angle Magnifier");
 	}
 
 	float wave[PORT_MAX_CHANNELS];
-	float x[PORT_MAX_CHANNELS];
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -78,9 +73,8 @@ struct Q : Module {
 		float hyst = params[SINGULAR_HYSTERISIS].getValue() / 6.f;
 		float plank = params[PLANK].getValue();
 		float newton = params[NEWTON].getValue();//ok
-		//and 2 params ...
 		float mass = params[MASS_RATIO].getValue();
-		float angle = params[ANGLE].getValue() / 90.f;
+		float angle = params[ANGLE].getValue();
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -98,34 +92,31 @@ struct Q : Module {
 			if(abs(massOsc) >= ihyst) massOsc = ihyst * ihyst / massOsc;//turn to multiplicand stable 
 			float iplank = inputs[IPLANK].getPolyVoltage(p) * 0.1f;
 			massOsc *= log(iplank + plank, 1.f);
+			float out = massOsc;//Heisenburg uncertainty
 			//basic dr.dv = hbar * massOsc UNCERTAIN GEOMETRY
 			//dv = k.F.dt and F = G.M.m/r^2 + k2.r ... for strong running effect too
 			//as k2 = 1 and k = 1 can then set G as last constant
 			//r can be altered some by angle of radial or hypotenuse tangent
 			float in = inputs[IN].getPolyVoltage(p) * 0.25f;
+			//should do tangential uncertainty increase radius "dark energy" gain
+			float iangle = log(angle + inputs[IANGLE].getPolyVoltage(p), 1.f);
+			in *= sqrtf(1.f + iangle * massOsc * massOsc);
 			float r2 = in * in;//multiply out radial uncertainty "dark matter" gain
 			float inewton = inputs[INEWTON].getPolyVoltage(p) * 0.1f;
 			inewton = log(inewton + newton, 1.f);
-			massOsc += (r2 * inewton) * massOsc;
-
-			float r = in * 0.1f;// - x[p];//distance
-			float iangle = abs(angle + inputs[IANGLE].getPolyVoltage(p));
-			r = sqrtf(r * r + x[p] * x[p] * iangle);//not right ...
-			//should do tangential uncertainty increase radius "dark energy" gain
-			
-			//float r2 = r * r;
-			//massOsc *= r2;//multiply out radial uncertainty "dark matter" gain
+			out += (r2 * inewton) * massOsc;//"dark matter" uncertainty
 			float imass = inputs[IMASS_RATIO].getPolyVoltage(p) * 0.1f;
-			imass += mass;
-			imass = log(imass, 1.f);
-			//float f = imass * (r * r2 - log(inewton + newton, 1.f));//implicit r^2 cross multiply
-			//x[p] += f;//uncertainty integrated ...? not really valid
+			imass = log(mass + imass, 1.f);
+			in *= 6.f;//restore
+			if(abs(in) >= ihyst) in = ihyst * ihyst / in;//turn to multiplicand stable
+			out += imass * massOsc / in;//"containment strong uncertainty"
+
 			//x[p] and this is why the crash happened ... ;D
 			//technically quark containment reduces the cubic on radius
 			//but keeping it in causes balance throught (in - x[p])
 			
 			// OUTS
-			outputs[OUT].setVoltage(massOsc, p);
+			outputs[OUT].setVoltage(out * 0.5f, p);
 		}
 	}
 };
