@@ -57,6 +57,7 @@ struct Q : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(OMEGA, -5.f, 5.f, 0.f, "Omega Mass Frequency", " Oct (rel C4)");
 		configParam(SINGULAR_HYSTERISIS, -24.f, -6.f, -24.f, "Sigularity Hysterisis", " dB");
+		configParam(PLANK, -1.f, 1.f, 1.f, "Uncertainty Plank Magnifier");
 	}
 
 	float wave[PORT_MAX_CHANNELS];
@@ -67,6 +68,7 @@ struct Q : Module {
 
 		float omega = params[OMEGA].getValue();
 		float hyst = params[SINGULAR_HYSTERISIS].getValue() / 6.f;
+		float plank = params[PLANK].getValue();
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -81,7 +83,9 @@ struct Q : Module {
 			float tmp = modulo(wave[p], 1.f);
 			float massOsc = tmp * (tmp - 1.f) * (wave[p] - 1.f);
 			if(abs(massOsc) >= ihyst) massOsc = ihyst * ihyst / massOsc;//turn to multiplicand stable 
-			
+			float iplank = inputs[IPLANK].getPolyVoltage(p) * 0.1f;
+			massOsc *= (iplank + plank);
+			//basic dx.dv = hbar * massOsc UNCERTAIN GEOMETRY
 			
 			// OUTS
 			outputs[OUT].setVoltage(0.f, p);
