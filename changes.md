@@ -1,3 +1,8 @@
+1.18.21
+===
+
+* Fixed `Q` singularity clicks (breaks patch)
+
 1.18.20
 ===
 

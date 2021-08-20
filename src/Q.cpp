@@ -56,11 +56,11 @@ struct Q : Module {
 	Q() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(OMEGA, -4.f, 4.f, 0.f, "Omega Mass Frequency", " Oct (rel C4)");
-		configParam(SINGULAR_HYSTERISIS, -12.f, 12.f, 0.f, "Sigularity Hysterisis", " dB");
-		configParam(PLANK, 0.f, 2.f, 1.f, "Uncertainty Plank Magnifier");
-		configParam(NEWTON, -2.f, 2.f, 0.f, "Gravity Newton Magnifier");
-		configParam(MASS_RATIO, -2.f, -0.f, -2.f, "Mass Magnifier");
-		configParam(ANGLE, -4.f, 4.f, 0.f, "Angle Magnifier");
+		configParam(SINGULAR_HYSTERISIS, 0.f, 6.f, 0.f, "Sigularity Hysterisis", " dB");
+		configParam(PLANK, 1.f, 2.f, 1.f, "Uncertainty Plank Magnifier");
+		configParam(NEWTON, 0.f, 2.f, 0.f, "Gravity Newton Magnifier");
+		configParam(MASS_RATIO, 2.f, 4.f, 0.f, "Mass Magnifier");
+		configParam(ANGLE, -1.f, 1.f, 0.f, "Angle Magnifier");
 	}
 
 	float wave[PORT_MAX_CHANNELS];
@@ -109,7 +109,7 @@ struct Q : Module {
 			imass = log(mass + imass, 1.f);
 			in *= 6.f;//restore
 			if(abs(in) >= ihyst) in = ihyst * ihyst / in;//turn to multiplicand stable
-			out += imass * massOsc / in;//"containment strong uncertainty"
+			out += imass * massOsc * in;//"containment strong uncertainty"
 
 			//x[p] and this is why the crash happened ... ;D
 			//technically quark containment reduces the cubic on radius
