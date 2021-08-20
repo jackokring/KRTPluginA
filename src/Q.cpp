@@ -60,6 +60,7 @@ struct Q : Module {
 		configParam(PLANK, -1.f, 1.f, 1.f, "Uncertainty Plank Magnifier");
 		configParam(NEWTON, -1.f, 1.f, 1.f, "Gravity Newton Magnifier");
 		configParam(MASS_RATIO, -2.f, 2.f, 0.f, "Mass Magnifier");
+		configParam(ANGLE, 0.f, 90.f, 0.f, "Angle of Dark Energy");
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			x[i] = 0.f;//initial follower
 			//v[i] = 0.f;
@@ -78,6 +79,7 @@ struct Q : Module {
 		float plank = params[PLANK].getValue();
 		float newton = params[NEWTON].getValue();
 		float mass = params[MASS_RATIO].getValue();
+		float angle = params[ANGLE].getValue() / 90.f;
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -100,6 +102,9 @@ struct Q : Module {
 			//r can be altered some by angle of radial or hypotenuse tangent
 			float in = inputs[IN].getPolyVoltage(p);
 			float r = in * 0.1f - x[p];//distance
+			float iangle = abs(angle + inputs[IANGLE].getPolyVoltage(p));
+			r = sqrtf(r * r + x[p] * x[p] * iangle);//not right ...
+			//should do tangential uncertainty increase radius "dark energy" gain
 			float inewton = inputs[INEWTON].getPolyVoltage(p) * 0.1f;
 			float r2 = r * r;
 			massOsc *= r2;//multiply out radial uncertainty "dark matter" gain
