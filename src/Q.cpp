@@ -56,6 +56,7 @@ struct Q : Module {
 	Q() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(OMEGA, -5.f, 5.f, 0.f, "Omega Mass Frequency", " Oct (rel C4)");
+		configParam(SINGULAR_HYSTERISIS, -24.f, -6.f, -24.f, "Sigularity Hysterisis", " dB");
 	}
 
 	float wave[PORT_MAX_CHANNELS];
@@ -65,9 +66,12 @@ struct Q : Module {
 		int maxPort = maxPoly();
 
 		float omega = params[OMEGA].getValue();
+		float hyst = params[SINGULAR_HYSTERISIS].getValue() / 6.f;
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
+			float ihyst = inputs[ISINGULAR_HYSTERISIS].getPolyVoltage(p) * 0.1f;
+			ihyst = log(hyst + ihyst, 0.5f);//1 Volt normal
 			float iomega = inputs[IOMEGA].getPolyVoltage(p);
 			//a simple oscillator, doesn't have to be as is
 			float freq = log(iomega + omega, dsp::FREQ_C4);
@@ -76,6 +80,9 @@ struct Q : Module {
 			wave[p] = modulo(wave[p], 2.f);
 			float tmp = modulo(wave[p], 1.f);
 			float massOsc = tmp * (tmp - 1.f) * (wave[p] - 1.f);
+			if(abs(massOsc) >= ihyst) massOsc = ihyst * ihyst / massOsc;//turn to multiplicand stable 
+			
+			
 			// OUTS
 			outputs[OUT].setVoltage(0.f, p);
 		}
