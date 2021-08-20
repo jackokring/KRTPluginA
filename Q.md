@@ -18,3 +18,5 @@ That's not the end of it though. In quark containment bounds the strong force ex
 It makes some nice noises anyhow.
 
 Oh, and the strong 1/r magnification along with some closed loop resonance locking over a miniture coriollis domain has some likely inducable Q kick. But that's another rational point.
+
+And the inverse pre-singularity management was perhaps more logical?
