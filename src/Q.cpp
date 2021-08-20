@@ -29,11 +29,55 @@ struct Q : Module {
 		NUM_LIGHTS
 	};
 
-	Q() {
-		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		for(int o = 0; o < NUM_OUTPUTS; o++) {
+			outputs[o].setChannels(poly);
+		}
+		return poly;
 	}
 
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
+	float modulo(float x, float m) {
+		float div = x / m;
+		long d = (long) div;
+		float rem = x - d * m;
+		return rem;
+	}
+
+	Q() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(OMEGA, -5.f, 5.f, 0.f, "Omega Mass Frequency", " Oct (rel C4)");
+	}
+
+	float wave[PORT_MAX_CHANNELS];
+
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+
+		float omega = params[OMEGA].getValue();
+
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float iomega = inputs[IOMEGA].getPolyVoltage(p);
+			//a simple oscillator, doesn't have to be as is
+			float freq = log(iomega + omega) * dsp::FREQ_C4;
+			float step = freq * 2.f / fs;
+			wave[p] += step;
+			wave[p] = modulo(wave[p], 2.f);
+			float tmp = modulo(wave[p], 1.f);
+			float massOsc = tmp * (tmp - 1.f) * (wave[p] - 1.f);
+			// OUTS
+			outputs[OUT].setVoltage(0.f, p);
+		}
 	}
 };
 
