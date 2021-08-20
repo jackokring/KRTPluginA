@@ -62,6 +62,7 @@ struct Q : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
+		int maxPort = maxPoly();
 
 		float omega = params[OMEGA].getValue();
 
@@ -69,7 +70,7 @@ struct Q : Module {
 		for(int p = 0; p < maxPort; p++) {
 			float iomega = inputs[IOMEGA].getPolyVoltage(p);
 			//a simple oscillator, doesn't have to be as is
-			float freq = log(iomega + omega) * dsp::FREQ_C4;
+			float freq = log(iomega + omega, dsp::FREQ_C4);
 			float step = freq * 2.f / fs;
 			wave[p] += step;
 			wave[p] = modulo(wave[p], 2.f);
