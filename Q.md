@@ -16,3 +16,5 @@ In a gravity field Δx.Δp (with Δp = mΔv and divided through by oscilation of
 That's not the end of it though. In quark containment bounds the strong force experiences a 1/r magnification (due to reciprication of small numbers and increase in the running constants), such that singularity uncertainty is magnified.
 
 It makes some nice noises anyhow.
+
+Oh, and the strong 1/r magnification along with some closed loop resonance locking over a miniture coriollis domain has some likely inducable Q kick. But that's another rational point.
