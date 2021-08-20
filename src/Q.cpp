@@ -58,9 +58,16 @@ struct Q : Module {
 		configParam(OMEGA, -5.f, 5.f, 0.f, "Omega Mass Frequency", " Oct (rel C4)");
 		configParam(SINGULAR_HYSTERISIS, -24.f, -6.f, -24.f, "Sigularity Hysterisis", " dB");
 		configParam(PLANK, -1.f, 1.f, 1.f, "Uncertainty Plank Magnifier");
+		configParam(NEWTON, -1.f, 1.f, 1.f, "Gravity Newton Magnifier");
+		configParam(MASS_RATIO, -2.f, 2.f, 0.f, "Mass Magnifier");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			x[i] = 0.f;//initial follower
+			//v[i] = 0.f;
+		}
 	}
 
 	float wave[PORT_MAX_CHANNELS];
+	float x[PORT_MAX_CHANNELS];
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -69,6 +76,8 @@ struct Q : Module {
 		float omega = params[OMEGA].getValue();
 		float hyst = params[SINGULAR_HYSTERISIS].getValue() / 6.f;
 		float plank = params[PLANK].getValue();
+		float newton = params[NEWTON].getValue();
+		float mass = params[MASS_RATIO].getValue();
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -89,9 +98,20 @@ struct Q : Module {
 			//dv = k.F.dt and F = G.M.m/r^2 + k2.r ... for strong running effect too
 			//as k2 = 1 and k = 1 can then set G as last constant
 			//r can be altered some by angle of radial or hypotenuse tangent
+			float in = inputs[IN].getPolyVoltage(p);
+			float r = in * 0.1f - x[p];//distance
+			float inewton = inputs[INEWTON].getPolyVoltage(p) * 0.1f;
+			float r2 = r * r;
+			massOsc *= r2;//multiply out radial uncertainty "dark matter" gain
+			float imass = inputs[IMASS_RATIO].getPolyVoltage(p) * 0.1f;
+			imass += mass;
+			imass = log(imass, 1.f);
+			float f = imass * (r * r2 - (inewton + newton));//implicit r^2 cross multiply
+			x[p] += f;
+			//x[p] and this is why the crash happened ... ;D
 			
 			// OUTS
-			outputs[OUT].setVoltage(0.f, p);
+			outputs[OUT].setVoltage(10.f * x[p], p);
 		}
 	}
 };
