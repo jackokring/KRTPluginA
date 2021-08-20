@@ -85,7 +85,7 @@ struct Q : Module {
 			if(abs(massOsc) >= ihyst) massOsc = ihyst * ihyst / massOsc;//turn to multiplicand stable 
 			float iplank = inputs[IPLANK].getPolyVoltage(p) * 0.1f;
 			massOsc *= (iplank + plank);
-			//basic dx.dv = hbar * massOsc UNCERTAIN GEOMETRY
+			//basic dr.dv = hbar * massOsc UNCERTAIN GEOMETRY
 			//dv = k.F.dt and F = G.M.m/r^2 + k2.r ... for strong running effect too
 			//as k2 = 1 and k = 1 can then set G as last constant
 			//r can be altered some by angle of radial or hypotenuse tangent
