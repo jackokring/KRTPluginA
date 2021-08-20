@@ -520,7 +520,7 @@ Outs
 ---
 * Output `OUT`
 
-A physical model simulation. Treats the input as a driven mass and calculates the position of the connected mass using a quantum and gravity connection.
+A physical model simulation. Treats the input as a driven mass radius and calculates the uncertainty of the mass using a quantum and gravity connection.
 
 C
 ===
