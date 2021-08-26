@@ -201,14 +201,23 @@
     {
       "slug": "U",
       "name": "U",
-      "description": "",
-      "tags": []
+      "description": "Sample and hold quantizer.",
+      "tags": [
+        "Quantizer",
+        "Polyphonic",
+        "Sample and hold",
+        "Noise"
+      ]
     },
     {
       "slug": "B",
       "name": "B",
-      "description": "",
-      "tags": []
+      "description": "Crossbar performance switch.",
+      "tags": [
+        "Switch",
+        "Controller",
+        "Polyphonic"
+      ]
     }
   ]
 }
