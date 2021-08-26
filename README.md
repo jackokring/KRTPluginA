@@ -552,3 +552,42 @@ Outs
 * Output Mix `MIX`
 
 The `G1`, `G2` and `G3` controls are **centred dB scaling** gainuverters. Each channel has a low pass single pole filter and an independent output. The `LINK` input is combined with all the outputs not connected to make the `MIX` output. Connecting to an output `OUT1`, `OUT2` or `OUT3` removes it form the `MIX` for utility as an attenuverter.
+
+U
+===
+
+**
+
+Parameters
+---
+* 
+
+
+Ins
+---
+* 
+
+Outs
+---
+* 
+
+
+
+B
+===
+
+**
+
+Parameters
+---
+* 
+
+
+Ins
+---
+* 
+
+Outs
+---
+* 
+
