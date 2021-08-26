@@ -23,6 +23,23 @@ struct B : Module {
 	}
 };
 
+//geometry edit
+#define HP 9
+#define LANES 4
+#define RUNGS 7
+
+//ok
+#define HP_UNIT 5.08
+#define WIDTH (HP*HP_UNIT)
+#define X_SPLIT (WIDTH / 2.f / LANES)
+
+#define HEIGHT 128.5
+#define Y_MARGIN 0.05f
+#define R_HEIGHT (HEIGHT*(1-2*Y_MARGIN))
+#define Y_SPLIT (R_HEIGHT / 2.f / RUNGS)
+
+//placement macro
+#define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
 
 struct BWidget : ModuleWidget {
 	BWidget(B* module) {
