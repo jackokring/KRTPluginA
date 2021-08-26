@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6568542"
-     inkscape:cx="70.445489"
-     inkscape:cy="141.10946"
+     inkscape:cx="75.837178"
+     inkscape:cy="56.256646"
      inkscape:document-units="mm"
      inkscape:current-layer="layer4"
      showgrid="true"
@@ -53,7 +53,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -146,19 +146,19 @@
     </g>
     <g
        aria-label="MIX"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#d45500;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        id="text139">
       <path
          d="m 15.311891,91.071059 h 1.026638 l 0.396186,1.536512 0.394463,-1.536512 h 1.023194 v 2.525254 h -0.637343 v -1.925808 l -0.494371,1.925808 h -0.577054 l -0.492648,-1.925808 v 1.925808 h -0.639065 z"
-         style="fill:#ff6600;stroke-width:0.26458332"
+         style="fill:#d45500;stroke-width:0.26458332"
          id="path340" />
       <path
          d="m 18.681194,91.071059 h 0.782037 v 2.525254 h -0.782037 z"
-         style="fill:#ff6600;stroke-width:0.26458332"
+         style="fill:#d45500;stroke-width:0.26458332"
          id="path342" />
       <path
          d="m 19.849081,91.071059 h 0.859551 l 0.447863,0.776869 0.434082,-0.776869 h 0.850938 l -0.785481,1.223008 0.859551,1.302246 h -0.876777 l -0.497816,-0.811319 -0.499539,0.811319 h -0.871609 l 0.871609,-1.316026 z"
-         style="fill:#ff6600;stroke-width:0.26458332"
+         style="fill:#d45500;stroke-width:0.26458332"
          id="path344" />
     </g>
     <g

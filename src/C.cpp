@@ -107,7 +107,7 @@ struct C : Module {
 			if(!outputs[OUT2].isConnected()) mix += out2;
 			if(!outputs[OUT3].isConnected()) mix += out3;
 			//SD normed mix
-			mix /= sqrtf(3.f);
+			//mix /= sqrtf(3.f);
 			mix += link;
 			outputs[MIX].setVoltage(mix, p);
 		}
