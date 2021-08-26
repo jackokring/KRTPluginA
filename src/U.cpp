@@ -58,7 +58,7 @@ struct UWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addParam(createParamCentered<RoundBlackSnapKnob>(loc(1, 1), module, U::QUANTIZE));
-		addParam(createParamCentered<RoundBlackKnob>(loc(1, 1), module, U::NOISE));
+		addParam(createParamCentered<RoundBlackKnob>(loc(2, 1), module, U::NOISE));
 
 		for(int i = 0; i < 3; i++) {
 			int y =  2 + 2 * i;

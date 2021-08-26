@@ -193,10 +193,11 @@ struct Mu : Module {
 	}
 
 	float avg(float a, float b) {
-		float x = (2 * a + b) / 3.f;
+		/* float x = (2 * a + b) / 3.f;
 		float y = (a + b) * 0.5f;
 		float z = (a + 2 * b) / 3.f;
-		return accel(x, y, z);//a trick of the light?
+		return accel(x, y, z);//a trick of the light? */
+		return (a + 3 * b) * 0.25f;
 	}
 
 	void process(const ProcessArgs& args) override {

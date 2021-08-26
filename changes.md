@@ -3,6 +3,7 @@
 
 * Made `C` gain normal not SD scaled for 2 and 1 split scaling (breaks patch)
 * Fixed `C` color on mix label
+* Reverted `μ` weighted average drift
 
 1.18.21
 ===
