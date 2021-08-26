@@ -556,7 +556,7 @@ The `G1`, `G2` and `G3` controls are **centred dB scaling** gainuverters. Each c
 U
 ===
 
-**
+*A Pink One - Sample and hold quantizer*
 
 Parameters
 ---
@@ -576,7 +576,7 @@ Outs
 B
 ===
 
-**
+*A White One with Buttons - Performance switch*
 
 Parameters
 ---
