@@ -6,6 +6,7 @@ struct B : Module {
 		ENUMS(BUTTON, 6 * 3),
 		MODE,
 		I_MODE,
+		PATTERN,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -22,11 +23,59 @@ struct B : Module {
 		NUM_LIGHTS
 	};
 
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		for(int o = 0; o < NUM_OUTPUTS; o++) {
+			outputs[o].setChannels(poly);
+		}
+		return poly;
+	}
+
 	const char *names[3][6] = {
 		{ "1A/1", "2A/1", "3A/1", "4A/1", "5A/3", "6A/3" },
 		{ "1B/1", "2B/1", "3B/1", "4B/1", "5B/3", "6B/3" },
 		{ "1C/1", "2C/1", "3C/1", "4C/1", "5C/3", "6C/3" }
 	};
+
+	char func[6 * 3][3][6];
+	bool use[6 * 3][3][6];
+	static const int sized = 6 * 6 * 3 * 3;
+	char saves[sized];
+
+	json_t* dataToJson() override {
+		json_t *rootJ = json_object();
+		for(int f = 0; f < 18; f++) {
+			for(int i = 0; i < 6; i++) {
+				for(int j = 0; j < 3; j++) {
+					int idx = i + 6 * (j + 18 * f);
+					saves[idx] = use[f][j][i] ? 'T' : 'F';
+				}
+			}
+		}
+		json_object_set(rootJ, "save", json_stringn(saves, sized));
+		return rootJ;
+	}
+
+	void dataFromJson(json_t* rootJ) override {  
+		json_t* textJ = json_object_get(rootJ, "save");
+  		if (textJ) {
+			const char *str = json_string_value(textJ);
+			if(str) {
+				for(int f = 0; f < 18; f++) {
+					for(int i = 0; i < 6; i++) {
+						for(int j = 0; j < 3; j++) {
+							int idx = i + 6 * (j + 18 * f);
+							use[f][j][i] = (str[idx] == 'T') ? true : false;
+						}
+					}
+				}
+			}
+		}
+	}
 
 	B() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -37,9 +86,39 @@ struct B : Module {
 		}
 		configParam(MODE, 0.f, 1.f, 0.f, "Memory/Pass/Function");
 		configParam(I_MODE, 0.f, 2.f, 0.f);//internal mode
+		configParam(PATTERN, 0.f, 18.f, 0.f);//default pattern
+		for(int f = 0; f < 18; f++) {
+			for(int i = 0; i < 6; i++) {
+				for(int j = 0; j < 3; j++) {
+					func[f][j][i] = 'A';//function set
+					use[f][j][i] = false;
+				}
+			}
+		}
 	}
 
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+		int maxPort = maxPoly();
+		int pattern = (int)params[PATTERN].getValue();
+
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+
+#pragma GCC ivdep
+			for(int i = 0; i < 3; i++) {//outputs
+				float out = 0.f;
+#pragma GCC ivdep
+				for(int j = 0; j < 6; j++) {//over inputs
+					if(use[pattern][i][j]) {
+						float in = inputs[IN + j].getPolyVoltage(p);
+						//process
+						out += in;
+					}
+				}
+				outputs[OUT + i].setVoltage(out, p);
+			}
+		}
 	}
 };
 
