@@ -82,7 +82,7 @@ struct U : Module {
 		float q = params[QUANTIZE].getValue() / 12.f;//semitone volts
 		float n = log(params[NOISE].getValue(), dsp::FREQ_C4);
 		n = clamp(n, 0.f, fs * 0.5f);//filter limit
-		std::normal_distribution<float> dist(0, 5);
+		static std::normal_distribution<float> dist(0, 5);
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
