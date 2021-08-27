@@ -1,5 +1,5 @@
 #include "plugin.hpp"
-#include <random>
+//#include <random> - links but then missing symbol!!!
 
 struct U : Module {
 	enum ParamIds {
@@ -73,7 +73,34 @@ struct U : Module {
         return powf(2.f, val) * centre;
     }
 
-	static std::default_random_engine gen;
+	//static std::default_random_engine gen;
+
+	float nextNextGaussian;
+	bool haveNextNextGaussian = false;
+
+	float nextDouble() {
+		float r = rand();
+		r /= RAND_MAX;//0 to 1
+		return r;
+	}
+
+	float nextGaussian() {
+		if (haveNextNextGaussian) {
+			haveNextNextGaussian = false;
+			return nextNextGaussian;
+		} else {
+			float v1, v2, s;
+			do {
+			v1 = 2 * nextDouble() - 1;   // between -1.0 and 1.0
+			v2 = 2 * nextDouble() - 1;   // between -1.0 and 1.0
+			s = v1 * v1 + v2 * v2;
+			} while (s >= 1.f || s == 0.f);
+			float multiplier = sqrtf(-2.f * logf(s) / s);
+			nextNextGaussian = v2 * multiplier;
+			haveNextNextGaussian = true;
+			return v1 * multiplier;
+		}
+	}
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -82,7 +109,7 @@ struct U : Module {
 		float q = params[QUANTIZE].getValue() / 12.f;//semitone volts
 		float n = log(params[NOISE].getValue(), dsp::FREQ_C4);
 		n = clamp(n, 0.f, fs * 0.5f);//filter limit
-		static std::normal_distribution<float> dist(0, 5);
+		//static std::normal_distribution<float> dist(0, 5);
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -93,7 +120,8 @@ struct U : Module {
 				if(inputs[IN + i].isConnected()) {
 					in = inputs[IN + i].getPolyVoltage(p);
 				} else {
-					in = dist(gen);//noise
+					//in = dist(gen);//noise
+					in = nextGaussian() * 5.f;//SD
 					setFK1(n, fs);
 					in = process1(in, p + i * PORT_MAX_CHANNELS);
 				}
