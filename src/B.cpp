@@ -5,6 +5,7 @@ struct B : Module {
 	enum ParamIds {
 		ENUMS(BUTTON, 6 * 3),
 		MODE,
+		I_MODE,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -21,8 +22,21 @@ struct B : Module {
 		NUM_LIGHTS
 	};
 
+	const char *names[3][6] = {
+		{ "1A/1", "2A/1", "3A/1", "4A/1", "5A/3", "6A/3" },
+		{ "1B/1", "2B/1", "3B/1", "4B/1", "5B/3", "6B/3" },
+		{ "1C/1", "2C/1", "3C/1", "4C/1", "5C/3", "6C/3" }
+	};
+
 	B() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		for(int i = 0; i < 6; i++) {
+			for(int j = 0; j < 3; j++) {
+				configParam(BUTTON + i + 6 * j, 0.f, 1.f, 0.f, names[j][i]);
+			}
+		}
+		configParam(MODE, 0.f, 1.f, 0.f, "Memory/Pass/Function");
+		configParam(I_MODE, 0.f, 2.f, 0.f);//internal mode
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -71,8 +85,8 @@ struct BWidget : ModuleWidget {
 			}
 		}
 
-		addParam(createParamCentered<LEDBezel>(loc(4, 7), module, B::MODE));
-		addChild(createLightCentered<LEDBezelLight<RedGreenBlueLight>>(loc(4, 7), module, B::MODES));
+		addParam(createParamCentered<LEDBezel>(loc(1, 7), module, B::MODE));
+		addChild(createLightCentered<LEDBezelLight<RedGreenBlueLight>>(loc(1, 7), module, B::MODES));
 	}
 };
 
