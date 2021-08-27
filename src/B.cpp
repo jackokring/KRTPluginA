@@ -3,15 +3,19 @@
 
 struct B : Module {
 	enum ParamIds {
+		ENUMS(BUTTON, 6 * 3),
 		NUM_PARAMS
 	};
 	enum InputIds {
+		ENUMS(IN, 6),
 		NUM_INPUTS
 	};
 	enum OutputIds {
+		ENUMS(OUT, 3),
 		NUM_OUTPUTS
 	};
 	enum LightIds {
+		ENUMS(SELECT, 6 * 3 * 3), //RGB
 		NUM_LIGHTS
 	};
 
@@ -51,6 +55,19 @@ struct BWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
+		for(int i = 0; i < 3; i++) {
+			addOutput(createOutputCentered<PJ301MPort>(loc(i + 2, 7), module, B::OUT + i));
+		}
+		for(int i = 0; i < 6; i++) {
+			addInput(createInputCentered<PJ301MPort>(loc(1, i + 1), module, B::IN + i));
+		}
+		for(int i = 0; i < 6; i++) {
+			for(int j = 0; j < 3; j++) {
+				int idx = i + 6 * j;
+				addParam(createParamCentered<LEDBezel>(loc(j + 2, i + 1), module, B::BUTTON + idx));
+				addChild(createLightCentered<LEDBezelLight<RedGreenBlueLight>>(loc(j + 2, i + 1), module, B::SELECT + 3 * idx));
+			}
+		}
 	}
 };
 
