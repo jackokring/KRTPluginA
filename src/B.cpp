@@ -4,6 +4,7 @@
 struct B : Module {
 	enum ParamIds {
 		ENUMS(BUTTON, 6 * 3),
+		MODE,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -16,6 +17,7 @@ struct B : Module {
 	};
 	enum LightIds {
 		ENUMS(SELECT, 6 * 3 * 3), //RGB
+		ENUMS(MODES, 3), //RGB
 		NUM_LIGHTS
 	};
 
@@ -68,6 +70,9 @@ struct BWidget : ModuleWidget {
 				addChild(createLightCentered<LEDBezelLight<RedGreenBlueLight>>(loc(j + 2, i + 1), module, B::SELECT + 3 * idx));
 			}
 		}
+
+		addParam(createParamCentered<LEDBezel>(loc(4, 7), module, B::MODE));
+		addChild(createLightCentered<LEDBezelLight<RedGreenBlueLight>>(loc(4, 7), module, B::MODES));
 	}
 };
 
