@@ -560,18 +560,20 @@ U
 
 Parameters
 ---
-* 
-
+* Quantize `QUNT` (in semitones)
+* Noise `NSE` (when no input color filter)
 
 Ins
 ---
-* 
+* Clock Sample `CLK`
+* Input `IN`
 
 Outs
 ---
-* 
+* Output `OUT`
+* Quantized Output `QOUT`
 
-
+A simple triple sample and hold with semitone quantizer.
 
 B
 ===
