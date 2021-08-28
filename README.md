@@ -582,7 +582,7 @@ B
 
 Parameters
 ---
-* 15 Route Buttons (unlabeled)
+* 18 Route Buttons (unlabeled)
 * Mode `MODE`
 
 Ins
