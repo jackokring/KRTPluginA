@@ -582,14 +582,19 @@ B
 
 Parameters
 ---
-* 
-
+* 15 Route Buttons (unlabeled)
+* Mode `MODE`
 
 Ins
 ---
-* 
+* `1`, `2`, `3`, `4`, `5` and `6`
 
 Outs
 ---
-* 
+* `A`, `B` and `C`
 
+Performance controller switch. The `MODE` cycles through `GREEN`, `RED` and `BLUE` modes.
+
+* `GREEN` mode: the routing buttons select switching of the inputs to the outputs. Multiple inputs can be selected and merged.
+* `RED` mode: the routing buttons select one of 18 recorded patterns to recall. The active pattern is shown `RED` perhaps mixed with `GREEN` and `BLUE` if other data is shown.
+* `BLUE` mode: the routing buttons select function merge processing.
