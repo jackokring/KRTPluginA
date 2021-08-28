@@ -41,17 +41,20 @@ struct B : Module {
 		{ "1C/1", "2C/1", "3C/1", "4C/1", "5C/3", "6C/3" }
 	};
 
-	char func[6 * 3][3][6];
-	bool use[6 * 3][3][6];
-	static const int sized = 6 * 6 * 3 * 3;
+	static const int patches = 6 * 3;
+	static const int outs = 3;
+	static const int ins = 6;
+	char func[patches][outs][ins];
+	bool use[patches][outs][ins];
+	static const int sized = patches * outs * ins;
 	char saves[sized];
 
 	json_t* dataToJson() override {
 		json_t *rootJ = json_object();
-		for(int f = 0; f < 18; f++) {
-			for(int i = 0; i < 6; i++) {
-				for(int j = 0; j < 3; j++) {
-					int idx = i + 6 * (j + 18 * f);
+		for(int f = 0; f < patches; f++) {
+			for(int i = 0; i < ins; i++) {
+				for(int j = 0; j < outs; j++) {
+					int idx = i + ins * (j + outs * f);
 					saves[idx] = use[f][j][i] ? 'T' : 'F';
 				}
 			}
@@ -65,10 +68,10 @@ struct B : Module {
   		if (textJ) {
 			const char *str = json_string_value(textJ);
 			if(str) {
-				for(int f = 0; f < 18; f++) {
-					for(int i = 0; i < 6; i++) {
-						for(int j = 0; j < 3; j++) {
-							int idx = i + 6 * (j + 18 * f);
+				for(int f = 0; f < patches; f++) {
+					for(int i = 0; i < ins; i++) {
+						for(int j = 0; j < outs; j++) {
+							int idx = i + ins * (j + outs * f);
 							use[f][j][i] = (str[idx] == 'T') ? true : false;
 						}
 					}
@@ -87,9 +90,9 @@ struct B : Module {
 		configParam(MODE, 0.f, 1.f, 0.f, "Memory/Pass/Function");
 		configParam(I_MODE, 0.f, 2.f, 0.f);//internal mode
 		configParam(PATTERN, 0.f, 18.f, 0.f);//default pattern
-		for(int f = 0; f < 18; f++) {
-			for(int i = 0; i < 6; i++) {
-				for(int j = 0; j < 3; j++) {
+		for(int f = 0; f < patches; f++) {
+			for(int i = 0; i < ins; i++) {
+				for(int j = 0; j < outs; j++) {
 					func[f][j][i] = 'A';//function set
 					use[f][j][i] = false;
 				}
