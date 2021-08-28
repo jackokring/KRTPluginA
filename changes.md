@@ -5,6 +5,7 @@
 * Fixed `C` color on mix label
 * Reverted `μ` weighted average drift (fixes patch)
 * Added `U` sample and hold quantizer
+* Added `B` performance router (no blue mode? CV shares lane?)
 
 1.18.21
 ===
