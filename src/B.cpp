@@ -23,6 +23,10 @@ struct B : Module {
 		NUM_LIGHTS
 	};
 
+#define MOD_PASS_G 0
+#define MOD_SELECT_R 1
+#define MOD_FUNC_B 2
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -100,10 +104,24 @@ struct B : Module {
 		}
 	}
 
+	dsp::SchmittTrigger modeTrig;
+	dsp::SchmittTrigger selTrig[outs][ins];
+
+	void RGBLed(int base, int id, bool r, bool g, bool b) {
+		lights[base + 3 * id].setBrightness(r ? 1.f : 0.f);
+		lights[base + 3 * id + 1].setBrightness(g ? 1.f : 0.f);
+		lights[base + 3 * id + 2].setBrightness(b ? 1.f : 0.f);
+	}	
+
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
 		int pattern = (int)params[PATTERN].getValue();
+		int mode = (int)params[I_MODE].getValue();
+		if(modeTrig.process(params[MODE].getValue())) {
+			mode++;
+			if(mode > 2 || mode < 0) mode = 0;//loop 
+		}
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -113,15 +131,31 @@ struct B : Module {
 				float out = 0.f;
 #pragma GCC ivdep
 				for(int j = 0; j < 6; j++) {//over inputs
+					int idx = j + 6 * i;
+					if(selTrig[i][j].process(params[BUTTON + idx].getValue())) {
+						if(mode == MOD_PASS_G) {
+							use[pattern][i][j] ^= true;//invert
+						}
+						if(mode == MOD_SELECT_R) {
+							pattern = idx;
+							params[PATTERN].setValue(pattern);//save
+						}
+						if(mode == MOD_FUNC_B) {
+
+						}
+					}
 					if(use[pattern][i][j]) {
 						float in = inputs[IN + j].getPolyVoltage(p);
 						//process
 						out += in;
 					}
+					RGBLed(SELECT, idx, idx == pattern, use[pattern][i][j], false);//no blue yet!
 				}
 				outputs[OUT + i].setVoltage(out, p);
 			}
 		}
+		params[I_MODE].setValue(mode);//on changed
+		RGBLed(MODES, 0, mode == MOD_SELECT_R, mode == MOD_PASS_G, mode == MOD_FUNC_B);
 	}
 };
 
