@@ -175,7 +175,7 @@ struct B : Module {
 					if(use[pattern][i][j]) {
 						float in = inputs[IN + j].getPolyVoltage(p);
 						//process
-						if(fn[0]) {
+						if(fn[0]) {//special as set up as first
 							out *= in * 0.2f;//div 5
 						} else {
 							out += in;
@@ -185,7 +185,10 @@ struct B : Module {
 						fn[j]);//blue selectors too
 				}
 				//blue processing per output here <---
-
+				if(fn[1] && abs(out) >= 5.f) {
+					//sing process
+					out = 25.f / out;
+				}
 				//output out
 				outputs[OUT + i].setVoltage(out, p);
 			}
