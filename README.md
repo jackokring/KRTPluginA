@@ -597,4 +597,4 @@ Performance controller switch. The `MODE` cycles through `GREEN`, `RED` and `BLU
 
 * `GREEN` mode: the routing buttons select switching of the inputs to the outputs. Multiple inputs can be selected and merged.
 * `RED` mode: the routing buttons select one of 18 recorded patterns to recall. The active pattern is shown `RED` perhaps mixed with `GREEN` and `BLUE` if other data is shown.
-* `BLUE` mode: the routing buttons select function merge processing.
+* `BLUE` mode: the routing buttons select function merge processing. Each of the three outputs can have the different functions applied in all combinations (top to bottom application order).
