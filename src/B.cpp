@@ -152,6 +152,7 @@ struct B : Module {
 #pragma GCC ivdep
 			for(int i = 0; i < 3; i++) {//outputs
 				float out = 0.f;
+				bool fn[6];
 #pragma GCC ivdep
 				for(int j = 0; j < 6; j++) {//over inputs
 					int idx = j + 6 * i;
@@ -167,14 +168,18 @@ struct B : Module {
 							func[pattern][i][j] ^= true;//invert
 						}
 					}
+					fn[j] = func[pattern][i][j];
 					if(use[pattern][i][j]) {
 						float in = inputs[IN + j].getPolyVoltage(p);
 						//process
 						out += in;
 					}
 					RGBLed(SELECT, idx, idx == pattern, use[pattern][i][j],
-						func[pattern][i][j]);//blue selectors too
+						fn[j]);//blue selectors too
 				}
+				//blue processing per output here <---
+
+				//output out
 				outputs[OUT + i].setVoltage(out, p);
 			}
 		}
