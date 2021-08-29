@@ -189,6 +189,9 @@ struct B : Module {
 					//sing process
 					out = 25.f / out;
 				}
+				if(fn[5]) {
+					out = cbrtf(out * 25.f);//cube root clip
+				}
 				//output out
 				outputs[OUT + i].setVoltage(out, p);
 			}
