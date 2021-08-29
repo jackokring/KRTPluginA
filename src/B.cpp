@@ -120,7 +120,7 @@ struct B : Module {
 		for(int f = 0; f < patches; f++) {
 			for(int i = 0; i < ins; i++) {
 				for(int j = 0; j < outs; j++) {
-					func[f][j][i] = 'A';//function set
+					func[f][j][i] = false;//function set
 					use[f][j][i] = false;
 				}
 			}
