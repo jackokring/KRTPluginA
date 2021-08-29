@@ -40,15 +40,15 @@ struct B : Module {
 	}
 
 	const char *names[3][6] = {
-		{ "1A/1", "2A/1", "3A/1", "4A/1", "5A/3", "6A/3" },
-		{ "1B/1", "2B/1", "3B/1", "4B/1", "5B/3", "6B/3" },
-		{ "1C/1", "2C/1", "3C/1", "4C/1", "5C/3", "6C/3" }
+		{ "1A", "2A", "3A", "4A", "5A", "6A" },
+		{ "1B", "2B", "3B", "4B", "5B", "6B" },
+		{ "1C", "2C", "3C", "4C", "5C", "6C" }
 	};
 
 	static const int patches = 6 * 3;
 	static const int outs = 3;
 	static const int ins = 6;
-	char func[patches][outs][ins];
+	bool func[patches][outs][ins];
 	bool use[patches][outs][ins];
 	static const int sized = patches * outs * ins;
 	char saves[sized];
@@ -64,6 +64,15 @@ struct B : Module {
 			}
 		}
 		json_object_set(rootJ, "save", json_stringn(saves, sized));
+		for(int f = 0; f < patches; f++) {
+			for(int i = 0; i < ins; i++) {
+				for(int j = 0; j < outs; j++) {
+					int idx = i + ins * (j + outs * f);
+					saves[idx] = func[f][j][i] ? 'T' : 'F';
+				}
+			}
+		}
+		json_object_set(rootJ, "blue", json_stringn(saves, sized));
 		return rootJ;
 	}
 
@@ -77,6 +86,20 @@ struct B : Module {
 						for(int j = 0; j < outs; j++) {
 							int idx = i + ins * (j + outs * f);
 							use[f][j][i] = (str[idx] == 'T') ? true : false;
+						}
+					}
+				}
+			}
+		}
+		textJ = json_object_get(rootJ, "blue");
+  		if (textJ) {
+			const char *str = json_string_value(textJ);
+			if(str) {
+				for(int f = 0; f < patches; f++) {
+					for(int i = 0; i < ins; i++) {
+						for(int j = 0; j < outs; j++) {
+							int idx = i + ins * (j + outs * f);
+							func[f][j][i] = (str[idx] == 'T') ? true : false;
 						}
 					}
 				}
@@ -141,7 +164,7 @@ struct B : Module {
 							params[PATTERN].setValue(pattern);//save
 						}
 						if(mode == MOD_FUNC_B) {
-
+							func[pattern][i][j] ^= true;//invert
 						}
 					}
 					if(use[pattern][i][j]) {
@@ -149,7 +172,8 @@ struct B : Module {
 						//process
 						out += in;
 					}
-					RGBLed(SELECT, idx, idx == pattern, use[pattern][i][j], false);//no blue yet!
+					RGBLed(SELECT, idx, idx == pattern, use[pattern][i][j],
+						func[pattern][i][j]);//blue selectors too
 				}
 				outputs[OUT + i].setVoltage(out, p);
 			}
