@@ -169,10 +169,17 @@ struct B : Module {
 						}
 					}
 					fn[j] = func[pattern][i][j];
+					if(j == 0 && fn[j]) {
+						out = 5.f;//mul function
+					}
 					if(use[pattern][i][j]) {
 						float in = inputs[IN + j].getPolyVoltage(p);
 						//process
-						out += in;
+						if(fn[0]) {
+							out *= in * 0.2f;//div 5
+						} else {
+							out += in;
+						}
 					}
 					RGBLed(SELECT, idx, idx == pattern, use[pattern][i][j],
 						fn[j]);//blue selectors too
