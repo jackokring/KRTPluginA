@@ -107,6 +107,11 @@ struct B : Module {
 		}
 	}
 
+	//obtain mapped control value
+    float log(float val) {
+        return powf(2.f, val);
+    }
+
 	B() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		for(int i = 0; i < 6; i++) {
@@ -188,6 +193,9 @@ struct B : Module {
 				if(fn[1] && abs(out) >= 5.f) {
 					//sing process
 					out = 25.f / out;
+				}
+				if(fn[4]) {
+					out = log(out);//map CV?
 				}
 				if(fn[5]) {
 					out = cbrtf(out * 25.f);//cube root clip
