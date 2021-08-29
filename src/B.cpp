@@ -194,6 +194,7 @@ struct B : Module {
 					//sing process
 					out = 25.f / out;
 				}
+				if(fn[3]) out = -out;//phase invert
 				if(fn[4]) {
 					out = log(out);//map CV?
 				}
