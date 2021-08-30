@@ -114,7 +114,7 @@ struct B : Module {
 
 	/* 1P H(s) = 1 / (s + fb) */
     //ONE POLE FILTER
-	float f1, f2, b[PORT_MAX_CHANNELS];
+	float f1, f2, b[PORT_MAX_CHANNELS * 3];
 
 	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
 		//f1   = tanf(M_PI * fc / fs);
@@ -217,7 +217,7 @@ struct B : Module {
 					out = cbrtf(out * 25.f);//cube root clip
 				}
 				if(fn[5]) {//dc block
-					out = process1(out, p);
+					out = process1(out, p + i * PORT_MAX_CHANNELS);//individual fix
 				}
 				//output out
 				outputs[OUT + i].setVoltage(out, p);
