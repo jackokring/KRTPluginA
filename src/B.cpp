@@ -112,6 +112,22 @@ struct B : Module {
         return powf(2.f, val);
     }
 
+	/* 1P H(s) = 1 / (s + fb) */
+    //ONE POLE FILTER
+	float f1, f2, b[PORT_MAX_CHANNELS];
+
+	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
+		//f1   = tanf(M_PI * fc / fs);
+		f1	 = tanpif(fc / fs);
+		f2   = 1 / (1 + f1);
+	}
+
+	float process1(float in, int p) {
+		float out = (f1 * in + b[p]) * f2;
+		b[p] = f1 * (in - out) + out;
+		return in - out;//hpf default
+	}
+
 	B() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		for(int i = 0; i < 6; i++) {
@@ -143,6 +159,7 @@ struct B : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
+		setFK1(10.f, fs);//dc stop
 		int maxPort = maxPoly();
 		int pattern = (int)params[PATTERN].getValue();
 		int mode = (int)params[I_MODE].getValue();
@@ -150,10 +167,8 @@ struct B : Module {
 			mode++;
 			if(mode > 2 || mode < 0) mode = 0;//loop 
 		}
-
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-
 #pragma GCC ivdep
 			for(int i = 0; i < 3; i++) {//outputs
 				float out = 0.f;
@@ -174,8 +189,8 @@ struct B : Module {
 						}
 					}
 					fn[j] = func[pattern][i][j];
-					if(j == 0 && fn[j]) {
-						out = 5.f;//mul function
+					if((j == 0) && fn[j]) {
+						out = 10.f;//mul function
 					}
 					if(use[pattern][i][j]) {
 						float in = inputs[IN + j].getPolyVoltage(p);
@@ -194,12 +209,15 @@ struct B : Module {
 					//sing process
 					out = 25.f / out;
 				}
-				if(fn[3]) out = -out;//phase invert
-				if(fn[4]) {
+				if(fn[2]) out = -out;//phase invert
+				if(fn[3]) {
 					out = log(out);//map CV?
 				}
-				if(fn[5]) {
+				if(fn[4]) {
 					out = cbrtf(out * 25.f);//cube root clip
+				}
+				if(fn[5]) {//dc block
+					out = process1(out, p);
 				}
 				//output out
 				outputs[OUT + i].setVoltage(out, p);
