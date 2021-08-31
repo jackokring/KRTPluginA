@@ -2,7 +2,7 @@
 ===
 
 * individual DC filters on `B` (can break patch)
-
+* added `J` all-pass filter
 
 1.20.21
 ===
