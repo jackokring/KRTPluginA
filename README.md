@@ -30,6 +30,9 @@ Index - Demo
 16. [M](#m) - [M](https://github.com/jackokring/KRTPluginADemo/blob/master/M.vcv)
 17. [Q](#q) - [Q](https://github.com/jackokring/KRTPluginADemo/blob/master/Q.vcv)
 18. [C](#c) - No demo required
+19. [U](#u)
+20. [B](#b)
+21. [J](#j)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -598,3 +601,20 @@ Performance controller switch. The `MODE` cycles through `GREEN`, `RED` and `BLU
 * `GREEN` mode: the routing buttons select switching of the inputs to the outputs. Multiple inputs can be selected and merged.
 * `RED` mode: the routing buttons select one of 18 recorded patterns to recall. The active pattern is shown `RED` perhaps mixed with `GREEN` and `BLUE` if other data is shown.
 * `BLUE` mode: the routing buttons select function merge processing. Each of the three outputs can have the different functions applied in all combinations (top to bottom application order).
+
+J
+===
+
+*A Cyan One - All-pass filter*
+
+Parameters
+---
+* 
+
+Ins
+---
+* Input `IN`
+
+Outs
+---
+* Output `OUT`

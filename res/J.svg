@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4"
-     inkscape:cx="89.003"
-     inkscape:cy="35.278354"
+     inkscape:cx="96.628"
+     inkscape:cy="405.27835"
      inkscape:document-units="mm"
      inkscape:current-layer="layer4"
      showgrid="true"
@@ -53,7 +53,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -63,7 +63,7 @@
      inkscape:label="Background"
      style="display:inline;opacity:1">
     <rect
-       style="fill:#0000ff;stroke-width:0.27736092"
+       style="fill:#00ffff;stroke-width:0.27736092"
        id="rect111"
        width="25.466146"
        height="128.32292"
@@ -384,14 +384,13 @@
        id="text107"
        transform="matrix(2.52226,0,0,2.4814703,-16.867486,28.084873)" />
     <g
-       aria-label="F"
-       transform="scale(1.204776,0.83002985)"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.14471245px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.53585339"
-       id="text135">
+       aria-label="J"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       id="text94">
       <path
-         d="m 9.1233365,-29.021654 h 3.9072645 v 1.098918 h -2.319938 v 0.893089 h 1.981541 v 1.032634 h -1.981541 v 2.089689 H 9.1233365 Z"
-         style="stroke-width:0.53585339"
-         id="path137" />
+         d="m 11.575865,-22.104461 h 0.782037 v 1.37287 q 0,0.43236 -0.07752,0.658013 -0.07579,0.225654 -0.308336,0.382406 -0.230822,0.156752 -0.592557,0.156752 -0.382405,0 -0.592556,-0.103353 -0.210151,-0.103353 -0.325561,-0.301446 -0.113689,-0.199815 -0.134359,-0.492649 l 0.745863,-0.10163 q 0.0017,0.167087 0.02928,0.248047 0.02756,0.08096 0.09302,0.130914 0.04479,0.03273 0.127468,0.03273 0.130914,0 0.191203,-0.09646 0.06201,-0.09819 0.06201,-0.329006 z"
+         style="stroke-width:0.26458332"
+         id="path96" />
     </g>
   </g>
 </svg>
