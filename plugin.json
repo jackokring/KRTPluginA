@@ -57,7 +57,7 @@
     },
     {
       "slug": "D",
-      "name": "D",
+      "name": ";D",
       "description": "VCA/future estimator with error.",
       "tags": [
         "Utility",
@@ -222,8 +222,12 @@
     {
       "slug": "J",
       "name": "J",
-      "description": "",
-      "tags": []
+      "description": "All-pass filter.",
+      "tags": [
+        "Filter",
+        "Polyphonic",
+        "Utility"
+      ]
     }
   ]
 }
