@@ -1,7 +1,7 @@
-1.22.21
+1.22.22
 ===
 
-* individual DC filters on `B`
+* individual DC filters on `B` (can break patch)
 
 
 1.20.21
