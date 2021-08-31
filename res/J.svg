@@ -17,7 +17,23 @@
    sodipodi:docname="J.svg"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
   <defs
-     id="defs4535" />
+     id="defs4535">
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Color Shift"
+       id="filter86">
+      <feColorMatrix
+         type="hueRotate"
+         values="330"
+         result="color1"
+         id="feColorMatrix82" />
+      <feColorMatrix
+         type="saturate"
+         values="0.6"
+         result="color2"
+         id="feColorMatrix84" />
+    </filter>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,10 +42,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4"
-     inkscape:cx="96.628"
-     inkscape:cy="405.27835"
+     inkscape:cx="104.253"
+     inkscape:cy="395.27835"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer1"
      showgrid="true"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -63,7 +79,7 @@
      inkscape:label="Background"
      style="display:inline;opacity:1">
     <rect
-       style="fill:#00ffff;stroke-width:0.27736092"
+       style="fill:#00ffff;stroke-width:0.27736092;filter:url(#filter86)"
        id="rect111"
        width="25.466146"
        height="128.32292"
