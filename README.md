@@ -609,10 +609,17 @@ J
 
 Parameters
 ---
-* 
+* Frequency `FRQ`
+* Order `ODR`
+* Bypass, High, All `BHA`
+* Wet Mix `WET`
 
 Ins
 ---
+* Frequency CV `FRQ`
+* Order CV `ODR`
+* Bypass, High, All CV `BHA`
+* Wet Mix CV `WET`
 * Input `IN`
 
 Outs
