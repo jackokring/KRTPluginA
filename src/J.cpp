@@ -40,12 +40,18 @@ struct J : Module {
 	J() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
-		configParam(ODR, 1.f, 8.f, 4.f, "Order");
+		configParam(ODR, 0.f, 8.f, 4.f, "Order");
 		configParam(BHA, -1.f, 1.f, 1.f, "Bypass, High, All");
 		configParam(WET, 0.f, 100.f, 100.f, "Wet Mix", " %");
 		//configParam(DRV, -6.f, 6.f, 0.f, "Drive", " dB");
 		//configParam(INV, -1.f, 1.f, -1.f, "Invert");
 	}
+
+
+    //obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
 
 	/* 1P H(s) = 1 / (s + fb) */
     //ONE POLE FILTER
@@ -77,30 +83,29 @@ struct J : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			/* float mag = 0.25f;
-			float ispd = inputs[ISPD].getPolyVoltage(p) * mag + spd;
-			float iskw = inputs[ISKW].getPolyVoltage(p) * mag + skw;
 			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
-			float ilah = inputs[ILAH].getPolyVoltage(p) * mag + lah;
-			flo0 = powf(flo0, ilah);//invert again at LPF
-			float flo1 = freqMul(ispd, iskw, 1);//second
-			flo1 = powf(flo1, ilah);
-			float damp0 = findK(ispd, iskw, 0);//first
-			float damp1 = findK(ispd, iskw, 1);//second
-
-			flo0 = clamp(ifrq * flo0, 0.f, fs * 0.5f);
-			flo1 = clamp(ifrq * flo1, 0.f, fs * 0.5f);
-			//calm max change
-			
+			float iodr = inputs[IODR].getPolyVoltage(p) + odr + 0.5f;//middle quantize
+			float ibha = inputs[IBHA].getPolyVoltage(p) * 0.1f + bha + 1.f;//offset 1
+			float iwet = inputs[IWET].getPolyVoltage(p) * 0.1f + wet;
+			/* 
 			float idrv = inputs[IDRV].getPolyVoltage(p) * mag + drv;
 			float iinv = inputs[IINV].getPolyVoltage(p) * mag + inv;
 			idrv = log(idrv, 5.f);//normal magnitude
 			*/
 			// IN
+			ifrq = clamp(ifrq, 0.f, fs * 0.5f);//safe
+			setFK1(ifrq, fs);//set phase frequency
 			float in = inputs[IN].getPolyVoltage(p);
-
+			float out = in;//0th order
+			float fout = out;
+			for(int i = 0; i < 8; i++) {
+				float filt = process1(out, p, i);
+				out -= ibha * filt;//filter
+				if(iodr > i) fout = out;//of order
+			}
 			// OUT
-			outputs[OUT].setVoltage(in, p);
+			out = fout * iwet + in * (1.f - iwet);//wet mix
+			outputs[OUT].setVoltage(out, p);
 		}
 	}
 };
