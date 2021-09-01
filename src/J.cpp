@@ -7,6 +7,8 @@ struct J : Module {
 		ODR,
 		BHA,
 		WET,
+		LFO,
+		LVL,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -14,6 +16,8 @@ struct J : Module {
 		IODR,
 		IBHA,
 		IWET,
+		ILFO,
+		ILVL,
 		IN,
 		NUM_INPUTS
 	};
@@ -43,8 +47,8 @@ struct J : Module {
 		configParam(ODR, 0.f, 8.f, 4.f, "Order");
 		configParam(BHA, -1.f, 1.f, 1.f, "Bypass, High, All");
 		configParam(WET, 0.f, 100.f, 100.f, "Wet Mix", " %");
-		//configParam(DRV, -6.f, 6.f, 0.f, "Drive", " dB");
-		//configParam(INV, -1.f, 1.f, -1.f, "Invert");
+		configParam(LFO, -4.f, 4.f, 0.f, "LFO Frequency", " Oct");
+		configParam(LVL, 0.f, 100.f, 0.f, "LFO Level", " %");
 	}
 
 
@@ -77,8 +81,8 @@ struct J : Module {
 		float odr = params[ODR].getValue();
 		float bha = params[BHA].getValue();
 		float wet = params[WET].getValue() * 0.01f;//%
-		//float drv = params[DRV].getValue()/6.f;//dB
-		//float inv = params[INV].getValue();
+		float lfo = params[LFO].getValue();
+		float lvl = params[LVL].getValue();
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
@@ -104,7 +108,7 @@ struct J : Module {
 				out -= ibha * filt;//filter
 				if(iodr > i - 1) {
 					gout = out;//of order
-					if(iodr > i) {
+					if(iodr > i) {//9 over default = in
 						fout = out;
 					}
 				}
@@ -151,15 +155,15 @@ struct JWidget : ModuleWidget {
 		addParam(createParamCentered<RoundBlackKnob>(loc(2, 1), module, J::ODR));
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, J::BHA));
 		addParam(createParamCentered<RoundBlackKnob>(loc(2, 2), module, J::WET));
-		//addParam(createParamCentered<RoundBlackKnob>(loc(1, 3), module, F::INV));
-		//addParam(createParamCentered<RoundBlackKnob>(loc(2, 3), module, F::DRV));
+		addParam(createParamCentered<RoundBlackKnob>(loc(1, 3), module, J::LFO));
+		addParam(createParamCentered<RoundBlackKnob>(loc(2, 3), module, J::LVL));
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 4), module, J::IFRQ));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 4), module, J::IODR));
 		addInput(createInputCentered<PJ301MPort>(loc(1, 5), module, J::IBHA));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 5), module, J::IWET));
-		//addInput(createInputCentered<PJ301MPort>(loc(1, 6), module, F::IINV));
-		//addInput(createInputCentered<PJ301MPort>(loc(2, 6), module, F::IDRV));
+		addInput(createInputCentered<PJ301MPort>(loc(1, 6), module, J::ILFO));
+		addInput(createInputCentered<PJ301MPort>(loc(2, 6), module, J::ILVL));
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 7), module, J::IN));
 		addOutput(createOutputCentered<PJ301MPort>(loc(2, 7), module, J::OUT));

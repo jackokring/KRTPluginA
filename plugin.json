@@ -222,11 +222,12 @@
     {
       "slug": "J",
       "name": "J",
-      "description": "All-pass filter.",
+      "description": "All-pass filter. (Phaser).",
       "tags": [
         "Filter",
         "Polyphonic",
-        "Utility"
+        "Utility",
+        "Phaser"
       ]
     }
   ]

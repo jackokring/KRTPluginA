@@ -613,6 +613,8 @@ Parameters
 * Order `ODR`
 * Bypass, High, All `BHA`
 * Wet Mix `WET`
+* LFO Frequency `LFO`
+* LFO Depth `LVL`
 
 Ins
 ---
@@ -620,6 +622,8 @@ Ins
 * Order CV `ODR`
 * Bypass, High, All CV `BHA`
 * Wet Mix CV `WET`
+* LFO Frequency CV `LFO`
+* LFO Depth CV `LVL`
 * Input `IN`
 
 Outs
