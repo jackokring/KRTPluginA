@@ -73,6 +73,15 @@ struct J : Module {
 		return out;//lpf default
 	}
 
+	float modulo(float x, float m) {
+		float div = x / m;
+		long d = (long) div;
+		float rem = x - d * m;
+		return rem;
+	}
+
+	float wave[PORT_MAX_CHANNELS];
+
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		int maxPort = maxPoly();
@@ -91,9 +100,17 @@ struct J : Module {
 			float ibha = inputs[IBHA].getPolyVoltage(p) * 0.1f + bha + 1.f;//offset 1
 			float iwet = inputs[IWET].getPolyVoltage(p) * 0.1f + wet;
 			float ilfo = inputs[ILFO].getPolyVoltage(p) + lfo;//CV octave
-			float ilvl = inputs[ILVL].getPolyVoltage(p) * 0.1f + lvl;
-
-			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
+			float lfof = log(ilfo, 5.f);//5 Hz default
+			float step = lfof * 2.f / fs;
+			wave[p] += step;
+			wave[p] = modulo(wave[p], 2.f);
+			float x = wave[p];
+			if(x > 1.f) {
+				x = 2.f - x;//triangle
+			}
+			x -= 0.5f;//centre
+			x *= 4.f;//4 octave range
+			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq + x * lvl, dsp::FREQ_C4);
 
 			// IN
 			ifrq = clamp(ifrq, 0.f, fs * 0.5f);//safe
@@ -118,6 +135,7 @@ struct J : Module {
 			fout = fout * (1.f - iodr) + gout * iodr;//mix orders 
 			out = fout * iwet + in * (1.f - iwet);//wet mix
 			outputs[OUT].setVoltage(out, p);
+			outputs[OLFO].setVoltage(5.f * x, p);//10V scaling 20V pk-pk
 		}
 	}
 };
@@ -162,7 +180,7 @@ struct JWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(loc(1, 5), module, J::IBHA));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 5), module, J::IWET));
 		addInput(createInputCentered<PJ301MPort>(loc(1, 6), module, J::ILFO));
-		addOuput(createOuputCentered<PJ301MPort>(loc(2, 6), module, J::OLFO));
+		addOutput(createOutputCentered<PJ301MPort>(loc(2, 6), module, J::OLFO));
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 7), module, J::IN));
 		addOutput(createOutputCentered<PJ301MPort>(loc(2, 7), module, J::OUT));
