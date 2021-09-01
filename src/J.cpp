@@ -100,7 +100,7 @@ struct J : Module {
 			float ibha = inputs[IBHA].getPolyVoltage(p) * 0.1f + bha + 1.f;//offset 1
 			float iwet = inputs[IWET].getPolyVoltage(p) * 0.1f + wet;
 			float ilfo = inputs[ILFO].getPolyVoltage(p) + lfo;//CV octave
-			float lfof = log(ilfo, 5.f);//5 Hz default
+			float lfof = log(ilfo, 1.f);//1 Hz default
 			float step = lfof * 2.f / fs;
 			wave[p] += step;
 			wave[p] = modulo(wave[p], 2.f);
