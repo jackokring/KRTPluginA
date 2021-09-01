@@ -82,20 +82,19 @@ struct J : Module {
 		float bha = params[BHA].getValue();
 		float wet = params[WET].getValue() * 0.01f;//%
 		float lfo = params[LFO].getValue();
-		float lvl = params[LVL].getValue();
+		float lvl = params[LVL].getValue() * 0.01f;//%
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
 			float iodr = inputs[IODR].getPolyVoltage(p) + odr;//middle quantize
 			float ibha = inputs[IBHA].getPolyVoltage(p) * 0.1f + bha + 1.f;//offset 1
 			float iwet = inputs[IWET].getPolyVoltage(p) * 0.1f + wet;
-			/* 
-			float idrv = inputs[IDRV].getPolyVoltage(p) * mag + drv;
-			float iinv = inputs[IINV].getPolyVoltage(p) * mag + inv;
-			idrv = log(idrv, 5.f);//normal magnitude
-			*/
+			float ilfo = inputs[ILFO].getPolyVoltage(p) + lfo;//CV octave
+			float ilvl = inputs[ILVL].getPolyVoltage(p) * 0.1f + lvl;
+
+			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
+
 			// IN
 			ifrq = clamp(ifrq, 0.f, fs * 0.5f);//safe
 			setFK1(ifrq, fs);//set phase frequency
