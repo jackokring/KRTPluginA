@@ -623,9 +623,9 @@ Ins
 * Bypass, High, All CV `BHA`
 * Wet Mix CV `WET`
 * LFO Frequency CV `LFO`
-* LFO Depth CV `LVL`
 * Input `IN`
 
 Outs
 ---
+* LFO Out `LFO`
 * Output `OUT`

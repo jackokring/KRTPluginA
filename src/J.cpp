@@ -17,11 +17,11 @@ struct J : Module {
 		IBHA,
 		IWET,
 		ILFO,
-		ILVL,
 		IN,
 		NUM_INPUTS
 	};
 	enum OutputIds {
+		OLFO,//lfo out
 		OUT,
 		NUM_OUTPUTS
 	};
@@ -162,7 +162,7 @@ struct JWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(loc(1, 5), module, J::IBHA));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 5), module, J::IWET));
 		addInput(createInputCentered<PJ301MPort>(loc(1, 6), module, J::ILFO));
-		addInput(createInputCentered<PJ301MPort>(loc(2, 6), module, J::ILVL));
+		addOuput(createOuputCentered<PJ301MPort>(loc(2, 6), module, J::OLFO));
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 7), module, J::IN));
 		addOutput(createOutputCentered<PJ301MPort>(loc(2, 7), module, J::OUT));
