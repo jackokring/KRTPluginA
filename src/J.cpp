@@ -84,7 +84,7 @@ struct J : Module {
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
 			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
-			float iodr = inputs[IODR].getPolyVoltage(p) + odr + 0.5f;//middle quantize
+			float iodr = inputs[IODR].getPolyVoltage(p) + odr;//middle quantize
 			float ibha = inputs[IBHA].getPolyVoltage(p) * 0.1f + bha + 1.f;//offset 1
 			float iwet = inputs[IWET].getPolyVoltage(p) * 0.1f + wet;
 			/* 
@@ -98,12 +98,21 @@ struct J : Module {
 			float in = inputs[IN].getPolyVoltage(p);
 			float out = in;//0th order
 			float fout = out;
+			float gout = out;
 			for(int i = 0; i < 8; i++) {
 				float filt = process1(out, p, i);
 				out -= ibha * filt;//filter
-				if(iodr > i) fout = out;//of order
+				if(iodr > i - 1) {
+					gout = out;//of order
+					if(iodr > i) {
+						fout = out;
+					}
+				}
 			}
 			// OUT
+			int io = (int)iodr;
+			iodr -= io;//frac
+			fout = fout * (1.f - iodr) + gout * iodr;//mix orders 
 			out = fout * iwet + in * (1.f - iwet);//wet mix
 			outputs[OUT].setVoltage(out, p);
 		}
@@ -139,7 +148,7 @@ struct JWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 1), module, J::FRQ));
-		addParam(createParamCentered<RoundBlackSnapKnob>(loc(2, 1), module, J::ODR));
+		addParam(createParamCentered<RoundBlackKnob>(loc(2, 1), module, J::ODR));
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, J::BHA));
 		addParam(createParamCentered<RoundBlackKnob>(loc(2, 2), module, J::WET));
 		//addParam(createParamCentered<RoundBlackKnob>(loc(1, 3), module, F::INV));
