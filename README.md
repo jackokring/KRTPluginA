@@ -33,6 +33,7 @@ Index - Demo
 19. [U](#u)
 20. [B](#b)
 21. [J](#j)
+22. [K](#k)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -629,3 +630,10 @@ Outs
 ---
 * LFO Out `LFO`
 * Output `OUT`
+
+An all-pass filter with some phaser style effect possibilities. A direct `LFO` output is available, as this is more important than CV control over the `LVL` sweep range.
+
+K
+===
+
+*A*
