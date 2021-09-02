@@ -184,7 +184,8 @@
       "tags": [
         "Polyphonic",
         "Effect",
-        "Physical modeling"
+        "Physical modeling",
+        "Oscillator"
       ]
     },
     {
@@ -227,7 +228,8 @@
         "Filter",
         "Polyphonic",
         "Utility",
-        "Phaser"
+        "Phaser",
+        "Low-frequency oscillator"
       ]
     },
     {
