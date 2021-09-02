@@ -636,4 +636,4 @@ An all-pass filter with some phaser style effect possibilities. A direct `LFO` o
 K
 ===
 
-*A*
+*A Black One - *
