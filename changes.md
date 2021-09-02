@@ -1,15 +1,17 @@
 1.22.22
 ===
 
-* individual DC filters on `B` (can break patch)
-* added `J` all-pass filter
+* individual DC filters on `B` (can break patch as now individual filters)
+* added `J` all-pass filter/phaser
+* added some relevant tags in .json
+
 
 1.20.21
 ===
 
-* Made `C` gain normal not SD scaled for 2 and 1 split scaling (breaks patch)
+* Made `C` gain normal not SD scaled for 2 ins (via mix) and 1 in split scaling (breaks patch)
 * Fixed `C` color on mix label
-* Reverted `μ` weighted average drift (fixes patch)
+* Reverted `μ` weighted average drift (fixes patch, mush on 2 of outputs fixed)
 * Added `U` sample and hold quantizer
 * Added `B` performance router
 
