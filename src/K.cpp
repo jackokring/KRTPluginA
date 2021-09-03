@@ -58,7 +58,7 @@ struct K : Module {
 
 	/* 1P H(s) = 1 / (s + fb) */
     //ONE POLE FILTER
-	float f1, f2, b[PORT_MAX_CHANNELS][8];
+	float f1, f2, b[PORT_MAX_CHANNELS];
 
 	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
 		//f1   = tanf(M_PI * fc / fs);
@@ -66,9 +66,9 @@ struct K : Module {
 		f2   = 1 / (1 + f1);
 	}
 
-	float process1(float in, int p, int idx) {
-		float out = (f1 * in + b[p][idx]) * f2;
-		b[p][idx] = f1 * (in - out) + out;
+	float process1(float in, int p) {
+		float out = (f1 * in + b[p]) * f2;
+		b[p] = f1 * (in - out) + out;
 		return out;//lpf default
 	}
 
@@ -79,7 +79,61 @@ struct K : Module {
 		return rem;
 	}
 
+	float wave[PORT_MAX_CHANNELS][3];
+
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+		int maxPort = maxPoly();
+
+		float frq = params[FRQ].getValue();
+		float lpf = params[LPF].getValue();
+		float rt1 = params[RTO1].getValue() / 12.f;
+		float rt2 = params[RTO2].getValue() / 12.f;
+		float md1 = params[MOD1].getValue() * 0.01f;//%
+		float md2 = params[MOD2].getValue() * 0.01f;//%
+
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float ifrq = log(inputs[IFRQ].getPolyVoltage(p) + frq, dsp::FREQ_C4);
+			float ilpf = log(inputs[ILPF].getPolyVoltage(p) + lpf, ifrq);
+			ilpf = clamp(ilpf, 0.f, fs * 0.5f);//safe
+			float irt1 = log(inputs[IRTO1].getPolyVoltage(p) + rt1, ifrq);
+			float irt2 = log(inputs[IRTO2].getPolyVoltage(p) + rt2, ifrq);
+			float imd1 = inputs[IMOD1].getPolyVoltage(p) * 0.1f + md1;
+			float imd2 = inputs[IMOD2].getPolyVoltage(p) * 0.1f + md2;
+
+			float step = irt2 * 2.f / fs;
+			wave[p][2] += step;
+			wave[p][2] = modulo(wave[p][2], 2.f);
+			float x = wave[p][2];
+			if(x > 1.f) {
+				x = 2.f - x;//triangle
+			}
+			x -= 0.5f;//centre
+			x *= 2.f * imd2;//1V pk modulation
+			float step1 = irt1 * 2.f / fs;
+			wave[p][1] += step1;
+			float x1 = modulo(wave[p][1] + x + 64.f, 2.f);//phase offset plus wrap
+			wave[p][1] = modulo(wave[p][1], 2.f);
+			if(x1 > 1.f) {
+				x1 = 2.f - x1;//triangle
+			}
+			x1 -= 0.5f;//centre
+			x1 *= 2.f * imd1;//1V pk modulation
+			setFK1(ilpf, fs);//set frequency
+			x1 = process1(x1, p);
+			outputs[OMOD].setVoltage(5.f * x1, p);//5V scaling 10V pk-pk
+			float step0 = ifrq * 2.f / fs;
+			wave[p][0] += step0;
+			float x0 = modulo(wave[p][0] + x1 + 64.f, 2.f);//phase offset plus wrap
+			wave[p][0] = modulo(wave[p][0], 2.f);
+			if(x0 > 1.f) {
+				x0 = 2.f - x0;//triangle
+			}
+			x0 -= 0.5f;//centre
+			outputs[OUT].setVoltage(10.f * x0, p);
+		}
 	}
 };
 
