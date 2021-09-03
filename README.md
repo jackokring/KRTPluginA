@@ -636,4 +636,27 @@ An all-pass filter with some phaser style effect possibilities. A direct `LFO` o
 K
 ===
 
-*A Black One - *
+*A Black One - Phase modulation oscillator*
+
+Parameters
+---
+* Frequency `FRQ`
+* Filter `LPF`
+* Ratio `RT1`
+* Ratio `RT2`
+* Modulation Depth `MD1`
+* Modulation Depth `MD2`
+
+Ins
+---
+* Frequency CV `FRQ`
+* Filter CV `LPF`
+* Ratio CV `RT1`
+* Ratio CV `RT2`
+* Modulation Depth CV `MD1`
+* Modulation Depth CV `MD2`
+
+Outs
+---
+* Modulation Out `MOD`
+* Output `OUT`

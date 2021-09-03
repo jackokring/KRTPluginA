@@ -235,8 +235,11 @@
     {
       "slug": "K",
       "name": "K",
-      "description": "",
-      "tags": []
+      "description": "Phase modulation oscillator.",
+      "tags": [
+        "Polyphonic",
+        "Oscillator"
+      ]
     }
   ]
 }
