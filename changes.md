@@ -4,6 +4,7 @@
 * individual DC filters on `B` (can break patch as now individual filters)
 * added `J` all-pass filter/phaser
 * added some relevant tags in .json
+* added `K` phase modulation oscillator
 
 
 1.20.21
