@@ -43,7 +43,8 @@ struct H : Module {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				int idx = j + 3 * i;
-				configParam(HARM + idx, 0.f, 100.f, 50.f, names[idx], " %");
+				configParam(HARM + idx, 0.f, 100.f, 100.f / 16.f * multiplier[idx],
+					names[idx], " %");
 			}
 		}
 	}
