@@ -65,7 +65,44 @@ struct H : Module {
         return powf(2.f, val) * centre;
     }
 
+	float modulo(float x, float m) {
+		float div = x / m;
+		long d = (long) div;
+		float rem = x - d * m;
+		return rem;
+	}
+
+	float wave[PORT_MAX_CHANNELS];
+	float para[9];
+
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+		int maxPort = maxPoly();
+#pragma GCC ivdep
+		for(int i = 0; i < 9; i++) {
+			para[i] = params[HARM + i].getValue() * 0.01f;
+		}
+		// PARAMETERS (AND IMPLICIT INS)
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float frq = log(inputs[FRQ].getPolyVoltage(p), dsp::FREQ_C4);
+			float pm = inputs[PM].getPolyVoltage(p) * 0.1f;
+			float out = 0.f;
+			float step = frq * 2.f / fs;
+			wave[p] += step;
+			wave[p] = modulo(wave[p], 240.f);
+#pragma GCC ivdep
+			for(int i = 0; i < 9; i++) {
+				float x = modulo(wave[p] * divider[i] + multiplier[i] * pm + 64.f, 2.f);//phase offset plus wrap
+				float amp = inputs[IHARM + i].getPolyVoltage(p) * 0.1f + para[i];
+				if(x > 1.f) {
+					x = 2.f - x;//triangle
+				}
+				x -= 0.5f;//centre
+				out += x * amp * multiplier[i];//energy density
+			}
+			outputs[OUT].setVoltage(out, p);
+		}
 	}
 };
 
