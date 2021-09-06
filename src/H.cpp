@@ -81,7 +81,7 @@ struct H : Module {
 		int maxPort = maxPoly();
 #pragma GCC ivdep
 		for(int i = 0; i < 9; i++) {
-			para[i] = params[HARM + i].getValue() * 0.01f;
+			para[i] = sqrtf(params[HARM + i].getValue() * 0.01f);
 		}
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
