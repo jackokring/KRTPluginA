@@ -1,7 +1,7 @@
 {
   "slug": "KRTPluginA",
   "name": "KRTPluginA",
-  "version": "1.23.22",
+  "version": "1.23.23",
   "license": "MIT",
   "brand": "KRT",
   "author": "Jacko",
@@ -244,8 +244,11 @@
     {
       "slug": "H",
       "name": "H",
-      "description": "",
-      "tags": []
+      "description": "Base gimpathizer. (Organ with phase modulation).",
+      "tags": [
+        "Polyphonic",
+        "Oscillator"
+      ]
     }
   ]
 }
