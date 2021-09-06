@@ -1,3 +1,9 @@
+1.23.22
+===
+
+* set defualt `J` mix at 50%
+* added `H` phase modulable organ
+
 1.22.22
 ===
 

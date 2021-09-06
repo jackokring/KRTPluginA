@@ -46,7 +46,7 @@ struct J : Module {
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(ODR, 0.f, 8.f, 4.f, "Order");
 		configParam(BHA, -1.f, 1.f, 1.f, "Bypass, High, All");
-		configParam(WET, 0.f, 100.f, 100.f, "Wet Mix", " %");
+		configParam(WET, 0.f, 100.f, 50.f, "Wet Mix", " %");
 		configParam(LFO, -4.f, 4.f, 0.f, "LFO Frequency", " Oct");
 		configParam(LVL, 0.f, 100.f, 0.f, "LFO Level", " %");
 	}

@@ -90,7 +90,7 @@ struct H : Module {
 			float out = 0.f;
 			float step = frq * 2.f / fs;
 			wave[p] += step;
-			wave[p] = modulo(wave[p], 240.f);
+			wave[p] = modulo(wave[p], 240.f * 4.f);
 #pragma GCC ivdep
 			for(int i = 0; i < 9; i++) {
 				float x = modulo(wave[p] * divider[i] + multiplier[i] * pm + 64.f, 2.f);//phase offset plus wrap
@@ -99,9 +99,9 @@ struct H : Module {
 					x = 2.f - x;//triangle
 				}
 				x -= 0.5f;//centre
-				out += x * amp * multiplier[i];//energy density
+				out += x * amp;//energy density?
 			}
-			outputs[OUT].setVoltage(out, p);
+			outputs[OUT].setVoltage(10.f / 3.f * out, p);
 		}
 	}
 };
@@ -138,7 +138,7 @@ struct HWidget : ModuleWidget {
 			for(int j = 0; j < 3; j++) {
 				int idx = j + 3 * i;
 				addParam(createParamCentered<RoundBlackKnob>(loc(j + 1, i + 1), module, H::HARM + idx));
-				addInput(createInputCentered<PJ301MPort>(loc(j + 4, i + 1), module, H::IHARM));
+				addInput(createInputCentered<PJ301MPort>(loc(j + 1, i + 4), module, H::IHARM + idx));
 			}
 		}
 		addInput(createInputCentered<PJ301MPort>(loc(1, 7), module, H::FRQ));
