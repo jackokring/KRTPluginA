@@ -31,7 +31,7 @@ Index - Demo
 17. [Q](#q) - [Q](https://github.com/jackokring/KRTPluginADemo/blob/master/Q.vcv)
 18. [C](#c) - No demo required
 19. [U](#u)
-20. [B](#b)
+20. [B](#b) - I seems to be adding to patch [B](https://github.com/jackokring/KRTPluginADemo/blob/master/B.vcv)
 21. [J](#j)
 22. [K](#k)
 23. [H](#h)
@@ -664,3 +664,21 @@ Outs
 
 H
 ===
+
+*Another Grey One - Base Gimpathizer*
+
+Parameters
+---
+* 9 Hammond Harminics `16'`, `5 1/3'`, `8'`, `4'`, `2 2/3'`, `2'`, `1 3/5'`, `1 1/3'` and `1'`
+
+Ins
+---
+* 9 Hammond Harminic CV `16'`, `5 1/3'`, `8'`, `4'`, `2 2/3'`, `2'`, `1 3/5'`, `1 1/3'` and `1'`
+* Frequency CV `FRQ`
+* Phase Modulation CV `PM`
+
+Outs
+---
+* Out `OUT`
+
+classic organ harmonics. Add a little phase modulation weighted more for the base harmonics, and make some interesting timbral textures. Hold on to your base bins.
