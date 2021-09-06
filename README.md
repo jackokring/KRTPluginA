@@ -34,6 +34,7 @@ Index - Demo
 20. [B](#b)
 21. [J](#j)
 22. [K](#k)
+23. [H](#h)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -660,3 +661,6 @@ Outs
 ---
 * Modulation Out `MOD`
 * Output `OUT`
+
+H
+===
