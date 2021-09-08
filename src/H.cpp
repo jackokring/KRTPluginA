@@ -47,6 +47,9 @@ struct H : Module {
 					names[idx], " %");
 			}
 		}
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			wave[i] = 0;
+		}
 	}
 
 	const float divider[9] = {//as multiplier

@@ -129,6 +129,11 @@ struct F : Module {
 		configParam(LAH, -1.f, 1.f, -1.f, "Low High");
 		configParam(DRV, -6.f, 6.f, 0.f, "Drive", " dB");
 		configParam(INV, -1.f, 1.f, -1.f, "Invert");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			for(int j = 0; j < 2; j++) {
+				bl[i][j] = bb[i][j] = 0;
+			}
+		}
 	}
 
 	//obtain mapped control value

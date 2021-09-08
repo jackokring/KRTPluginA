@@ -53,6 +53,9 @@ struct A : Module {
 		configParam(OFF, -4.f, 4.f, 0.f, "Offset", " Oct");
 		configParam(RING, 0.f, 6.f, 0.f, "Ring Mod", " dB (rel 6)");
 		configParam(MAM, -2.f, 2.f, 0.f, "Mod offset");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			bl[i] = bb[i] = b[i] = b2[i] = 0;
+		}
 	}
 
     //obtain mapped control value

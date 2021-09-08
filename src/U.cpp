@@ -56,6 +56,9 @@ struct U : Module {
 		for(int i = 0; i < 3; i++) {
 			sampled[i] = 0.f;
 		}
+		for(int i = 0; i < PORT_MAX_CHANNELS * 3; i++) {
+			b[i] = 0;
+		}
 	}
 
 	dsp::SchmittTrigger sh[3];

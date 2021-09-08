@@ -54,6 +54,9 @@ struct D : Module {
 		configParam(DB, -24.f, 6.f, 0.f, "Exponential Gain", " dB");
 		configParam(CVDB, -6.f, 6.f, 0.f, "Modulation Level", " Center dB (rel 6)");
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			b[i] = 0;
+		}
 	}
 
 	//obtain mapped control value

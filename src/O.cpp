@@ -39,6 +39,11 @@ struct O : Module {
 			configParam(FRQ + i, -2.f, 2.f, 0.f, "Relative Frequency", " Oct");
 			configParam(FBK + i, 0.f, 100.f, 50.f, "Feedback", " %");
 		}
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			for(int j = 0; i < 3; j++) {
+				wave[i][j] = 0;
+			}
+		}
 	}
 
 	//obtain mapped control value

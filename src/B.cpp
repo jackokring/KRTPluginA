@@ -146,6 +146,9 @@ struct B : Module {
 				}
 			}
 		}
+		for(int i = 0; i < PORT_MAX_CHANNELS * 3; i++) {
+			b[i] = 0;
+		}
 	}
 
 	dsp::SchmittTrigger modeTrig;

@@ -49,6 +49,12 @@ struct J : Module {
 		configParam(WET, 0.f, 100.f, 50.f, "Wet Mix", " %");
 		configParam(LFO, -4.f, 4.f, 0.f, "LFO Frequency", " Oct");
 		configParam(LVL, 0.f, 100.f, 0.f, "LFO Level", " %");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			wave[i] = 0;
+			for(int j = 0; i < 8; j++) {
+				b[i][j] = 0;
+			}
+		}
 	}
 
 

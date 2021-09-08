@@ -49,6 +49,12 @@ struct K : Module {
 		configParam(RTO2, -12.f, 12.f, 0.f, "High Ratio", " Semitones");
 		configParam(MOD1, 0.f, 100.f, 50.f, "Low Modulation", " %");
 		configParam(MOD2, 0.f, 100.f, 50.f, "High Modulation", " %");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			b[i] = 0;
+			for(int j = 0; i < 3; j++) {
+				wave[i][j] = 0;
+			}
+		}
 	}
 
 	//obtain mapped control value

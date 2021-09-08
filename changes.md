@@ -3,6 +3,11 @@
 
 
 
+1.23.24
+===
+
+* filter zero initializations (all modules)
+* increased mash range on `X`
 
 1.23.23
 ===

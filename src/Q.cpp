@@ -61,6 +61,9 @@ struct Q : Module {
 		configParam(NEWTON, 0.f, 2.f, 0.f, "Gravity Newton Magnifier");
 		configParam(MASS_RATIO, 2.f, 4.f, 0.f, "Mass Magnifier");
 		configParam(ANGLE, -1.f, 1.f, 0.f, "Angle Magnifier");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			wave[i] = 0;
+		}
 	}
 
 	float wave[PORT_MAX_CHANNELS];

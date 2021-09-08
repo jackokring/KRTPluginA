@@ -69,6 +69,11 @@ struct C : Module {
 		configParam(F1, -6.f, 6.f, 0.f, "LPF", " Oct");
 		configParam(F2, -6.f, 6.f, 0.f, "LPF", " Oct");
 		configParam(F3, -6.f, 6.f, 0.f, "LPF", " Oct");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			for(int j = 0; j < 3; j++) {
+				b[i][j] = 0;
+			}
+		}
 	}
 
 	void process(const ProcessArgs& args) override {

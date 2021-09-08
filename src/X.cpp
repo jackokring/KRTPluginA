@@ -68,8 +68,11 @@ struct X : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FOLD, 0.f, 100.f, 50.f, "Fold Depth", " %");
 		configParam(KIND, -1.f, 1.f, 0.f, "Fold Kind");
-		configParam(MASH, 23.f, 1.f, 23.f, "Mash Bit Depth", " bits");
+		configParam(MASH, 23.f, -4.f, 23.f, "Mash Bit Depth", " bits");
 		configParam(WET, 0.f, 100.f, 50.f, "Wet Mix", " %");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			bl[i] = bb[i] = 0;
+		}
 	}
 
 	float modulo(float x, float m) {

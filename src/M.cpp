@@ -60,6 +60,11 @@ struct M : Module {
 		configParam(HIGH, -4.f, 0.f, 0.f, "High Frequency", " Oct (rel 21.22 kHz");
 		configParam(HGAIN, -20.f, 0.f, -20.f, "High Gain", " dB");
 		//21kHz break on high boost
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			for(int j = 0; i < 4; j++) {
+				b[i][j] = 0;
+			}
+		}
 	}
 
 	//obtain mapped control value
