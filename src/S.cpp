@@ -65,7 +65,12 @@ struct S : Module {
 
 		if(triggerStrt) {
 			beatCounter = 0.f;
-			beatIn = 0;
+			beatIn = 63;
+			//perculiar beat thing of MIDI
+			//the regular logic convention
+			//of reset overides clock?
+			//easiest to arm a transient state
+			divider = div;//arm on last for next clock
 			running = true;
 		}
 		if(triggerCont) {
@@ -75,9 +80,9 @@ struct S : Module {
 			running = false;
 		}
 		if(triggerClk && running) {//running check
-			div++;
+			divider++;//divider not div control
 			if(divider >= div) {
-				div = 0;
+				divider = 0;
 				beatIn++;
 				beatIn &= 63;
 				beatCounter = 0.f;

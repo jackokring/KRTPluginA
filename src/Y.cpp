@@ -460,6 +460,7 @@ struct Y : Module {
 		if(beats >= 64) {//sanity range before use
 			beatCounter = modulo(beatCounter, 64);//beats long
 		}
+		//using reset overides clock in chained modules
 	}	
 };
 

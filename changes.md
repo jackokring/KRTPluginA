@@ -1,7 +1,7 @@
 1.24.24
 ===
 
-
+* clocking on `S` fixed MIDI arm style
 
 1.23.24
 ===

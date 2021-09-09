@@ -314,6 +314,9 @@ struct Om : Module {
 			ptrOffsets = 0;//reset
 			lights[LRAND].setBrightness(0.f);
 			lights[LBIRD].setBrightness(0.f);
+			//ignore synchronous clock trigger
+			//unlike MIDI which reset does not override
+			//first clock
 		} else if(trigClk) {
 			//on clock step forward
 			unsigned char x = getDigit(ptrOffsets, seed) - '@';
