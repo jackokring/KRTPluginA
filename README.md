@@ -690,7 +690,24 @@ I
 
 *A Light Grey One - Clock divider*
 
+Parameters
+---
+* 3 Dividers `D1`, `D2`, `D3`
+* 3 Phases `P1`, `P2`, `P3`
+
+Ins
+---
+* Clock `CLK`
+* Reset `RST`
+
+Outs
+---
+* Down Beat `DWN`
+* All But Down Beat `SANS`
+* 3 Outs `O1`, `O2`, `O3`
+* Exclusive Or of All 3 Outputs `XOR` 
+
 G
 ===
 
-*A Light Grey One - Compressor*
+*Another Light Grey One - Compressor*
