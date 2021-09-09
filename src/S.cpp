@@ -23,7 +23,7 @@ struct S : Module {
 	};
 
 	double beatCounter = 0;
-	int beatIn = 0;
+	int beatIn = 64;
 	int divider = 0;
 	bool running = false;
 
@@ -65,7 +65,7 @@ struct S : Module {
 
 		if(triggerStrt) {
 			beatCounter = 0.f;
-			beatIn = 63;
+			beatIn = 64;
 			//perculiar beat thing of MIDI
 			//the regular logic convention
 			//of reset overides clock?
@@ -80,6 +80,7 @@ struct S : Module {
 			running = false;
 		}
 		if(triggerClk && running) {//running check
+			beatIn &= 63;//cancel armed state
 			divider++;//divider not div control
 			if(divider >= div) {
 				divider = 0;
@@ -94,7 +95,7 @@ struct S : Module {
 			beatCounter = modulo(beatCounter, 1);//beats long
 		}
 
-		outputs[OUT].setVoltage((beatIn + beatCounter) * 10.f / 64.f);
+		outputs[OUT].setVoltage(((beatIn & 63) + beatCounter) * 10.f / 64.f);
 
 	}
 };
