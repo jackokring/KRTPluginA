@@ -80,7 +80,7 @@ struct S : Module {
 			running = false;
 		}
 		if(triggerClk && running) {//running check
-			beatIn &= 63;//cancel armed state
+			if(beatIn > 63) beatIn = 63;//cancel armed state
 			divider++;//divider not div control
 			if(divider >= div) {
 				divider = 0;
