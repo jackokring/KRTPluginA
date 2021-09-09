@@ -35,6 +35,8 @@ Index - Demo
 21. [J](#j)
 22. [K](#k)
 23. [H](#h)
+24. [I](#i)
+25. [G](#g)
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
 
@@ -682,3 +684,13 @@ Outs
 * Out `OUT`
 
 classic organ harmonics. Add a little phase modulation weighted more for the base harmonics, and make some interesting timbral textures. Hold on to your base bins.
+
+I
+===
+
+*A Light Grey One - Clock divider*
+
+G
+===
+
+*A Light Grey One - Compressor*

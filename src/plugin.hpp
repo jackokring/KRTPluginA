@@ -37,6 +37,8 @@ extern Model *modelJ;
 extern Model *modelK;
 
 extern Model *modelH;
+extern Model *modelI;
+extern Model *modelG;
 
 #define M_PI_F float(M_PI)
 #define M_PI_POW_2 M_PI * M_PI

@@ -40,5 +40,7 @@ void init(Plugin* p) {
 	p->addModel(modelK);
 
 	p->addModel(modelH);
+	p->addModel(modelI);
+	p->addModel(modelG);
 	
 }

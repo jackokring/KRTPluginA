@@ -1,4 +1,4 @@
-1.24.24
+1.25.24
 ===
 
 * clocking on `S` fixed MIDI arm style
