@@ -3,12 +3,26 @@
 
 struct G : Module {
 	enum ParamIds {
+		ATK,
+		DCY,
+		THR,
+		RTO,
+		CUT,
+		Q,
+		MIX,
+		ENV,
 		NUM_PARAMS
 	};
 	enum InputIds {
+		FRQ,
+		SCH,
+		IN,
 		NUM_INPUTS
 	};
 	enum OutputIds {
+		OFRQ,
+		OENV,
+		OUT,
 		NUM_OUTPUTS
 	};
 	enum LightIds {
