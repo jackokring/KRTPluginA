@@ -24,7 +24,7 @@ struct S : Module {
 
 	double beatCounter = 0;
 	int beatIn = 64;
-	int divider = 0;
+	int divider = 17;
 	bool running = false;
 
 	dsp::SchmittTrigger tClk;
@@ -51,7 +51,6 @@ struct S : Module {
 
 		double bps = (double)params[BPM].getValue() / 15.f;//beat per bar
 		double beatSamp = bps / fs;//beats per sample
-		float beats = beatCounter;
 		int div = (int)params[DIV].getValue();
 
 		float trigClk = inputs[CLK].getVoltage();
@@ -91,9 +90,7 @@ struct S : Module {
 		}
 
 		if(running) beatCounter += beatSamp;
-		if(beats >= 1) {//sanity range before use
-			beatCounter = modulo(beatCounter, 1);//beats long
-		}
+		beatCounter = modulo(beatCounter, 1);//beats long
 
 		outputs[OUT].setVoltage(((beatIn & 63) + beatCounter) * 10.f / 64.f);
 
