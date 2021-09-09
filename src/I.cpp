@@ -23,7 +23,22 @@ struct I : Module {
 		NUM_LIGHTS
 	};
 
+	int maxPoly() {
+		int poly = inputs[CLK].getChannels();
+		for(int o = 0; o < NUM_OUTPUTS; o++) {
+			outputs[o].setChannels(poly);
+		}
+		return poly;
+	}
+
 	const int gcd = 360 * 7 * 11 * 13;//for phase
+
+	bool outSym[PORT_MAX_CHANNELS][3];
+
+	dsp::SchmittTrigger sClk[PORT_MAX_CHANNELS];
+	dsp::SchmittTrigger sRst;
+
+	int divider[3];
 
 	I() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
@@ -34,6 +49,42 @@ struct I : Module {
 	}
 
 	void process(const ProcessArgs& args) override {
+		//float fs = args.sampleRate;
+		int maxPort = maxPoly();
+
+
+		// PARAMETERS (AND IMPLICIT INS)
+		float rst = inputs[RST].getVoltageSum();//signal OR
+		bool trigRst = sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
+		for(int p = maxPort - 1; p > 0; p--) {//Assume branch into unroll number ...
+			float clk = inputs[CLK].getPolyVoltage(p);			
+			bool trigClk = sClk[p].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
+			if(trigClk) {
+				for(int i = 0; i < 3; i++) {
+					outSym[p][i] = outSym[p - 1][i];
+				}
+			}
+		}
+		//clock normalization
+		float clk = inputs[CLK].getPolyVoltage(0);
+		bool trigClk = sClk[0].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
+		if(trigRst) {
+			
+		} else if(trigClk) {
+
+		}
+		// outSym[0] = getDigit(ptrOffsets, seed) - '@';//set out * 3
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			// OUTS
+			bool x = false;
+#pragma GCC ivdep			
+			for(int i = 0; i < 3; i++) {
+				outputs[OUT + i].setVoltage(outSym[p][i] ? 10.f : 0.f, p);
+				x ^= outSym[p][i];
+			}
+			outputs[XOR].setVoltage(x ? 10.f : 0.f, p);//gate
+		}
 	}
 };
 
