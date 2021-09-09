@@ -3,12 +3,20 @@
 
 struct I : Module {
 	enum ParamIds {
+		ENUMS(DIV, 3),//divider
+		ENUMS(PHA, 3),//phase of division
 		NUM_PARAMS
 	};
 	enum InputIds {
+		CLK.
+		RST,
 		NUM_INPUTS
 	};
 	enum OutputIds {
+		DWN,//downbeat clock
+		SANS,//rest of the clocks
+		ENUMS(OUT, 3),//divided outs
+		XOR,//of outs
 		NUM_OUTPUTS
 	};
 	enum LightIds {
