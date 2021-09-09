@@ -70,7 +70,7 @@ struct S : Module {
 			//the regular logic convention
 			//of reset overides clock?
 			//easiest to arm a transient state
-			divider = div;//arm on last for next clock
+			divider = 17;//arm on last for next clock always!
 			running = true;
 		}
 		if(triggerCont) {
