@@ -23,8 +23,14 @@ struct I : Module {
 		NUM_LIGHTS
 	};
 
+	const int gcd = 360 * 7 * 11 * 13;//for phase
+
 	I() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		for(int i = 0; i < 3; i++) {
+			configParam(DIV + i, 1.f, 16.f, 1.f, "Divider");
+			configParam(PHA + i, 0.f, 100.f, 0.f, "Phase", " %");
+		}
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -60,7 +66,7 @@ struct IWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		for(int i = 0; i < 3; i++) {
-			addParam(createParamCentered<RoundBlackKnob>(loc(1, i + 1), module, I::DIV + i));
+			addParam(createParamCentered<RoundBlackSnapKnob>(loc(1, i + 1), module, I::DIV + i));
 			addParam(createParamCentered<RoundBlackKnob>(loc(2, i + 1), module, I::PHA + i));
 			addOutput(createOutputCentered<PJ301MPort>(loc(2, i + 4), module, I::OUT + i));
 		}
