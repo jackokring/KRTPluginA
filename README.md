@@ -729,7 +729,7 @@ Ins
 ---
 * Frequency `FRQ`
 * Sidechain `SCH` (normaled from `IN`)
-* Input `IN`
+* Input `IN`3 Outs `O1`, `O2`, `O3`
 
 Outs
 ---
