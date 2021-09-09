@@ -28,6 +28,8 @@ struct I : Module {
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
 			outputs[o].setChannels(poly);
 		}
+		outputs[DWN].setChannels(1);
+		outputs[SANS].setChannels(1);
 		return poly;
 	}
 
@@ -38,20 +40,30 @@ struct I : Module {
 	dsp::SchmittTrigger sClk[PORT_MAX_CHANNELS];
 	dsp::SchmittTrigger sRst;
 
-	int divider[3];
+	int master = 0;
+	bool bagIt = false;
+	bool maskIt = false;
+	int divs[3];
+	int phase[3];
 
 	I() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		for(int i = 0; i < 3; i++) {
 			configParam(DIV + i, 1.f, 16.f, 1.f, "Divider");
 			configParam(PHA + i, 0.f, 100.f, 0.f, "Phase", " %");
+			for(int j = 0; j < PORT_MAX_CHANNELS; j++) {
+				outSym[j][i] = false;
+			}
 		}
 	}
 
 	void process(const ProcessArgs& args) override {
 		//float fs = args.sampleRate;
 		int maxPort = maxPoly();
-
+		for(int i = 0; i < 3; i++) {
+			divs[i] = (int)params[DIV + i].getValue();
+			phase[i] = (int)(params[PHA + i].getValue() * 0.01f * (divs[i] - 1.f));
+		}
 
 		// PARAMETERS (AND IMPLICIT INS)
 		float rst = inputs[RST].getVoltageSum();//signal OR
@@ -69,11 +81,26 @@ struct I : Module {
 		float clk = inputs[CLK].getPolyVoltage(0);
 		bool trigClk = sClk[0].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
 		if(trigRst) {
-			
+			master = 0;
+			if(trigClk) {
+				maskIt = true;
+			} else {
+				bagIt = true;
+			}
 		} else if(trigClk) {
-
+			if(bagIt) {//inhibit still active
+				bagIt = false;
+				maskIt = true;
+			} else {
+				maskIt = false;
+				master++;
+				if(master > gcd) master = 0;//modulo
+			}
 		}
-		// outSym[0] = getDigit(ptrOffsets, seed) - '@';//set out * 3
+		bool clkMsk = sClk[0].isHigh();
+		outSym[0][0] = clkMsk && ((master % divs[0]) == phase[0]);
+		outSym[0][1] = clkMsk && ((master % divs[1]) == phase[1]);
+		outSym[0][2] = clkMsk && ((master % divs[2]) == phase[2]);
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
 			// OUTS
@@ -85,6 +112,8 @@ struct I : Module {
 			}
 			outputs[XOR].setVoltage(x ? 10.f : 0.f, p);//gate
 		}
+		outputs[DWN].setVoltage(clkMsk && maskIt ? 10.f : 0.f);//gate
+		outputs[SANS].setVoltage(clkMsk && !maskIt ? 10.f : 0.f);//gate
 	}
 };
 
