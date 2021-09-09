@@ -683,7 +683,7 @@ Outs
 ---
 * Out `OUT`
 
-classic organ harmonics. Add a little phase modulation weighted more for the base harmonics, and make some interesting timbral textures. Hold on to your base bins.
+Classic organ harmonics. Add a little phase modulation weighted more for the base harmonics, and make some interesting timbral textures. Hold on to your base bins. To not weight the phase modulation gets harmonically (n+1) very fast.
 
 I
 ===
@@ -705,9 +705,36 @@ Outs
 * Down Beat `DWN`
 * All But Down Beat `SANS`
 * 3 Outs `O1`, `O2`, `O3`
-* Exclusive Or of All 3 Outputs `XOR` 
+* Exclusive Or of All 3 Outputs `XOR`
+
+Apart from being 3 variable clock dividers which maintain a sychronization phase this module also extracts the down beat for modules where `RST` does not override `CLK` and so need the first clock needs extracting (the downbeat) to synchronize them. Such "armed before play" modules copy the MIDI standard but are different from the normal electronic logic synchronous convention of hold in the first state on `RST` and so ignore the first `CLK`. They use an extra state (called "armed" here) and then need a `CLK` to enter the first state.
 
 G
 ===
 
 *Another Light Grey One - Compressor*
+
+Parameters
+---
+* Attack `ATK`
+* Decay `DCY`
+* Threshold `THR`
+* Ratio of compression or Expansion `RTO`
+* Low Pass Cut `CUT`
+* Low Pass Resonance `Q`
+* Mix to Makeup Level `MIX`
+* Envelope Follower to CV `ENV`
+
+Ins
+---
+* Frequency `FRQ`
+* Sidechain `SCH` (normaled from `IN`)
+* Input `IN`
+
+Outs
+---
+* Frequency `FRQ` (with `ENV` mixed in with control gain)
+* Envelope Follower `ENV`
+* Compressed Output `OUT`
+
+A normal compressor with a sidechain input. The envelope follower can be mixed with the `FRQ` in to produce some pinging harmonics, along with a filter which can be tuned down for a `Q` boost and sub-base cut. The `MIX` brings a compressed `OUT` back upto normalized levels like a make up gain.
