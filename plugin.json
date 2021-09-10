@@ -251,6 +251,15 @@
       ]
     },
     {
+      "slug": "I",
+      "name": "I",
+      "description": "Clock divider with downbeat extract.",
+      "tags": [
+        "Clock modulator",
+        "Polyphonic"
+      ]
+    },
+    {
       "slug": "G",
       "name": "G",
       "description": "Compressor with control outs.",
@@ -259,15 +268,6 @@
         "Compressor",
         "Limiter",
         "Dynamics"
-      ]
-    },
-    {
-      "slug": "I",
-      "name": "I",
-      "description": "Clock divider with downbeat extract.",
-      "tags": [
-        "Clock modulator",
-        "Polyphonic"
       ]
     }
   ]
