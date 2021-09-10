@@ -707,7 +707,15 @@ Outs
 * 3 Outs `O1`, `O2`, `O3`
 * Exclusive Or of All 3 Outputs `XOR`
 
-Apart from being 3 variable clock dividers which maintain a sychronization phase this module also extracts the down beat for modules where `RST` does not override `CLK` and so need the first clock needs extracting (the downbeat) to synchronize them. Such "armed before play" modules copy the MIDI standard but are different from the normal electronic logic synchronous convention of hold in the first state on `RST` and so ignore the first `CLK`. They use an extra state (called "armed" here) and then need a `CLK` to enter the first state.
+Apart from being 3 variable clock dividers which maintain a sychronization phase this module also extracts the down beat for modules when high `RST` does not override `CLK` and so need the first clock extracting (the downbeat) to synchronize them. Such "armed before play" (rising edge reset) modules **should** copy the **MIDI standard** but are different from the **normal electronic logic synchronous convention** of hold in the first state on `RST` and so **don't** ignore the first `CLK`. They **should** use an extra state (called "armed" here) and then need a `CLK` to enter the first state.
+
+If a module resets on rising edge `RST` but also reacts after to rising edge `CLK` and also **doesn't** have an "armed" state, it jump forward one step out of sync. If it has an "armed" state and `RST` is slightly delayed compared to `CLK` is spend one step in the "armed" state based on a race of signals through wiring.
+
+If the `CLK` is before the `RST`: the clock is the downbeat. `DWN` and `SANS` can be used as `RST` and `CLK` for downstream modules without confusion if they reset into the first state not needing a clock to transition from an "armed" state. The clock is truncated on `RST` and sent out `DWN` and is a glitch on `SANS`.
+
+If the `CLK` is after the `RST` (but `RST` is still high): the clock is the downbeat. `DWN` and `SANS` can be used as `RST` and `CLK` for downstream modules without confusion if they reset into the first state not needing a clock to transition from an "armed" state. The clock is sent out `DWN` and does not appear out of `SANS`.
+
+So basically that part of the module helps when synchronizing modules with a rising edge `RST` instead of a high continuous `RST` (with `CLK` ignore). Extracting the downbeat is in a sense a clock ignore on `SANS`. `DWN` is in a sense a `RST` but delayed until after `CLK`.
 
 G
 ===

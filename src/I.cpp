@@ -41,7 +41,6 @@ struct I : Module {
 	dsp::SchmittTrigger sRst;
 
 	int master = 0;
-	bool bagIt = false;
 	bool maskIt = false;
 	int divs[3];
 	int phase[3];
@@ -67,7 +66,7 @@ struct I : Module {
 
 		// PARAMETERS (AND IMPLICIT INS)
 		float rst = inputs[RST].getVoltageSum();//signal OR
-		bool trigRst = sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
+		sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
 		for(int p = maxPort - 1; p > 0; p--) {//Assume branch into unroll number ...
 			float clk = inputs[CLK].getPolyVoltage(p);			
 			bool trigClk = sClk[p].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
@@ -80,22 +79,13 @@ struct I : Module {
 		//clock normalization
 		float clk = inputs[CLK].getPolyVoltage(0);
 		bool trigClk = sClk[0].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
-		if(trigRst) {
+		if(sRst.isHigh()) {
 			master = 0;
-			if(trigClk) {
-				maskIt = true;
-			} else {
-				bagIt = true;
-			}
+			maskIt = true;
 		} else if(trigClk) {
-			if(bagIt) {//inhibit still active
-				bagIt = false;
-				maskIt = true;
-			} else {
-				maskIt = false;
-				master++;
-				if(master > gcd) master = 0;//modulo
-			}
+			maskIt = false;
+			master++;
+			if(master > gcd) master = 0;//modulo
 		}
 		bool clkMsk = sClk[0].isHigh();
 		outSym[0][0] = clkMsk && ((master % divs[0]) == phase[0]);

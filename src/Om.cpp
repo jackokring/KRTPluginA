@@ -295,7 +295,7 @@ struct Om : Module {
 
 		// PARAMETERS (AND IMPLICIT INS)
 		float rst = inputs[RST].getVoltageSum();//signal OR
-		bool trigRst = sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
+		sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
 		for(int p = maxPort - 1; p > 0; p--) {//Assume branch into unroll number ...
 			float clk = inputs[CLK].getPolyVoltage(p);			
 			bool trigClk = sClk[p].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
@@ -309,7 +309,7 @@ struct Om : Module {
 		clk = sClk[0].isHigh() ? 10.f : 0.f;
 		float clk2 = sClk[0].isHigh() ? 0.f : 10.f;
 		lights[LCLK].setBrightness(clk);//only needs to be 1.f
-		if(trigRst) {
+		if(sRst.isHigh()) {
 			//on reset
 			ptrOffsets = 0;//reset
 			lights[LRAND].setBrightness(0.f);

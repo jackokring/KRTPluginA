@@ -2,6 +2,8 @@
 ===
 
 * clocking on `S` fixed MIDI arm style
+* reset on high in `Ω`
+* added `I` clock divider
 
 1.23.24
 ===
