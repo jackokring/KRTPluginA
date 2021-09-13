@@ -728,8 +728,8 @@ Parameters
 * Decay `DCY`
 * Threshold `THR`
 * Ratio of compression or Expansion `RTO`
-* Low Pass Cut `CUT`
-* Low Pass Resonance `Q`
+* High Pass Cut `CUT`
+* High Pass Resonance `Q`
 * Mix to Makeup Level `MIX`
 * Envelope Follower to CV `ENV`
 
