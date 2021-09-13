@@ -52,7 +52,7 @@ struct G : Module {
 		configParam(MIX, 0.f, 100.f, 0.f, "Mix Gain", " %");
 		configParam(ENV, 0.f, 1.f, 0.f, "Envelope Amount", " Oct/dB");
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
-			bl[i] = bb[i] = b[i] = 0;
+			bl[i] = bb[i] = b[i] = last[i] = 0;
 		}
 	}
 
@@ -94,7 +94,7 @@ struct G : Module {
 
 	/* 1P H(s) = 1 / (s + fb) */
     //ONE POLE FILTER
-	float f1, f2, b[PORT_MAX_CHANNELS];
+	float f1, f2, b[PORT_MAX_CHANNELS], last[PORT_MAX_CHANNELS];
 
 	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
 		//f1   = tanf(M_PI * fc / fs);
@@ -105,10 +105,60 @@ struct G : Module {
 	float process1(float in, int p) {
 		float out = (f1 * in + b[p]) * f2;
 		b[p] = f1 * (in - out) + out;
+		last[p] = out;
 		return out;//lpf default
 	}
 
 	void process(const ProcessArgs& args) override {
+		float fs = args.sampleRate;
+
+		float atk = log(params[ATK].getValue()/3.f, 1.f);
+		float dcy = log(params[DCY].getValue()/3.f, 1.f);
+		int maxPort = maxPoly();
+		float thr = log(params[THR].getValue()/6.f, 5.f);
+		float rto = params[RTO].getValue();
+		float cut = params[CUT].getValue();
+		float rez = params[Q].getValue();
+		float mix = params[MIX].getValue() * 0.01f;//%
+		float env = params[ENV].getValue();//oct/dB
+
+#pragma GCC ivdep
+		for(int p = 0; p < maxPort; p++) {
+			float frq = inputs[FRQ].getPolyVoltage(p);
+			float in = inputs[IN].getPolyVoltage(p);
+			float sch = inputs[SCH].isConnected() ?
+				inputs[SCH].getPolyVoltage(p) : in;
+			
+			sch = abs(sch);//absolute value
+			float tau;
+			//f = 1/2pi-tau
+			if(sch > last[p]) {
+				//attack
+				tau = atk;
+			} else {
+				//decay
+				tau = dcy;
+			}
+			float tasf = 0.5f / (M_PI * tau);//time as frequency
+			tasf = clamp(tasf, 0.f, fs * 0.5f);
+			setFK1(tasf, fs);
+			sch = process1(sch, p);//envelope follow
+			float use = 1.f;
+			if(sch > thr) {
+				//alter use ratio
+			}
+			in *= use;//apply ratio
+
+			frq = clamp(frq, 0.f, fs * 0.5f);
+			setFK2(frq, rez, fs);
+			in = process2(in, p);//cut and rez
+			//make up gain
+
+			// OUTS
+			outputs[OFRQ].setVoltage(0.f, p);
+			outputs[OENV].setVoltage(sch, p);
+			outputs[OUT].setVoltage(in, p);
+		}
 	}
 };
 
