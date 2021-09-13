@@ -46,8 +46,10 @@ struct G : Module {
 		configParam(ATK, -27.f, -1.f, -9.f, "Attack Time", " dBs");
 		configParam(DCY, -27.f, -1.f, -6.f, "Decay Time", " dBs");
 		configParam(THR, -24.f, 6.f, -6.f, "Threshold", " dB");
-		configParam(RTO, 4.f, -4.f, 1.f, "Ratio", " 2^N:1");
-		configParam(FRQ, -8.f, 4.f, 0.f, "Frequency", " Oct");
+		configParam(RTO, 8.f, -4.f, 2.f, "Ratio", " 2^N:1");//256 soft-limiter
+		//default 4:1 compressing
+		configParam(CUT, -8.f, 2.f, 0.f, "Frequency", " Oct");
+		//more for base
 		configParam(Q, -6.f, 12.f, -6.f, "Resonance", " dBQ");
 		configParam(MIX, 0.f, 100.f, 0.f, "Mix Gain", " %");
 		configParam(ENV, -1.f, 1.f, 0.f, "Envelope Amount", " Oct/6dB");
