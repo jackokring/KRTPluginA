@@ -50,7 +50,7 @@ struct G : Module {
 		configParam(FRQ, -8.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(Q, -6.f, 12.f, -6.f, "Resonance", " dBQ");
 		configParam(MIX, 0.f, 100.f, 0.f, "Mix Gain", " %");
-		configParam(ENV, 0.f, 1.f, 0.f, "Envelope Amount", " Oct/dB");
+		configParam(ENV, 0.f, 1.f, 0.f, "Envelope Amount", " Oct/6dB");
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			bl[i] = bb[i] = b[i] = last[i] = 0;
 		}
@@ -116,11 +116,12 @@ struct G : Module {
 		float dcy = log(params[DCY].getValue()/3.f, 1.f);
 		int maxPort = maxPoly();
 		float thr = log(params[THR].getValue()/6.f, 5.f);
-		float rto = log(params[RTO].getValue(), 1.f);
+		float rto = log(-params[RTO].getValue(), 1.f);
 		float cut = params[CUT].getValue();
 		float rez = params[Q].getValue();
 		float mix = params[MIX].getValue() * 0.01f;//%
-		float env = params[ENV].getValue();//oct/dB
+		float env = params[ENV].getValue();//oct/6dB
+		float makeUp = 10.f / ((10.f - thr) * rto + thr);
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -149,19 +150,20 @@ struct G : Module {
 				//alter use ratio
 				float over = sch - thr;
 				over *= rto;//compress
-				use = (over + thr) / thr;
+				use = (over + thr) / sch;
 				regain = 1.f / use;//use < 1 ...
 			}
 			in *= use;//apply ratio
+			float cv = frq + env * regain;
 
-			frq = log(frq, dsp::FREQ_C4);//get corner
+			frq = log(cv, dsp::FREQ_C4);//get corner
 			frq = clamp(frq, 0.f, fs * 0.5f);
 			setFK2(frq, rez, fs);
 			in = process2(in, p);//cut and rez
 			//make up gain
-			in = (1.f - mix) * in + mix * in * regain; 
+			in = (1.f - mix) * in + mix * in * makeUp; 
 			// OUTS
-			outputs[OFRQ].setVoltage(0.f, p);
+			outputs[OFRQ].setVoltage(cv, p);
 			outputs[OENV].setVoltage(sch, p);
 			outputs[OUT].setVoltage(in, p);
 		}
