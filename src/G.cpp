@@ -29,6 +29,18 @@ struct G : Module {
 		NUM_LIGHTS
 	};
 
+	int maxPoly() {
+		int poly = 1;
+		for(int i = 0; i < NUM_INPUTS; i++) {
+			int chan = inputs[i].getChannels();
+			if(chan > poly) poly = chan;
+		}
+		for(int o = 0; o < NUM_OUTPUTS; o++) {
+			outputs[o].setChannels(poly);
+		}
+		return poly;
+	}
+
 	G() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(ATK, -27.f, -1.f, -9.f, "Attack Time", " dBs");
@@ -39,6 +51,61 @@ struct G : Module {
 		configParam(Q, -6.f, 12.f, -6.f, "Resonance", " dBQ");
 		configParam(MIX, 0.f, 100.f, 0.f, "Mix Gain", " %");
 		configParam(ENV, 0.f, 1.f, 0.f, "Envelope Amount", " Oct/dB");
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			bl[i] = bb[i] = b[i] = 0;
+		}
+	}
+
+	//obtain mapped control value
+    float log(float val, float centre) {
+        return powf(2.f, val) * centre;
+    }
+
+    float qk(float val) {
+        float v = log(val, 1.f);
+        return 1 / v;//return k from Q
+    }
+
+	float f, t, u, k, tf, bl[PORT_MAX_CHANNELS], bb[PORT_MAX_CHANNELS];
+
+    /* 2P
+           Ghigh * s^2 + Gband * s + Glow
+    H(s) = ------------------------------
+                 s^2 + k * s + 1
+     */
+    //TWO POLE FILTER
+	void setFK2(float fc, float q, float fs) {
+		//f   = tanf(M_PI * fc / fs);
+		f	= tanpif(fc / fs);
+		k   = qk(q);
+		t   = 1 / (1 + k * f);
+		u   = 1 / (1 + t * f * f);
+		tf  = t * f;
+	}
+
+	float process2(float in, int p) {
+		float low = (bl[p] + tf * (bb[p] + f * in)) * u;
+		float band = (bb[p] + f * (in - low)) * t;
+		float high = in - low - k * band;
+		bb[p] = band + f * high;
+		bl[p] = low  + f * band;
+		return high;//hpf default
+	}
+
+	/* 1P H(s) = 1 / (s + fb) */
+    //ONE POLE FILTER
+	float f1, f2, b[PORT_MAX_CHANNELS];
+
+	void setFK1(float fc, float fs) {//fb feedback not k*s denominator
+		//f1   = tanf(M_PI * fc / fs);
+		f1	 = tanpif(fc / fs);
+		f2   = 1 / (1 + f1);
+	}
+
+	float process1(float in, int p) {
+		float out = (f1 * in + b[p]) * f2;
+		b[p] = f1 * (in - out) + out;
+		return out;//lpf default
 	}
 
 	void process(const ProcessArgs& args) override {
