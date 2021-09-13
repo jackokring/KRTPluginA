@@ -50,7 +50,7 @@ struct G : Module {
 		configParam(FRQ, -8.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(Q, -6.f, 12.f, -6.f, "Resonance", " dBQ");
 		configParam(MIX, 0.f, 100.f, 0.f, "Mix Gain", " %");
-		configParam(ENV, 0.f, 1.f, 0.f, "Envelope Amount", " Oct/6dB");
+		configParam(ENV, -1.f, 1.f, 0.f, "Envelope Amount", " Oct/6dB");
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			bl[i] = bb[i] = b[i] = last[i] = 0;
 		}
@@ -118,7 +118,7 @@ struct G : Module {
 		float thr = log(params[THR].getValue()/6.f, 5.f);
 		float rto = log(-params[RTO].getValue(), 1.f);
 		float cut = params[CUT].getValue();
-		float rez = params[Q].getValue();
+		float rez = params[Q].getValue()/6.f;
 		float mix = params[MIX].getValue() * 0.01f;//%
 		float env = params[ENV].getValue();//oct/6dB
 		float makeUp = 10.f / ((10.f - thr) * rto + thr);
@@ -145,17 +145,14 @@ struct G : Module {
 			setFK1(tasf, fs);
 			sch = process1(sch, p);//envelope follow
 			float use = 1.f;
-			float regain = 1.f;
 			if(sch > thr) {
 				//alter use ratio
 				float over = sch - thr;
 				over *= rto;//compress
 				use = (over + thr) / sch;
-				regain = 1.f / use;//use < 1 ...
 			}
 			in *= use;//apply ratio
-			float cv = frq + env * regain;
-
+			float cv = frq + env * -log2f(use);
 			frq = log(cv, dsp::FREQ_C4);//get corner
 			frq = clamp(frq, 0.f, fs * 0.5f);
 			setFK2(frq, rez, fs);
