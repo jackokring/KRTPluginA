@@ -46,7 +46,7 @@ struct G : Module {
 		configParam(ATK, -27.f, -1.f, -9.f, "Attack Time", " dBs");
 		configParam(DCY, -27.f, -1.f, -6.f, "Decay Time", " dBs");
 		configParam(THR, -24.f, 6.f, -6.f, "Threshold", " dB");
-		configParam(RTO, 16.f, -16.f, 4.f, "Ratio", ":1");
+		configParam(RTO, 4.f, -4.f, 1.f, "Ratio", " 2^N:1");
 		configParam(FRQ, -8.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(Q, -6.f, 12.f, -6.f, "Resonance", " dBQ");
 		configParam(MIX, 0.f, 100.f, 0.f, "Mix Gain", " %");
@@ -116,7 +116,7 @@ struct G : Module {
 		float dcy = log(params[DCY].getValue()/3.f, 1.f);
 		int maxPort = maxPoly();
 		float thr = log(params[THR].getValue()/6.f, 5.f);
-		float rto = params[RTO].getValue();
+		float rto = log(params[RTO].getValue(), 1.f);
 		float cut = params[CUT].getValue();
 		float rez = params[Q].getValue();
 		float mix = params[MIX].getValue() * 0.01f;//%
@@ -124,7 +124,7 @@ struct G : Module {
 
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			float frq = inputs[FRQ].getPolyVoltage(p);
+			float frq = inputs[FRQ].getPolyVoltage(p) + cut;
 			float in = inputs[IN].getPolyVoltage(p);
 			float sch = inputs[SCH].isConnected() ?
 				inputs[SCH].getPolyVoltage(p) : in;
@@ -144,16 +144,22 @@ struct G : Module {
 			setFK1(tasf, fs);
 			sch = process1(sch, p);//envelope follow
 			float use = 1.f;
+			float regain = 1.f;
 			if(sch > thr) {
 				//alter use ratio
+				float over = sch - thr;
+				over *= rto;//compress
+				use = (over + thr) / thr;
+				regain = 1.f / use;//use < 1 ...
 			}
 			in *= use;//apply ratio
 
+			frq = log(frq, dsp::FREQ_C4);//get corner
 			frq = clamp(frq, 0.f, fs * 0.5f);
 			setFK2(frq, rez, fs);
 			in = process2(in, p);//cut and rez
 			//make up gain
-
+			in = (1.f - mix) * in + mix * in * regain; 
 			// OUTS
 			outputs[OFRQ].setVoltage(0.f, p);
 			outputs[OENV].setVoltage(sch, p);
