@@ -727,7 +727,7 @@ Parameters
 * Attack `ATK`
 * Decay `DCY`
 * Threshold `THR`
-* Ratio of compression or Expansion `RTO`
+* Ratio of compression `RTO` (or expansion)
 * High Pass Cut `CUT`
 * High Pass Resonance `Q`
 * Mix to Makeup Level `MIX`
@@ -745,4 +745,4 @@ Outs
 * Envelope Follower `ENV`
 * Compressed Output `OUT`
 
-A normal compressor with a sidechain input. The envelope follower can be mixed with the `FRQ` in to produce some pinging harmonics, along with a filter which can be tuned down for a `Q` boost and sub-base cut. The `MIX` brings a compressed `OUT` back upto normalized levels like a make up gain.
+A normal compressor with a sidechain input. The envelope follower can be mixed with the `FRQ` in to produce some pinging harmonics by the output `FRQ` (modified by the envelope), along with a high pass filter which can be tuned down for a `Q` boost and sub-base cut. The `MIX` brings a compressed `OUT` back upto normalized levels like an auto-computed make up gain.
