@@ -1,3 +1,10 @@
+1.25.25
+===
+
+* fixed intiitialization bug regression for some modules added in 1.23.24
+* extended control ranges on `G`
+
+
 1.25.24
 ===
 

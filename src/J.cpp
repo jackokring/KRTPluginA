@@ -51,7 +51,7 @@ struct J : Module {
 		configParam(LVL, 0.f, 100.f, 0.f, "LFO Level", " %");
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			wave[i] = 0;
-			for(int j = 0; i < 8; j++) {
+			for(int j = 0; j < 8; j++) {
 				b[i][j] = 0;
 			}
 		}

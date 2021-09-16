@@ -54,7 +54,7 @@ struct Mu : Module {
 		configParam(G2, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
 		configParam(G3, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
-			for(int j = 0; i < 4; j++) {
+			for(int j = 0; j < 4; j++) {
 				bl[i][j] = bb[i][j] = 0;
 			}
 		}

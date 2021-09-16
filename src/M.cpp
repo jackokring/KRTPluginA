@@ -61,7 +61,7 @@ struct M : Module {
 		configParam(HGAIN, -20.f, 0.f, -20.f, "High Gain", " dB");
 		//21kHz break on high boost
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
-			for(int j = 0; i < 4; j++) {
+			for(int j = 0; j < 4; j++) {
 				b[i][j] = 0;
 			}
 		}

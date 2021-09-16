@@ -40,7 +40,7 @@ struct O : Module {
 			configParam(FBK + i, 0.f, 100.f, 50.f, "Feedback", " %");
 		}
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
-			for(int j = 0; i < 3; j++) {
+			for(int j = 0; j < 3; j++) {
 				wave[i][j] = 0;
 			}
 		}
