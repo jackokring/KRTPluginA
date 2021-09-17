@@ -535,6 +535,8 @@ Is dark matter the intergral over an average on a non-linear 1/r^2 law of an unc
 
 How to connect your modular to a scanning tunnelling microscope? Contact a physical? Enjoy!
 
+To `H` or not to wage? Das ist da krewestion? Wether it is better to enter into mass statisctic of global endomology or to find yourself under a hierachy of perfection?
+
 C
 ===
 
