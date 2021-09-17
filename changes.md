@@ -1,11 +1,12 @@
-1.25.25
+1.25.25 (actually shows as 1.25.24)
 ===
 
 * fixed intiitialization bug regression for some modules added in 1.23.24
 * extended control ranges on `G`
+* forgot to bump version number so 1.25.24 published is actually 1.25.25
 
 
-1.25.24
+1.25.24 (an main build unpublished version number)
 ===
 
 * clocking on `S` fixed MIDI arm style
