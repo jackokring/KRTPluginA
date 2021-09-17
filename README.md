@@ -529,6 +529,12 @@ Outs
 
 A physical model simulation. Treats the input as a driven mass radius and calculates the uncertainty of the mass using a quantum and gravity connection.
 
+I could explain by (https://drive.google.com/file/d/0B-avx1luFGRbRTVFOFhSWkluQWM/view?usp=sharing&resourcekey=0-YsVFVTBgEFU-1QAJ1hYz8A)[Mistakes and genius] as yes something are wrong, and somethings being applied have an error less than Planks constant cubed which is very small as to be imesurable, yet defined as certain by fixing the constant as a committie committed to, and so ...
+
+Is dark matter the intergral over an average on a non-linear 1/r^2 law of an uncertainty in radial potential energy? Is dark energy a tangential version? As distances get smaller the F=kr of quark confinement something that 1/r maps to r becomes a strong force unseen equivelent? Dark strong? A prediction or just a tune from finding subharmonic greatest common division of the natural omega frequency of matter?
+
+How to connect your modular to a scanning tunnelling microscope? Contact a physical? Enjoy!
+
 C
 ===
 
