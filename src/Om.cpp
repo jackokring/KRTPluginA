@@ -126,7 +126,7 @@ struct Om : Module {
 	unsigned char getDigit(unsigned int ptrO, float seed) {
 		seed += ptrO;
 		unsigned int s1 = ((int) seed) & 63;//pos
-		float rem = modulo(seed, 1.f);//remainder and positive for 
+		float rem = modulo(seed, 1.f);//remainder and positive for
 		unsigned int s2 = s1 + 1;
 		s1 = randomz[s1];
 		s2 = randomz[s2];
@@ -144,7 +144,7 @@ struct Om : Module {
 	}
 
 	void putDigit(unsigned int ptrO, float seed, unsigned char digit) {
-		offsets[ptrO & 63] = 0;//blank zero 
+		offsets[ptrO & 63] = 0;//blank zero
 		unsigned char x = getDigit(ptrO, seed);//producing
 		offsets[ptrO & 63] = digit - x;//calc offset to make digit
 	}
@@ -210,7 +210,7 @@ struct Om : Module {
 		return rootJ;
 	}
 
-	void dataFromJson(json_t* rootJ) override {  
+	void dataFromJson(json_t* rootJ) override {
 		json_t* textJ = json_object_get(rootJ, "save");
   		if (textJ) {
 			const char *str = json_string_value(textJ);
@@ -251,6 +251,17 @@ struct Om : Module {
 	}
 
 	Om() {
+		/* https://vcvrack.com/manual/Migrate2#3-New-optional-v2-API-features
+		configInput(PITCH_INPUT, "1V/oct pitch");
+		configOutput(SIN_OUTPUT, "Sine");
+		configLight(PHASE_LIGHT, "Phase");
+		//replace configParam with either below ...
+		configButton(TAP_PARAM);
+		configSwitch(SYNC_PARAM, 0, 1, 0, "Sync mode", {"Soft", "Hard"});
+		//default bypass
+		configBypass(LEFT_INPUT, LEFT_OUTPUT);
+		configBypass(RIGHT_INPUT, RIGHT_OUTPUT);
+		*/
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
 		//decide symbol rangs ...
@@ -297,7 +308,7 @@ struct Om : Module {
 		float rst = inputs[RST].getVoltageSum();//signal OR
 		sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
 		for(int p = maxPort - 1; p > 0; p--) {//Assume branch into unroll number ...
-			float clk = inputs[CLK].getPolyVoltage(p);			
+			float clk = inputs[CLK].getPolyVoltage(p);
 			bool trigClk = sClk[p].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
 			if(trigClk) {
 				outSym[p] = outSym[p - 1];//chain arp
@@ -346,7 +357,7 @@ struct Om : Module {
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
 			// OUTS
-#pragma GCC ivdep			
+#pragma GCC ivdep
 			for(int i = 0; i < 13; i++) {
 				float combined = 0.f;
 				if(outSym[p] == i + 1) {
@@ -380,7 +391,7 @@ struct Om : Module {
 #define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
 
 NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
-	NVGcolor backgroundColor = nvgRGB(0x10, 0x10, 0x10); 
+	NVGcolor backgroundColor = nvgRGB(0x10, 0x10, 0x10);
 	nvgBeginPath(vg);
 	nvgRoundedRect(vg, 0.f, 0.f, box->size.x, box->size.y, 3.f);
 	nvgFillColor(vg, backgroundColor);
@@ -394,7 +405,7 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 	std::shared_ptr<Font> font;
 	std::string fontPath;
 	char **what = NULL;
-	
+
 	DisplayWidget() {
 		fontPath = std::string(asset::plugin(pluginInstance, "res/fonts/Segment14.ttf"));
 	}
@@ -453,7 +464,7 @@ struct OmWidget : ModuleWidget {
 
 		addChild(createLightCentered<SmallLight<GreenLight>>(loc(1, 1.5f), module, Om::LBIRD));
 		addChild(createLightCentered<SmallLight<GreenLight>>(loc(2, 1.5f), module, Om::LCLK));
-		addChild(createLightCentered<SmallLight<GreenLight>>(loc(3, 1.5f), module, Om::LRAND));	
+		addChild(createLightCentered<SmallLight<GreenLight>>(loc(3, 1.5f), module, Om::LRAND));
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, Om::CLK));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 3), module, Om::RST));
