@@ -1,3 +1,9 @@
+2.25.26
+===
+
+* made this file link here ?
+* increased SDK V2 (2.25.25) but this file was misdirected
+
 1.25.25 (actually shows as 1.25.24)
 ===
 
@@ -153,4 +159,3 @@
 * Improved [demo repository](https://github.com/jackokring/KRTPluginADemo)
 * Added cube root output scaling to `u` (breaks compatibility)
 * Started change log (this file)
-
