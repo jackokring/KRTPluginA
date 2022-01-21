@@ -42,6 +42,40 @@ struct Om : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Clock",
+		"Reset",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+		"Letter Pair Triggered Output",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+		"Randomized",
+		"Bird Applied",
+		"Clock Active",
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	char onDisplay1[9] = "        ";
 	char onDisplay2[9] = "        ";//double
 	bool flip = false;
@@ -267,6 +301,7 @@ struct Om : Module {
 		//decide symbol rangs ...
 		configParam(SEED, 0.f, 64.f, 0.f, "Seed");
 		configParam(VAR, 0.f, 100.f, 50.f, "Random", " %");
+		iol(true);
 		for(int o = 0; o < PORT_MAX_CHANNELS; o++) {
 			outSym[o] = 0;
 		}
@@ -412,6 +447,13 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 
 	void set(char **p) {
 		what = p;
+	}
+
+	void drawLayer(const DrawArgs& args, int layer) override {
+		if (layer == 1) {
+			draw(args);
+		}
+		Widget::drawLayer(args, layer);
 	}
 
 	void draw(const DrawArgs &args) override {
