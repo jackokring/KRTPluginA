@@ -76,7 +76,7 @@ struct B : Module {
 		return rootJ;
 	}
 
-	void dataFromJson(json_t* rootJ) override {  
+	void dataFromJson(json_t* rootJ) override {
 		json_t* textJ = json_object_get(rootJ, "save");
   		if (textJ) {
 			const char *str = json_string_value(textJ);
@@ -158,7 +158,7 @@ struct B : Module {
 		lights[base + 3 * id].setBrightness(r ? 1.f : 0.f);
 		lights[base + 3 * id + 1].setBrightness(g ? 1.f : 0.f);
 		lights[base + 3 * id + 2].setBrightness(b ? 1.f : 0.f);
-	}	
+	}
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
@@ -168,7 +168,7 @@ struct B : Module {
 		int mode = (int)params[I_MODE].getValue();
 		if(modeTrig.process(params[MODE].getValue())) {
 			mode++;
-			if(mode > 2 || mode < 0) mode = 0;//loop 
+			if(mode > 2 || mode < 0) mode = 0;//loop
 		}
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {

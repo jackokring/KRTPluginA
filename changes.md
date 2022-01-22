@@ -3,6 +3,7 @@
 
 * made this file link here ?
 * increased SDK V2 (2.25.25) but this file was misdirected
+* started adding some V2 labellings to some things
 
 1.25.25 (actually shows as 1.25.24)
 ===
