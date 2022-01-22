@@ -33,6 +33,35 @@ struct A : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -49,10 +78,11 @@ struct A : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(REZ, -6.f, 30.f, -6.f, "Resonance", " dBQ");
-		configParam(MOD, -2.f, 2.f, 0.f, "Mod frequency");
+		configParam(MOD, -2.f, 2.f, 0.f, "Mod Frequency");
 		configParam(OFF, -4.f, 4.f, 0.f, "Offset", " Oct");
 		configParam(RING, 0.f, 6.f, 0.f, "Ring Mod", " dB (rel 6)");
-		configParam(MAM, -2.f, 2.f, 0.f, "Mod offset");
+		configParam(MAM, -2.f, 2.f, 0.f, "Mod Offset");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			bl[i] = bb[i] = b[i] = b2[i] = 0;
 		}
@@ -130,7 +160,7 @@ struct A : Module {
 
 	float sum(float* c, float* input, int begin = 0, int cycle = 4) {
 		float add = 0.f;
-#pragma GCC ivdep		
+#pragma GCC ivdep
 		for(int co = 0; co < cycle; co ++) {//right is most recent
 			int idx = (begin + co) & 3;
 			add += c[co] * input[idx];
@@ -160,7 +190,7 @@ struct A : Module {
 			float fo = log(params[OFF].getValue() + cv
 				+ inputs[IMOD].getPolyVoltage(p) * modo,	//offset
 				dsp::FREQ_C4);
-			
+
 			float ff = log(params[FRQ].getValue() + cv
 				+ inputs[IMOD].getPolyVoltage(p) * modf,	//freq
 				dsp::FREQ_C4);
@@ -181,7 +211,7 @@ struct A : Module {
 			// Process filters 1, 2, 3 with common freq 1 and 3
 			setFK1(fo, fs);
 			float postL = process1(in18 + fut, p);//add future for low pass
-			
+
 			inbp += in18;
 			float postH = process3(inbp, p);//fixed to allow inverse filter
 			float qPlate = postL * postH * plate;//plate signal
