@@ -48,19 +48,19 @@ struct Om : Module {
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
-		"Letter Pair Triggered Output",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
+		"Letter Pair Triggered",
 	};
 
 	const char *lightstring[NUM_LIGHTS] = {
