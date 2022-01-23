@@ -1,4 +1,4 @@
-KRTPluginA 
+KRTPluginA
 ===
 
 Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work it could also be quite dangerous. The index is numbered so that `WORKING_MACHINES_COUNT` makes sense given the development ordering of the index.
@@ -9,36 +9,36 @@ Compiled with: `gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0` or later. Any issues d
 
 Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/) for less detail and more of an overview.
 
-Index - Demo
+Index - Version - Demo
 ===
 
-1. [A](#a) - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
-2. [μ](#μ) - [crisp](https://github.com/jackokring/KRTPluginADemo/blob/master/crisp.vcv)
-3. [T](#t) - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
-4. [L](#l) - [boring](https://github.com/jackokring/KRTPluginADemo/blob/master/boring.vcv)
-5. [;D](#d) - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
-6. [R](#r) - No demo required
-7. [Ω](#Ω) - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
-8. [V](#v) - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
-9. [F](#f) - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
-10. [W](#w) - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
-11. [Y](#y) - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
-12. [O](#o) - [parabolic](https://github.com/jackokring/KRTPluginADemo/blob/master/parabolic.vcv)
-13. [S](#s) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
-14. [E](#e) - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
-15. [X](#x) - [wave](https://github.com/jackokring/KRTPluginADemo/blob/master/wave.vcv)
-16. [M](#m) - [M](https://github.com/jackokring/KRTPluginADemo/blob/master/M.vcv)
-17. [Q](#q) - [Q](https://github.com/jackokring/KRTPluginADemo/blob/master/Q.vcv)
-18. [C](#c) - No demo required
-19. [U](#u)
-20. [B](#b) - I seems to be adding to patch [B](https://github.com/jackokring/KRTPluginADemo/blob/master/B.vcv)
-21. [J](#j)
-22. [K](#k)
-23. [H](#h)
-24. [I](#i)
-25. [G](#g)
+1. [A](#a) - 1 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
+2. [μ](#μ) - 1 - [crisp](https://github.com/jackokring/KRTPluginADemo/blob/master/crisp.vcv)
+3. [T](#t) - 1 - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
+4. [L](#l) - 1 - [boring](https://github.com/jackokring/KRTPluginADemo/blob/master/boring.vcv)
+5. [;D](#d) - 1 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
+6. [R](#r) - 1 - No demo required
+7. [Ω](#Ω) - 1 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
+8. [V](#v) - 1 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
+9. [F](#f) - 1 - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
+10. [W](#w) - 1 - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
+11. [Y](#y) - 1 - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
+12. [O](#o) - 1 - [parabolic](https://github.com/jackokring/KRTPluginADemo/blob/master/parabolic.vcv)
+13. [S](#s) - 1 - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
+14. [E](#e) - 1 - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
+15. [X](#x) - 1 - [wave](https://github.com/jackokring/KRTPluginADemo/blob/master/wave.vcv)
+16. [M](#m) - 1 - [M](https://github.com/jackokring/KRTPluginADemo/blob/master/M.vcv)
+17. [Q](#q) - 1 - [Q](https://github.com/jackokring/KRTPluginADemo/blob/master/Q.vcv)
+18. [C](#c) - 1 - No demo required
+19. [U](#u) - 1
+20. [B](#b) - 1 - I seems to be adding to patch [B](https://github.com/jackokring/KRTPluginADemo/blob/master/B.vcv)
+21. [J](#j) - 1
+22. [K](#k) - 1
+23. [H](#h) - 1
+24. [I](#i) - 1
+25. [G](#g) - 1 
 
-[Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business. 
+[Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business.
 
 A
 ===
@@ -182,7 +182,7 @@ Outs
 * Pre-trigger `PRE`
 * Out `OUT`
 
-A synchronized delay with a `PRE` control to remove a time dependant on sample latency so as to match timing one synchronization trigger later. So suppose you wish to sychronize to some live play and are prepared to time up one `TRIG` later (say a bar for arguments sake), then you can increase `PRE` to achive that less than the bar delay with latency compensating the rest of the bar delay which `PRE` removed on `OUT`. The output `PRE` gates high before the bar end to allow down module to trigger other things with the need to be triggered before the bar start. 
+A synchronized delay with a `PRE` control to remove a time dependant on sample latency so as to match timing one synchronization trigger later. So suppose you wish to sychronize to some live play and are prepared to time up one `TRIG` later (say a bar for arguments sake), then you can increase `PRE` to achive that less than the bar delay with latency compensating the rest of the bar delay which `PRE` removed on `OUT`. The output `PRE` gates high before the bar end to allow down module to trigger other things with the need to be triggered before the bar start.
 
 ;D
 ===
