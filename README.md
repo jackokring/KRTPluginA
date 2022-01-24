@@ -12,6 +12,8 @@ Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/) fo
 Index - Version - Demo
 ===
 
+The version number indicates the API build compatibility and feature use. So 1 is VCVRack V1 API. These will be changed as higher API number features are used and adapted to.
+
 1. [A](#a) - 1 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
 2. [μ](#μ) - 1 - [crisp](https://github.com/jackokring/KRTPluginADemo/blob/master/crisp.vcv)
 3. [T](#t) - 1 - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
@@ -36,7 +38,7 @@ Index - Version - Demo
 22. [K](#k) - 1
 23. [H](#h) - 1
 24. [I](#i) - 1
-25. [G](#g) - 1 
+25. [G](#g) - 1
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business.
 
