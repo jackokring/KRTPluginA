@@ -16,7 +16,7 @@
     {
       "slug": "A",
       "name": "A",
-      "description": "Plate 18 dB filter. (Band pass phased ring mod).",
+      "description": "Plate 18 dB filter. (Band pass phased ring mod). Other ins and outs with different order are available. The ring modulation is between a low and high pass for a band pass with harmonics effect.",
       "tags": [
         "Effect",
         "Filter",

@@ -34,21 +34,21 @@ struct A : Module {
 	};
 
 	const char *instring[NUM_INPUTS] = {
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
+		"-18 dB",
+		"Frequency CV",
+		"-18 dB predictive",
+		"-12 dB (no plate)",
+		"Modulation",
+		"-6 dB HP",
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
+		"-6 dB LP",
+		"-12/-18 dB",
+		"Tracking CV",
+		"-6 dB HP",
+		"-12/-18 dB inverse",
+		"Plate",
 	};
 
 	const char *lightstring[NUM_LIGHTS] = {
@@ -78,10 +78,10 @@ struct A : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(REZ, -6.f, 30.f, -6.f, "Resonance", " dBQ");
-		configParam(MOD, -2.f, 2.f, 0.f, "Mod Frequency");
+		configParam(MOD, -2.f, 2.f, 0.f, "Modulation of frequency");
 		configParam(OFF, -4.f, 4.f, 0.f, "Offset", " Oct");
-		configParam(RING, 0.f, 6.f, 0.f, "Ring Mod", " dB (rel 6)");
-		configParam(MAM, -2.f, 2.f, 0.f, "Mod Offset");
+		configParam(RING, 0.f, 6.f, 0.f, "Ring modulation", " dB (rel 6)");
+		configParam(MAM, -2.f, 2.f, 0.f, "Mod offset");
 		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			bl[i] = bb[i] = b[i] = b2[i] = 0;
