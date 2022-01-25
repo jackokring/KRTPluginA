@@ -15,7 +15,7 @@ Index - Version - Demo
 The version number indicates the API build compatibility and feature use. So 1 is VCVRack V1 API. These will be changed as higher API number features are used and adapted to.
 
 1. [A](#a) - 2 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
-2. [μ](#μ) - 1 - [crisp](https://github.com/jackokring/KRTPluginADemo/blob/master/crisp.vcv)
+2. [μ](#μ) - 2 - [crisp](https://github.com/jackokring/KRTPluginADemo/blob/master/crisp.vcv)
 3. [T](#t) - 1 - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
 4. [L](#l) - 1 - [boring](https://github.com/jackokring/KRTPluginADemo/blob/master/boring.vcv)
 5. [;D](#d) - 1 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
@@ -84,7 +84,7 @@ If some controls appear not to operate use `IN1` and `LP12` out, with `CV` for t
 μ
 ===
 
-*The Gold One - Summation generatve additive sythesis*
+*The Gold One - Summation generative additive synthesis*
 
 Parameters
 ---

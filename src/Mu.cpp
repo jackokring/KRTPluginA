@@ -32,6 +32,35 @@ struct Mu : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Gain modulation",
+		"Limit catastropy frequency",
+		"Halflife modulation",
+		"Signal 1",
+		"Signal 2",
+		"Signal 3",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Differential",
+		"Second differential",
+		"Third differential",
+		"Basic integral",
+		"Pole form sigularity integral",
+		"Log form singularity integral",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -46,13 +75,14 @@ struct Mu : Module {
 
 	Mu() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(DB, -24.f, 6.f, 0.f, "Exponential Gain", " dB");
+		configParam(DB, -24.f, 6.f, 0.f, "Exponential gain", " dB");
 		configParam(HZ, -4.f, 4.f, 0.f, "Slew LPF", " Oct");
 		configParam(LAM, -36.f, 0.f, 36.f, "Halflife", " dBs");
 		//-infinty centre
 		configParam(G1, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
 		configParam(G2, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
 		configParam(G3, -6.f, 6.f, 0.f, "Gain", " Center dB (rel 6)");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			for(int j = 0; j < 4; j++) {
 				bl[i][j] = bb[i][j] = 0;
@@ -189,7 +219,7 @@ struct Mu : Module {
 
 	float sum(float* c, float* input, int begin = 0, int cycle = 4) {
 		float add = 0.f;
-#pragma GCC ivdep		
+#pragma GCC ivdep
 		for(int co = 0; co < cycle; co ++) {//right is most recent
 			int idx = (begin + co) & 3;
 			add += c[co] * input[idx];
@@ -264,7 +294,7 @@ struct Mu : Module {
 				pre[p+4*PORT_MAX_CHANNELS][idx] = cheat;
 				cheat = future(pre[p+4*PORT_MAX_CHANNELS]);
 			}
-			
+
 			cvhz = clamp(cvhz, 0.f, fs * 0.5f);//limit max filter
 
 			in *= cvdb;//gain
@@ -276,7 +306,7 @@ struct Mu : Module {
 				pre[p][idx] = in;//buffer
 				in = future(pre[p]);
 			}
-			
+
 			float h = dsp::FREQ_C4/cvhz;//inverse of central rate nyquist
 			//scale? - V/sample -> normalization of sample rate change
 			float si = fs/dsp::FREQ_C4;//doubling rate should double gain
