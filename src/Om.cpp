@@ -428,15 +428,12 @@ struct Om : Module {
 //placement macro
 #define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
 
-NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
+void prepareDisplay(NVGcontext *vg, Rect *box) {
 	NVGcolor backgroundColor = nvgRGB(0x10, 0x10, 0x10);
 	nvgBeginPath(vg);
 	nvgRoundedRect(vg, 0.f, 0.f, box->size.x, box->size.y, 3.f);
 	nvgFillColor(vg, backgroundColor);
 	nvgFill(vg);
-	nvgFontSize(vg, fontSize);
-	NVGcolor textColor = nvgRGB(0x5d, 0xfc, 0x0a);
-	return textColor;
 }
 
 struct DisplayWidget : LightWidget {//TransparentWidget {
@@ -458,20 +455,25 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 		Widget::drawLayer(args, layer);
 	}
 
-	void drew(const DrawArgs &args) {
+	void draw(const DrawArgs &args) override {//background
+		prepareDisplay(args.vg, &box);
+	}
+
+	void drew(const DrawArgs &args) {//foreground
 		std::shared_ptr<Font> font;
 		if (!(font = APP->window->loadFont(fontPath))) {
 			return;
 		}
-		NVGcolor textColor = prepareDisplay(args.vg, &box, 18);
+		NVGcolor textColor = nvgRGB(0x5d, 0xfc, 0x0a);//green
 		nvgFontFaceId(args.vg, font->handle);
+		nvgFontSize(args.vg, 18);
 
 		Vec textPos = Vec(4, 22);
 		nvgFillColor(args.vg, textColor);
 		nvgText(args.vg, textPos.x, textPos.y, *what, NULL);
 	}
 
-	void fixCentre(Vec here, int many) {
+	void fixCentre(Vec here, int many) {//locate control
 		box.size = Vec(14.6f * many + 8, 26);
 		box.pos = Vec(here.x - box.size.x / 2, here.y - box.size.y / 2);
 	}
