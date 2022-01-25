@@ -440,7 +440,6 @@ NVGcolor prepareDisplay(NVGcontext *vg, Rect *box, int fontSize) {
 }
 
 struct DisplayWidget : LightWidget {//TransparentWidget {
-	std::shared_ptr<Font> font;
 	std::string fontPath;
 	char **what = NULL;
 
@@ -453,13 +452,14 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 	}
 
 	void drawLayer(const DrawArgs& args, int layer) override {
-		if (layer == 1) {
+		if (layer == 1 || layer == 0) {
 			draw(args);
 		}
 		Widget::drawLayer(args, layer);
 	}
 
 	void draw(const DrawArgs &args) override {
+		std::shared_ptr<Font> font;
 		if (!(font = APP->window->loadFont(fontPath))) {
 			return;
 		}

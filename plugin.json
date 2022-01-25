@@ -4,6 +4,7 @@
   "version": "2.25.26",
   "license": "MIT",
   "brand": "KRT",
+  "description": "The free plugin set from KRT.",
   "author": "Jacko",
   "authorEmail": "jackokring@gmail.com",
   "authorUrl": "https://kring.co.uk",
@@ -16,7 +17,7 @@
     {
       "slug": "A",
       "name": "A",
-      "description": "Plate 18 dB filter. (Band pass phased ring mod). Other ins and outs with different order are available. The ring modulation is between a low and high pass for a band pass with harmonics effect.",
+      "description": "Plate 18 dB filter. (Band pass phased ring mod).\nOther ins and outs with different order are available.\nThe ring modulation is between a low and high pass\nfor a band pass with harmonics effect.",
       "tags": [
         "Effect",
         "Filter",
@@ -26,7 +27,7 @@
     {
       "slug": "Mu",
       "name": "\u03bc",
-      "description": "Time dependant caclulus on a summing junction. (Precise Distortion) This is complex to explain. Much better to listen and fiddle.",
+      "description": "Time dependant caclulus on a summing junction with\nseries truncation distortion. This is complex to explain.\nMuch better to listen and fiddle.",
       "tags": [
         "Effect",
         "Waveshaper",
@@ -81,7 +82,7 @@
     {
       "slug": "Om",
       "name": "\u03a9",
-      "description": "Clock distribution randomizer. Generates a randomish sequence of length 64 and depending on the left most displayed letter outputs a trigger when the clock is high or low.",
+      "description": "Clock distribution randomizer. Generates a randomish sequence\nof length 64 and depending on the left-most\ndisplayed letter outputs a trigger when the clock is high or low.",
       "tags": [
         "Clock modulator",
         "Polyphonic",
@@ -102,7 +103,7 @@
     {
       "slug": "F",
       "name": "F",
-      "description": "24 dB morph filter. A 2D interpolation and extrapolation between 4 classic analytic filter responses (Bessel, Butterworth, Linkwitz and Legendre). Includes an interpole distortion effect and morphing to the inverse filter.",
+      "description": "24 dB morph filter. A 2D interpolation and extrapolation between 4 classic\nanalytic filter responses (Bessel, Butterworth, Linkwitz and Legendre).\nIncludes an interpole distortion effect and morphing to the inverse filter.",
       "tags": [
         "Filter",
         "Polyphonic"
