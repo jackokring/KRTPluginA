@@ -22,7 +22,7 @@ The version number indicates the API build compatibility and feature use. So 1 i
 6. [R](#r) - 1 - No demo required
 7. [Ω](#Ω) - 2 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 8. [V](#v) - 1 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
-9. [F](#f) - 1 - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
+9. [F](#f) - 2 - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
 10. [W](#w) - 1 - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
 11. [Y](#y) - 1 - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
 12. [O](#o) - 1 - [parabolic](https://github.com/jackokring/KRTPluginADemo/blob/master/parabolic.vcv)

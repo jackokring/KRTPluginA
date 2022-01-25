@@ -102,7 +102,7 @@
     {
       "slug": "F",
       "name": "F",
-      "description": "24 dB morph filter.",
+      "description": "24 dB morph filter. A 2D interpolation and extrapolation between 4 classic analytic filter responses (Bessel, Butterworth, Linkwitz and Legendre). Includes an interpole distortion effect and morphing to the inverse filter.",
       "tags": [
         "Filter",
         "Polyphonic"
