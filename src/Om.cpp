@@ -48,25 +48,28 @@ struct Om : Module {
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
-		"Letter Pair Triggered",
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+		"Letter pair hi/lo trigger",
+
+		"Letter pair hi/lo trigger",
 	};
 
 	const char *lightstring[NUM_LIGHTS] = {
 		"Randomized",
-		"Bird Applied",
-		"Clock Active",
+		"Bird applied",
+		"Clock active",
 	};
 
 	void iol(bool lights) {
@@ -297,10 +300,10 @@ struct Om : Module {
 		configBypass(RIGHT_INPUT, RIGHT_OUTPUT);
 		*/
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(BIRD, 0.f, 100.f, 0.f, "Apply Bird", " %");
+		configParam(BIRD, 0.f, 100.f, 0.f, "Apply bird rate", " %");
 		//decide symbol rangs ...
-		configParam(SEED, 0.f, 64.f, 0.f, "Seed");
-		configParam(VAR, 0.f, 100.f, 50.f, "Random", " %");
+		configParam(SEED, 0.f, 64.f, 0.f, "Seed random");
+		configParam(VAR, 0.f, 100.f, 50.f, "Randomize rate", " %");
 		iol(true);
 		for(int o = 0; o < PORT_MAX_CHANNELS; o++) {
 			outSym[o] = 0;

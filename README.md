@@ -20,7 +20,7 @@ The version number indicates the API build compatibility and feature use. So 1 i
 4. [L](#l) - 1 - [boring](https://github.com/jackokring/KRTPluginADemo/blob/master/boring.vcv)
 5. [;D](#d) - 1 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
 6. [R](#r) - 1 - No demo required
-7. [Ω](#Ω) - 1 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
+7. [Ω](#Ω) - 2 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 8. [V](#v) - 1 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 9. [F](#f) - 1 - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
 10. [W](#w) - 1 - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
