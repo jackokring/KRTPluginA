@@ -47,6 +47,45 @@ struct Y : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Control command select",
+		"Control execute",
+		"Position scroll",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Trigger 1",
+		"Trigger 2",
+		"Trigger 3",
+		"Trigger 4",
+		"Trigger 5",
+		"Trigger 6",
+		"Trigger 7",
+		"Trigger 8",
+		"Trigger 9",
+		"Trigger 10",
+		"Trigger 11",
+		"Trigger 12",
+		"Trigger 13",
+		"Trigger 14",
+		"Trigger 15",
+		"Trigger 16",
+		"Run clock",
+		"Reset timing",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+		//no use ...
+		//done by buttons, but ... RGB tripple tool tip faux pas.
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 #define T 16
 #define Q 32
 #define CPYA 64
@@ -58,10 +97,10 @@ struct Y : Module {
 #define MUTA 4096
 #define NOWA 8192
 #define TR(x) T + x
-#define QU(x) Q + x	
+#define QU(x) Q + x
 
 	const int noteProcess[128] = {
-	//	C				D				E		F				G				A				B		
+	//	C				D				E		F				G				A				B
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
 		0,		0, 		0, 		0,		0,		0,		0,		0,		0,		0,		0,		0,
@@ -99,7 +138,7 @@ struct Y : Module {
 		return rootJ;
 	}
 
-	void dataFromJson(json_t* rootJ) override {  
+	void dataFromJson(json_t* rootJ) override {
 		json_t* textJ = json_object_get(rootJ, "save");
   		if (textJ) {
 			const char *str = json_string_value(textJ);
@@ -144,17 +183,17 @@ struct Y : Module {
 	Y() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(TEMPO, 0.f, 240.f, 120.f, "Tempo", " bpm");
-		configParam(LEN, 0.f, 100.f, 50.f, "Gate Length", " %");
+		configParam(LEN, 0.f, 100.f, 50.f, "Gate length", " %");
 		for(int i = 0; i < 16; i++) {
-			configParam(QUADS + i, 0.f, 1.f, 0.f, qNames[i]);
+			configButton(QUADS + i, qNames[i]);
 		}
 		for(int i = 0; i < 12; i++) {
-			configParam(TRIPS + i, 0.f, 1.f, 0.f, tNames[i]);
+			configButton(TRIPS + i, tNames[i]);
 		}
-		configParam(RUN, 0.f, 1.f, 0.f, "Run and Stop");
-		configParam(RST, 0.f, 1.f, 0.f, "Reset");
+		configButton(RUN, "Run and stop");
+		configButton(RST, "Reset");
 		for(int i = 0; i < 4; i++) {
-			configParam(MODES + i, 0.f, 1.f, 0.f, mNames[i]);
+			configButton(MODES + i, mNames[i]);
 		}
 		configParam(IS_RUN, 0.f, 1.f, 0.f);
 		configParam(MODE, 0.f, 3.f, 0.f);
@@ -162,8 +201,8 @@ struct Y : Module {
 			configParam(PAT + i, 0.f, patNum - 1.f, 0.f);//default pattern
 			configParam(MUTES + i, 0.f, 1.f, 1.f);
 		}
-		configParam(CPY, 0.f, 1.f, 0.f, "Copy");
-		configParam(PST, 0.f, 1.f, 0.f, "Paste");
+		configButton(CPY, "Copy");
+		configButton(PST, "Paste");
 		configParam(CHAN, 0.f, chanNum - 1.f, 0.f);
 		for(int p = 0; p < patNum; p++) {
 			for(int s = 0; s < stepsNum; s++) {
@@ -174,8 +213,9 @@ struct Y : Module {
 		}
 		configParam(CPAT, 0.f, 15.f, 0.f);
 		configParam(CCHN, 0.f, 15.f, 0.f);
-		configParam(JAZZ4, -1.f, 1.f, 0.f, "Quad Jazz");
-		configParam(JAZZ3, -1.f, 1.f, 0.f, "Triple Jazz");
+		configParam(JAZZ4, -1.f, 1.f, 0.f, "Quad jazz");
+		configParam(JAZZ3, -1.f, 1.f, 0.f, "Triple jazz");
+		iol(false);//lights thru buttons as RGB *3 overlay happens????
 	}
 
 	double beatCounter = 0;
@@ -405,7 +445,7 @@ struct Y : Module {
 				button3(beats, i, newMode);
 			}
 			if((mux & 1023) == 2) light3(beats, tBeats, i, newMode);
-		}		
+		}
 		if(trigRun || actionCode == RUNA) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
 		}
@@ -461,7 +501,7 @@ struct Y : Module {
 			beatCounter = modulo(beatCounter, 64);//beats long
 		}
 		//using reset overides clock in chained modules
-	}	
+	}
 };
 
 //geometry edit
@@ -537,7 +577,7 @@ struct YWidget : ModuleWidget {
 		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(1, 4.75f), module, Y::LCPY));
 
 		addParam(createParamCentered<LEDBezel>(loc(2, 4.75f), module, Y::PST));
-		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(2, 4.75f), module, Y::LPST));	
+		addChild(createLightCentered<LEDBezelLight<GreenLight>>(loc(2, 4.75f), module, Y::LPST));
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(3.5f, 3.75f), module, Y::JAZZ3));
 		addParam(createParamCentered<RoundBlackKnob>(loc(5.5f, 3.75f), module, Y::JAZZ4));

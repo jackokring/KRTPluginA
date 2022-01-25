@@ -24,7 +24,7 @@ The version number indicates the API build compatibility and feature use. So 1 i
 8. [V](#v) - 1 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 9. [F](#f) - 2 - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
 10. [W](#w) - 1 - [W](https://github.com/jackokring/KRTPluginADemo/blob/master/W.vcv)
-11. [Y](#y) - 1 - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
+11. [Y](#y) - 2 - [Y](https://github.com/jackokring/KRTPluginADemo/blob/master/Y.vcv)
 12. [O](#o) - 1 - [parabolic](https://github.com/jackokring/KRTPluginADemo/blob/master/parabolic.vcv)
 13. [S](#s) - 1 - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
 14. [E](#e) - 1 - [SE](https://github.com/jackokring/KRTPluginADemo/blob/master/SE.vcv)
