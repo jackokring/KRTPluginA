@@ -452,13 +452,13 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 	}
 
 	void drawLayer(const DrawArgs& args, int layer) override {
-		if (layer == 1 || layer == 0) {
-			draw(args);
+		if (layer == 1 /* || layer == 0 */) {
+			drew(args);
 		}
 		Widget::drawLayer(args, layer);
 	}
 
-	void draw(const DrawArgs &args) override {
+	void drew(const DrawArgs &args) {
 		std::shared_ptr<Font> font;
 		if (!(font = APP->window->loadFont(fontPath))) {
 			return;

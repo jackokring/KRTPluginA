@@ -151,7 +151,7 @@
     {
       "slug": "E",
       "name": "E",
-      "description": "Simple AR envelope with VCA. Nice.",
+      "description": "Simple AR envelope with VCA. Nice. Gained modulation out.",
       "tags": [
         "Envelope generator",
         "Voltage-controlled amplifier",
@@ -192,7 +192,7 @@
     {
       "slug": "C",
       "name": "C",
-      "description": "A set of three attenuverters with mixing.\nKind of usful chainable mixer.",
+      "description": "A set of three attenuverters with mixing.\nKind of useful chainable mixer.",
       "tags": [
         "Attenuator",
         "Mixer",
