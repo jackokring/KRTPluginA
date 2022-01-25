@@ -4,18 +4,18 @@
 * made this file link here ?
 * increased SDK V2 (2.25.25) but this file was misdirected
 * started adding some V2 labellings to some things
-* made README.md include version design in index
+* made `README.md` include version design in index
 * decided to follow lowercase convention for labels
-* will remove button labellings as per V2 docs
- 
+* remove button labellings as per V2 docs
+
 
 1.25.25 (actually shows as 1.25.24)
 ===
 
-* fixed intiitialization bug regression for some modules added in 1.23.24
+* fixed initialization bug regression for some modules added in 1.23.24
 * extended control ranges on `G`
 * forgot to bump version number so 1.25.24 published is actually 1.25.25
-
+* Final SDK V1 version
 
 1.25.24 (an main build unpublished version number)
 ===
