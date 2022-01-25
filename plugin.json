@@ -81,7 +81,7 @@
     {
       "slug": "Om",
       "name": "\u03a9",
-      "description": "Clock distribution randomizer.",
+      "description": "Clock distribution randomizer. Generates a randomish sequence of length 64 and depending on the left most displayed letter outputs a trigger when the clock is high or low.",
       "tags": [
         "Clock modulator",
         "Polyphonic",
