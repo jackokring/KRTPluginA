@@ -23,6 +23,33 @@ struct B : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Crossbar 1",
+		"Crossbar 2",
+		"Crossbar 3",
+		"Crossbar 4",
+		"Crossbar 5",
+		"Crossbar 6",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Crossbar A",
+		"Crossbar B",
+		"Crossbar C",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+		//no use ...
+		//done by buttons, but ... RGB tripple tool tip faux pas.
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 #define MOD_PASS_G 0
 #define MOD_SELECT_R 1
 #define MOD_FUNC_B 2
@@ -132,12 +159,13 @@ struct B : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		for(int i = 0; i < 6; i++) {
 			for(int j = 0; j < 3; j++) {
-				configParam(BUTTON + i + 6 * j, 0.f, 1.f, 0.f, names[j][i]);
+				configButton(BUTTON + i + 6 * j, names[j][i]);
 			}
 		}
-		configParam(MODE, 0.f, 1.f, 0.f, "Memory/Pass/Function");
+		configButton(MODE, "Memory (R)/Pass (G)/Function (B)");
 		configParam(I_MODE, 0.f, 2.f, 0.f);//internal mode
 		configParam(PATTERN, 0.f, 18.f, 0.f);//default pattern
+		iol(false);
 		for(int f = 0; f < patches; f++) {
 			for(int i = 0; i < ins; i++) {
 				for(int j = 0; j < outs; j++) {
