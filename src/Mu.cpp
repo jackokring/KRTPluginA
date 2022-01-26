@@ -43,10 +43,10 @@ struct Mu : Module {
 
 	const char *outstring[NUM_OUTPUTS] = {
 		"Differential",
-		"Second differential",
-		"Third differential",
+		"Pole modulation",
+		"Zero modulation",
 		"Basic integral",
-		"Pole form sigularity integral",
+		"Pole form singularity integral",
 		"Log form singularity integral",
 	};
 
