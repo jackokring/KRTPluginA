@@ -117,20 +117,20 @@ Some weird calculus module. It really depends what it can be made to do. It migh
 
 All the estimators are predictive one sample into the future (with `λ` kind of being a sophisticated constant of integration), a pre slew filter is set as a 6 dB/Oct zero delay filter. This filter may work opposite to how you might expect for some outputs.
 
-So the inputs `IN1`, `IN3` and `IN3` are controlled by **centred dB scaling** gainuverters for gain, amplified by an exponetial `dB`, slew limited and then processed for calculus estimates (9th order FIR).
+So the inputs `IN1`, `IN3` and `IN3` are controlled by **centred dB scaling** gainuverters for gain, amplified by an exponential `dB`, slew limited and then processed for calculus estimates (9th order FIR).
 
-The integrals are further processed by 3 point series accelerations (a tiny effect but interesting) to occur at a sample in the future. `λ` applies an effective modulation of this integral time step from a fraction of a sample to multiple samples. The halflife then is measured in exponetial inverse octaves.
+The integrals are further processed by 3 point series accelerations (a tiny effect but interesting) to occur at a sample in the future. `λ` applies an effective modulation of this integral time step from a fraction of a sample to multiple samples. The half-life then is measured in exponential inverse octaves.
 
 I mean why a 9th order FIR, and the number 27 of the sporadic simple groups connection? From 2 comes 2 to the power of all N. From 3 comes all odd numbers? This likely explains the choice of cube root to control the range of output voltage.
 
 Blerb (not essential to understanding the module)
 ---
 
-He's irisponsible :D https://en.wikipedia.org/wiki/Jacques_Tits ... roll on (Monster Moonshine)[https://en.wikipedia.org/wiki/Monstrous_moonshine] and let's not confuse maths with physics "speculated" on maths. Hope I got all the integration by parts and collection of approximants in limited terms right? (Some 2's, some 3's, some hopeful sporadics on the elliptic). Did I mention the congruants div 3 and the determinats (count 44 (18n+26 (Groupies)[https://en.wikipedia.org/wiki/Sporadic_group])) with Z(p) and alternating groups to a 42 which the circle and ellipse are the alternating or not on the major minor radius?
+He's irisponsible :D https://en.wikipedia.org/wiki/Jacques_Tits ... roll on (Monster Moonshine)[https://en.wikipedia.org/wiki/Monstrous_moonshine] and let's not confuse maths with physics "speculated" on maths. Hope I got all the integration by parts and collection of approximants in limited terms right? (Some 2's, some 3's, some hopeful sporadics on the elliptic). Did I mention the congruants div 3 and the determinants (count 44 (18n+26 (Groupies)[https://en.wikipedia.org/wiki/Sporadic_group])) with Z(p) and alternating groups to a 42 which the circle and ellipse are the alternating or not on the major minor radius?
 
-Initialize the big bang with differential estimates of the future captain, so obivating the definitional requirements at the singularity Captain. Well Gamma Bob, well gamma. A form of precision series truncation crusher, nice! None of that chucking away an abstract precision and getting right in there with truncation of summation generatve additive sythesis, for that timbral union.
+Initialize the big bang with differential estimates of the future captain, so obivating the definitional requirements at the singularity Captain. Well Gamma Bob, well gamma. A form of precision series truncation crusher, nice! None of that chucking away an abstract precision and getting right in there with truncation of summation generative additive synthesis, for that timbrel union.
 
-But isn't it about the singularity context of integration in a set of limits x, x+y where x is unkown but gestimated in a relative context Captain? Yes Bob all error in the calculus should be reported as this module is not about error, and others maybe built.
+But isn't it about the singularity context of integration in a set of limits x, x+y where x is unknown but gestimated in a relative context Captain? Yes Bob all error in the calculus should be reported as this module is not about error, and others maybe built.
 
 But shouldn't a sine converge to sin(x)? And and truncation of terms provide a controlled deviation from sin(x) for Fauxrier harminics? Exactly Boz, the sweet low power law alias summands.
 
@@ -160,7 +160,7 @@ The trigger `TRIG` resets the delay and produces a down shifted `OUT` until the 
 
 Going down is always a prerequisite before rising to the top! And normal is very overdue. The maximal delay length is divided by polyphony. What's the cache flush GB/s on this thing? I'm thinking 4 bars and a bit or so?
 
-Polyphonic triggers occur at the optimal octave intercept per trigger, and so the outputs become phasic to the triggers. `HI` can off trigger a trigger to sync with the up speed clearing of the precision down beat zero delay. No trigger equals monophony and no delay after the "blip" as there is a trigger need on `TRIG`.
+Polyphonic triggers occur at the optimal octave intercept per trigger, and so the outputs become phasic to the triggers. `HI` can off trigger a trigger to sync with the up speed clearing of the precision down beat zero delay. No trigger equals no effect and no delay after the "blip" as there is a trigger need on `TRIG`.
 
 Try `NOTE` at 5 semitones, and alter the trigger rate for a sync chord arpy sound. In this sense other semitone values are better at lower `TRIG` rates. Try some drums on the `HI` out for an interesting timing effect too.
 
@@ -184,7 +184,7 @@ Outs
 * Pre-trigger `PRE`
 * Out `OUT`
 
-A synchronized delay with a `PRE` control to remove a time dependant on sample latency so as to match timing one synchronization trigger later. So suppose you wish to sychronize to some live play and are prepared to time up one `TRIG` later (say a bar for arguments sake), then you can increase `PRE` to achive that less than the bar delay with latency compensating the rest of the bar delay which `PRE` removed on `OUT`. The output `PRE` gates high before the bar end to allow down module to trigger other things with the need to be triggered before the bar start.
+A synchronized delay with a `PRE` control to remove a time dependant on sample latency so as to match timing one synchronization trigger later. So suppose you wish to synchronize to some live play and are prepared to time up one `TRIG` later (say a bar for arguments sake), then you can increase `PRE` to achieve that less than the bar delay with latency compensating the rest of the bar delay which `PRE` removed on `OUT`. The output `PRE` gates high before the bar end to allow down module to trigger other things with the need to be triggered before the bar start.
 
 ;D
 ===
@@ -206,7 +206,7 @@ Outs
 ---
 * Out `OUT`
 
-Exponetial amplitude modulation with a future projection estimate 2 samples into the future for phase critical all pass when used with modules that have a 1 sample delay. The `CVdB` control is a **centred dB scaling** gainuverter.
+Exponential amplitude modulation with a future projection estimate 2 samples into the future for phase critical all pass when used with modules that have a 1 sample delay. The `CVdB` control is a **centred dB scaling** gainuverter.
 
 Also useful for pointing out transients in `IN` as the estimator is excited by the parts of the signal with aliasing potential.
 
@@ -235,7 +235,7 @@ Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy mod
 Ω
 ===
 
-*The 70% Grey One (With A Display) - Clock distribution randomizer*
+*The 70% Grey One (With A Display) - Clock distribution randomiser*
 
 Parameters
 ---
@@ -285,7 +285,7 @@ Outs
     * Frequency CV to Oscillator`CV`
     * Envelope Shaped Output `OUT`
 
-Takes in triggers on `T5` and `T7` to trigger one of the three vertical envelopes. `IN` is from the oscillator source, and `OUT` is that signal modified by the envelope. `CV` can be tuned dependant on the trigger pair combination. I thought it would help with using Ω. Although it might be quite useful on its own. The two outer `OUT` signals are normalized to the center `OUT` channel for less cables.
+Takes in triggers on `T5` and `T7` to trigger one of the three vertical envelopes. `IN` is from the oscillator source, and `OUT` is that signal modified by the envelope. `CV` can be tuned dependant on the trigger pair combination. I thought it would help with using Ω. Although it might be quite useful on its own. The two outer `OUT` signals are normalized to the centre `OUT` channel for less cables.
 
 F
 ===
@@ -473,7 +473,7 @@ An oversampled wave-folder based on Chebychev polynomials and some extras for a 
 M
 ===
 
-*Another 30% Grey One - Emphisis filter*
+*Another 30% Grey One - Emphasis filter*
 
 Parameters
 ---
@@ -494,7 +494,7 @@ Outs
 * Send `SND` (send filter output)
 * Out `OUT` (return filter output)
 
-An equilazation filter to decrease the effect of non-linear signal processing on high frequencies throwing them into alias distortion. A return filter removes the emphisis. So the base is amplified and treble reduced on the forward send filter, and the opposite for the return filter. It may make interfacing a "phono" deck easier, but does not amplify the tiny signals from a deck.
+An equalization filter to decrease the effect of non-linear signal processing on high frequencies throwing them into alias distortion. A return filter removes the emphasis. So the base is amplified and treble reduced on the forward send filter, and the opposite for the return filter. It may make interfacing a "phono" deck easier, but does not amplify the tiny signals from a deck.
 
 It reduces the non-linear shaping of high frequencies in the send return path from injecting harmonics into the alias band above the sampling Nyquist frequency. So good for base harmonic generation. The headroom of VCV rack should support the +/- 50V peak to peak. But you might need a bit of gain reduction before this module.
 
@@ -531,9 +531,9 @@ Outs
 
 A physical model simulation. Treats the input as a driven mass radius and calculates the uncertainty of the mass using a quantum and gravity connection.
 
-I could explain by (https://drive.google.com/file/d/0B-avx1luFGRbRTVFOFhSWkluQWM/view?usp=sharing&resourcekey=0-YsVFVTBgEFU-1QAJ1hYz8A)[Mistakes and genius] as yes something are wrong, and somethings being applied have an error less than Planks constant cubed which is very small as to be imesurable, yet defined as certain by fixing the constant as a committie committed to, and so ...
+I could explain by (https://drive.google.com/file/d/0B-avx1luFGRbRTVFOFhSWkluQWM/view?usp=sharing&resourcekey=0-YsVFVTBgEFU-1QAJ1hYz8A)[Mistakes and genius] as yes something are wrong, and something being applied have an error less than Planks constant cubed which is very small as to be immeasurable, yet defined as certain by fixing the constant as a committee committed to, and so ...
 
-Is dark matter the intergral over an average on a non-linear 1/r^2 law of an uncertainty in radial potential energy? Is dark energy a tangential version? As distances get smaller the F=kr of quark confinement something that 1/r maps to r becomes a strong force unseen equivelent? Dark strong? A prediction or just a tune from finding subharmonic greatest common division of the natural omega frequency of matter?
+Is dark matter the integral over an average on a non-linear 1/r^2 law of an uncertainty in radial potential energy? Is dark energy a tangential version? As distances get smaller the F=kr of quark confinement something that 1/r maps to r becomes a strong force unseen equivalent? Dark strong? A prediction or just a tune from finding sub-harmonic greatest common division of the natural omega frequency of matter?
 
 How to connect your modular to a scanning tunnelling microscope? Contact a physical? Enjoy!
 
@@ -599,7 +599,7 @@ B
 
 Parameters
 ---
-* 18 Route Buttons (unlabeled)
+* 18 Route Buttons
 * Mode `MODE`
 
 Ins
@@ -693,7 +693,7 @@ Outs
 ---
 * Out `OUT`
 
-Classic organ harmonics. Add a little phase modulation weighted more for the base harmonics, and make some interesting timbral textures. Hold on to your base bins. To not weight the phase modulation gets harmonically (n+1) very fast.
+Classic organ harmonics. Add a little phase modulation weighted more for the base harmonics, and make some interesting timbrel textures. Hold on to your base bins. To not weight the phase modulation gets harmonically (n+1) very fast.
 
 I
 ===
@@ -717,7 +717,7 @@ Outs
 * 3 Outs `O1`, `O2`, `O3`
 * Exclusive Or of All 3 Outputs `XOR`
 
-Apart from being 3 variable clock dividers which maintain a sychronization phase this module also extracts the down beat for modules when high `RST` does not override `CLK` and so need the first clock extracting (the downbeat) to synchronize them. Such "armed before play" (rising edge reset) modules **should** copy the **MIDI standard** but are different from the **normal electronic logic synchronous convention** of hold in the first state on `RST` and so **don't** ignore the first `CLK`. They **should** use an extra state (called "armed" here) and then need a `CLK` to enter the first state.
+Apart from being 3 variable clock dividers which maintain a synchronization phase this module also extracts the down beat for modules when high `RST` does not override `CLK` and so need the first clock extracting (the downbeat) to synchronize them. Such "armed before play" (rising edge reset) modules **should** copy the **MIDI standard** but are different from the **normal electronic logic synchronous convention** of hold in the first state on `RST` and so **don't** ignore the first `CLK`. They **should** use an extra state (called "armed" here) and then need a `CLK` to enter the first state.
 
 If a module resets on rising edge `RST` but also reacts after to rising edge `CLK` and also **doesn't** have an "armed" state, it jump forward one step out of sync. If it has an "armed" state and `RST` is slightly delayed compared to `CLK` is spend one step in the "armed" state based on a race of signals through wiring.
 
@@ -755,6 +755,6 @@ Outs
 * Envelope Follower `ENV`
 * Compressed Output `OUT`
 
-A normal compressor with a sidechain input. The envelope follower can be mixed with the `FRQ` in to produce some pinging harmonics by the output `FRQ` (modified by the envelope), along with a high pass filter which can be tuned down for a `Q` boost and sub-base cut. The `MIX` brings a compressed `OUT` back upto normalized levels like an auto-computed make up gain. The amount of applied compression could more accurately be the envelope applied via the `ENV` control to the `FRQ` chain. This chain also applies to the `CUT` to slide up the corner frequency of the high-pass filter.
+A normal compressor with a side-chain input. The envelope follower can be mixed with the `FRQ` in to produce some pinging harmonics by the output `FRQ` (modified by the envelope), along with a high pass filter which can be tuned down for a `Q` boost and sub-base cut. The `MIX` brings a compressed `OUT` back upto normalized levels like an auto-computed make up gain. The amount of applied compression could more accurately be the envelope applied via the `ENV` control to the `FRQ` chain. This chain also applies to the `CUT` to slide up the corner frequency of the high-pass filter.
 
 The `CUT` filter is perhaps the most interesting bit of the design. The range of the control is slanted towards sun-octaves, while the `Q` has been somewhat limited as it is applied post compression. It makes a nice effect when compression "breathing" is swept using `CUT` and `ENV` controls to balance the style.
