@@ -22,6 +22,26 @@ struct X : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Audio",
+		"Shape order modulation",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -66,10 +86,11 @@ struct X : Module {
 
 	X() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(FOLD, 0.f, 100.f, 50.f, "Fold Depth", " %");
-		configParam(KIND, -1.f, 1.f, 0.f, "Fold Kind");
-		configParam(MASH, 23.f, -4.f, 23.f, "Mash Bit Depth", " bits");
-		configParam(WET, 0.f, 100.f, 50.f, "Wet Mix", " %");
+		configParam(FOLD, 0.f, 100.f, 50.f, "Fold depth", " %");
+		configParam(KIND, -1.f, 1.f, 0.f, "Fold kind");
+		configParam(MASH, 23.f, -4.f, 23.f, "Mash bit depth", " bits");
+		configParam(WET, 0.f, 100.f, 50.f, "Wet mix", " %");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			bl[i] = bb[i] = 0;
 		}

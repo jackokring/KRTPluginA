@@ -29,6 +29,31 @@ struct Q : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Audio",
+		"Omega mass frequency modulation",
+		"Sigularity hysterisis modulation",
+		"Uncertainty plank magnifier modulation",
+		"Gravity newton magnifier modulation",
+		"Mass magnifier modulation",
+		"Angle magnifier modulation",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Audio 1",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -55,12 +80,13 @@ struct Q : Module {
 
 	Q() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(OMEGA, -4.f, 4.f, 0.f, "Omega Mass Frequency", " Oct (rel C4)");
-		configParam(SINGULAR_HYSTERISIS, 0.f, 6.f, 0.f, "Sigularity Hysterisis", " dB");
-		configParam(PLANK, 1.f, 2.f, 1.f, "Uncertainty Plank Magnifier");
-		configParam(NEWTON, 0.f, 2.f, 0.f, "Gravity Newton Magnifier");
-		configParam(MASS_RATIO, 2.f, 4.f, 0.f, "Mass Magnifier");
-		configParam(ANGLE, -1.f, 1.f, 0.f, "Angle Magnifier");
+		configParam(OMEGA, -4.f, 4.f, 0.f, "Omega mass frequency", " Oct (rel C4)");
+		configParam(SINGULAR_HYSTERISIS, 0.f, 6.f, 0.f, "Sigularity hysterisis", " dB");
+		configParam(PLANK, 1.f, 2.f, 1.f, "Uncertainty plank magnifier");
+		configParam(NEWTON, 0.f, 2.f, 0.f, "Gravity newton magnifier");
+		configParam(MASS_RATIO, 2.f, 4.f, 0.f, "Mass magnifier");
+		configParam(ANGLE, -1.f, 1.f, 0.f, "Angle magnifier");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			wave[i] = 0;
 		}
@@ -92,7 +118,7 @@ struct Q : Module {
 			float tmp = modulo(wave[p], 1.f);
 			float massOsc = tmp * (tmp - 1.f) * (wave[p] - 1.f);
 			massOsc *= 20.f;//scale
-			if(abs(massOsc) >= ihyst) massOsc = ihyst * ihyst / massOsc;//turn to multiplicand stable 
+			if(abs(massOsc) >= ihyst) massOsc = ihyst * ihyst / massOsc;//turn to multiplicand stable
 			float iplank = inputs[IPLANK].getPolyVoltage(p) * 0.1f;
 			massOsc *= log(iplank + plank, 1.f);
 			float out = massOsc;//Heisenburg uncertainty
@@ -117,7 +143,7 @@ struct Q : Module {
 			//x[p] and this is why the crash happened ... ;D
 			//technically quark containment reduces the cubic on radius
 			//but keeping it in causes balance throught (in - x[p])
-			
+
 			// OUTS
 			outputs[OUT].setVoltage(out * 0.5f, p);
 		}

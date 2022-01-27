@@ -25,6 +25,29 @@ struct M : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Low frequency corner",
+		"High frequency corner",
+		"Audio",
+		"FX return",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"FX send",
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -55,10 +78,11 @@ struct M : Module {
 
 	M() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(LOW, -3.f, 4.f, 0.f, "Low Frequency", " Oct (rel 50 Hz)");//800
-		configParam(LGAIN, 0.f, 20.f, 20.f, "Low Gain", " dB");
-		configParam(HIGH, -4.f, 0.f, 0.f, "High Frequency", " Oct (rel 21.22 kHz");
-		configParam(HGAIN, -20.f, 0.f, -20.f, "High Gain", " dB");
+		configParam(LOW, -3.f, 4.f, 0.f, "Low frequency", " Oct (rel 50 Hz)");//800
+		configParam(LGAIN, 0.f, 20.f, 20.f, "Low gain", " dB");
+		configParam(HIGH, -4.f, 0.f, 0.f, "High frequency", " Oct (rel 21.22 kHz");
+		configParam(HGAIN, -20.f, 0.f, -20.f, "High gain", " dB");
+		iol(false);
 		//21kHz break on high boost
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			for(int j = 0; j < 4; j++) {
@@ -95,7 +119,7 @@ struct M : Module {
 		float lgain = dB(params[LGAIN].getValue());
 		float high = params[HIGH].getValue();
 		float hgain = dB(params[HGAIN].getValue());
-		
+
 		int maxPort = maxPoly();
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
@@ -106,7 +130,7 @@ struct M : Module {
 			low = clamp(low, 0.f, fs * 0.5f);
 			high = log(high + inputs[IHIGH].getPolyVoltage(p), 21220.f);
 			high = clamp(high, 0.f, fs * 0.5f);
-			
+
 			//extra constructed poles/zeros for actual
 			float lmid = low * lgain;//decade
 			float hmid = high * hgain;//decade
@@ -167,7 +191,7 @@ struct MWidget : ModuleWidget {
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 2), module, M::LGAIN));
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 3), module, M::HIGH));
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 4), module, M::HGAIN));
-	
+
 		addInput(createInputCentered<PJ301MPort>(loc(0.75f, 5), module, M::ILOW));
 		addInput(createInputCentered<PJ301MPort>(loc(1.25f, 5), module, M::IHIGH));
 		addInput(createInputCentered<PJ301MPort>(loc(0.75f, 6), module, M::IN));
