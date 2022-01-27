@@ -22,6 +22,28 @@ struct S : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"MIDI clock",
+		"MIDI start",
+		"MIDI stop",
+		"MIDI continue",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"LFO style"
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	double beatCounter = 0;
 	int beatIn = 64;
 	int divider = 17;
@@ -36,6 +58,7 @@ struct S : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BPM, 0.f, 240.f, 120.f, "Estimated Tempo", " bpm");
 		configParam(DIV, 1.f, 16.f, 1.f, "Division Ratio");
+		iol(false);
 	}
 
 	//double bit error ?? time??

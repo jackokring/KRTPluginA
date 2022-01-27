@@ -19,6 +19,25 @@ struct O : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Frequency CV",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -36,9 +55,10 @@ struct O : Module {
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(FBK, 0.f, 100.f, 50.f, "Feedback", " %");
 		for(int i = 1; i < 3; i++) {
-			configParam(FRQ + i, -2.f, 2.f, 0.f, "Relative Frequency", " Oct");
+			configParam(FRQ + i, -2.f, 2.f, 0.f, "Relative frequency", " Oct");
 			configParam(FBK + i, 0.f, 100.f, 50.f, "Feedback", " %");
 		}
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			for(int j = 0; j < 3; j++) {
 				wave[i][j] = 0;

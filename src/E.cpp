@@ -22,6 +22,27 @@ struct E : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Audio",
+		"Trigger",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Modulation bi-polar"
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -36,9 +57,10 @@ struct E : Module {
 
 	E() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(ATK, -27.f, 9.f, -9.f, "Attack Time", " dBs");
-		configParam(REL, -27.f, 9.f, -9.f, "Release Time", " dBs");
-		configParam(MOD, -6.f, 6.f, 0.f, "Modulation Level", " Center dB (rel 6)");
+		configParam(ATK, -27.f, 9.f, -9.f, "Attack time", " dBs");
+		configParam(REL, -27.f, 9.f, -9.f, "Release time", " dBs");
+		configParam(MOD, -6.f, 6.f, 0.f, "Modulation level", " Center dB (rel 6)");
+		iol(false);
 		for(int j = 0; j < PORT_MAX_CHANNELS; j++) {
 			env[j] = 0.f;//silence
 			envA[j] = false;//not triggered
