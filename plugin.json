@@ -17,7 +17,7 @@
     {
       "slug": "A",
       "name": "A",
-      "description": "Plate 18 dB filter. (Band pass phased ring mod).\nOther ins and outs with different order are available.\nThe ring modulation is between a low and high pass\nfor a band pass with harmonics effect.",
+      "description": "Plate 18 dB filter. Band pass phased ring mod.\nOther ins and outs with different order are available.\nThe ring modulation is between a low and high pass\nfor a band pass with harmonics effect.",
       "tags": [
         "Effect",
         "Filter",
@@ -59,7 +59,7 @@
     {
       "slug": "D",
       "name": ";D",
-      "description": "VCA/future estimator with error? A very simple utility.",
+      "description": "Exponential VCA and future estimator with error? A very simple utility.",
       "tags": [
         "Utility",
         "Attenuator",
@@ -71,7 +71,7 @@
     {
       "slug": "R",
       "name": "R",
-      "description": "Simple mixer split.",
+      "description": "Simple mixer split. Put a signal on another as an insert.",
       "tags": [
         "Attenuator",
         "Mixer",
@@ -103,7 +103,7 @@
     {
       "slug": "F",
       "name": "F",
-      "description": "24 dB morph filter. A 2D interpolation and extrapolation between 4 classic\nanalytic filter responses (Bessel, Butterworth, Linkwitz and Legendre).\nIncludes an interpole distortion effect and morphing to the inverse filter.",
+      "description": "24 dB morph filter. A 2D interpolation and extrapolation between 4 classic\nanalytic filter responses of Bessel, Butterworth, Linkwitz and Legendre.\nIncludes an interpole distortion effect and morphing to the inverse filter.",
       "tags": [
         "Filter",
         "Polyphonic"
@@ -141,7 +141,7 @@
     {
       "slug": "S",
       "name": "S",
-      "description": "Clock to CV generator. (Needs MIDI clk, cont, stop, start)\nProduces a time based CV.",
+      "description": "Clock to CV generator. Needs MIDI clk, cont, stop and start.\nProduces a time based CV.",
       "tags": [
         "MIDI",
         "Clock modulator",
@@ -170,7 +170,7 @@
     {
       "slug": "M",
       "name": "M",
-      "description": "Emphisis and de-emphisis filter. (Default RIAA and inverse)\nThis module has large gain. WARNING!",
+      "description": "Emphisis and de-emphisis filter. Default is RIAA and inverse.\nThis module has large gain. WARNING!",
       "tags": [
         "Polyphonic",
         "Filter",
@@ -192,7 +192,7 @@
     {
       "slug": "C",
       "name": "C",
-      "description": "A set of three attenuverters with mixing.\nKind of useful chainable mixer.",
+      "description": "A set of three attenuverters with mixing.\nKind of useful chainable mixer.\nIncludes LPF per channel.",
       "tags": [
         "Attenuator",
         "Mixer",
@@ -214,7 +214,7 @@
     {
       "slug": "B",
       "name": "B",
-      "description": "Crossbar performance switch.",
+      "description": "Crossbar performance switch. Remembers internal routing\nfor performance switching.",
       "tags": [
         "Switch",
         "Controller",
@@ -224,7 +224,7 @@
     {
       "slug": "J",
       "name": "J",
-      "description": "All-pass filter. (Phaser)",
+      "description": "All-pass filter. (Phaser) Has an LFO built-in.",
       "tags": [
         "Filter",
         "Polyphonic",
@@ -245,7 +245,7 @@
     {
       "slug": "H",
       "name": "H",
-      "description": "Base gimpathizer. (Organ with phase modulation)\nBass how low?",
+      "description": "Base gimpathizer. An organ with phase modulation.\nBass how low?",
       "tags": [
         "Polyphonic",
         "Oscillator"
@@ -263,7 +263,7 @@
     {
       "slug": "G",
       "name": "G",
-      "description": "Compressor with control outs.",
+      "description": "Compressor with control outs. Has a low pass peaking filter.",
       "tags": [
         "Polyphonic",
         "Compressor",
