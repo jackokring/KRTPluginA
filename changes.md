@@ -1,3 +1,9 @@
+2.25.27
+===
+
+* complete V2 migration labellings
+* improve tool tip documentation
+
 2.25.26
 ===
 
@@ -6,8 +12,8 @@
 * started adding some V2 labellings to some things
 * made `README.md` include version design in index
 * decided to follow lowercase convention for labels
-* remove button labellings as per V2 docs
 
+## Version 1 SDK Defunct
 
 1.25.25 (actually shows as 1.25.24)
 ===

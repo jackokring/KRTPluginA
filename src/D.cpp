@@ -21,6 +21,26 @@ struct D : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Audio",
+		"Gain modulation",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+		//no use ...
+	};
+
+	void iol(bool lights) {
+			for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+			for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+			if(!lights) return;
+			for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+		}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -51,9 +71,10 @@ struct D : Module {
 
 	D() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(DB, -24.f, 6.f, 0.f, "Exponential Gain", " dB");
-		configParam(CVDB, -6.f, 6.f, 0.f, "Modulation Level", " Center dB (rel 6)");
+		configParam(DB, -24.f, 6.f, 0.f, "Exponential gain", " dB");
+		configParam(CVDB, -6.f, 6.f, 0.f, "Modulation level", " Center dB (rel 6)");
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			b[i] = 0;
 		}

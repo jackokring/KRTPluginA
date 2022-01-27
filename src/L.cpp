@@ -21,6 +21,27 @@ struct L : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Audio",
+		"Trigger sync",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Pre-trigger sync",
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+		//no use ...
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -35,8 +56,9 @@ struct L : Module {
 
 	L() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(PRE, 0.f, 16.f, 0.f, "Pre-trigger Samples", " 2^N Samples");
-		configParam(FINE, 0.f, 1.f, 0.f, "Fine Pre-trigger", " 2^N+ Samples");
+		configParam(PRE, 0.f, 16.f, 0.f, "Pre-trigger samples", " 2^N Samples");
+		configParam(FINE, 0.f, 1.f, 0.f, "Fine pre-trigger", " 2^N+ Samples");
+		iol(false);
 		for(int p = 0; p < PORT_MAX_CHANNELS; p++) {
 			lastHead[p] = head[p] = tail[p] = 0.f;
 			buff.resize(MAX_BUFFER);
@@ -103,7 +125,7 @@ struct L : Module {
 		// POLY: Port::getPolyVoltage(c)
 		//float fs = args.sampleRate;
 		int maxPort = maxPoly();
-		maxLen = MAX_BUFFER / maxPort;//share buffer 
+		maxLen = MAX_BUFFER / maxPort;//share buffer
 		long max = (long) maxLen;
 		maxLen = (float) max;//round down for sample guard
 
@@ -114,13 +136,13 @@ struct L : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			buffStart[p] = maxLen * p;//fit 
+			buffStart[p] = maxLen * p;//fit
 			float in = inputs[IN].getPolyVoltage(p);
 			float trig = inputs[TRIG].getPolyVoltage(p);
 			bool trigger = st[p].process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
 
 			putBuffer(in, p);
-			if(trigger) { 
+			if(trigger) {
 				len[p] = modulo(head[p] - lastHead[p] + maxLen, maxLen);//get written length since trigger
 				lastHead[p] = head[p];//maintain length measure
 			}

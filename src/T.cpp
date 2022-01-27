@@ -21,6 +21,27 @@ struct T : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Audio",
+		"Trigger sync",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Higher trigger",
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+		//no use ...
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -36,7 +57,8 @@ struct T : Module {
 	T() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(NOTE, 0.f, 11.f, 0.f, "Tune", " Semitones");
-		configParam(FINE, 0.f, 100.f, 0.f, "Fine Tune", " Cents");
+		configParam(FINE, 0.f, 100.f, 0.f, "Fine tune", " Cents");
+		iol(false);
 		for(int p = 0; p < PORT_MAX_CHANNELS; p++) {
 			head[p] = tail[p] = 0.f;
 			hi[p] = false;
@@ -91,7 +113,7 @@ struct T : Module {
 		where2 = modulo(where2, maxLen);//modulo
 		where2 += buffStart[chan];
 		long w2 = (long) where2;//get an integer index
-		//ERROR!! --fixed by -2 on buffer collide slot 
+		//ERROR!! --fixed by -2 on buffer collide slot
 		if(w == w2) return true;//overflow
 		buff[w] = in;
 		return false;// no reset
@@ -138,7 +160,7 @@ struct T : Module {
 		// POLY: Port::getPolyVoltage(c)
 		//float fs = args.sampleRate;
 		int maxPort = maxPoly();
-		maxLen = MAX_BUFFER / maxPort;//share buffer 
+		maxLen = MAX_BUFFER / maxPort;//share buffer
 		long max = (long) maxLen;
 		maxLen = (float) max;//round down for sample guard
 
@@ -152,12 +174,12 @@ struct T : Module {
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
-			buffStart[p] = maxLen * p;//fit 
+			buffStart[p] = maxLen * p;//fit
 			float in = inputs[IN].getPolyVoltage(p);
 			float trig = inputs[TRIG].getPolyVoltage(p);
 			bool trigger = st[p].process(rescale(trig, 0.1f, 2.f, 0.f, 1.f));
 
-			if(trigger || putBuffer(in, p)) { 
+			if(trigger || putBuffer(in, p)) {
 				len[p] = head[p];//get written length since trigger
 				if(len[p] > MAX_BUFFER) len[p] = MAX_BUFFER;//safe
 				//on 24 bit mantissa overflow the head progress many stall
@@ -169,7 +191,7 @@ struct T : Module {
 
 			float out;
 			if(hi[p]) {
-				if(tail[p] > len[p]) { 
+				if(tail[p] > len[p]) {
 					out = getBuffer(1.f, p);//pass
 					hi[p] = false;
 				} else {

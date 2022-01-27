@@ -16,10 +16,10 @@ The version number indicates the API build compatibility and feature use. So 1 i
 
 1. [A](#a) - 2 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
 2. [μ](#μ) - 2 - [crisp](https://github.com/jackokring/KRTPluginADemo/blob/master/crisp.vcv)
-3. [T](#t) - 1 - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
-4. [L](#l) - 1 - [boring](https://github.com/jackokring/KRTPluginADemo/blob/master/boring.vcv)
-5. [;D](#d) - 1 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
-6. [R](#r) - 1 - No demo required
+3. [T](#t) - 2 - [I shat the she riff](https://github.com/jackokring/KRTPluginADemo/blob/master/I%20shat%20the%20she%20riff..vcv)
+4. [L](#l) - 2 - [boring](https://github.com/jackokring/KRTPluginADemo/blob/master/boring.vcv)
+5. [;D](#d) - 2 - [DA](https://github.com/jackokring/KRTPluginADemo/blob/master/DA.vcv)
+6. [R](#r) - 2 - No demo required
 7. [Ω](#Ω) - 2 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 8. [V](#v) - 1 - [Omicron](https://github.com/jackokring/KRTPluginADemo/blob/master/Omicron.vcv)
 9. [F](#f) - 2 - [morph](https://github.com/jackokring/KRTPluginADemo/blob/master/morph.vcv)
