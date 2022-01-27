@@ -40,7 +40,7 @@ struct Q : Module {
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"Audio 1",
+		"Audio",
 	};
 
 	const char *lightstring[NUM_LIGHTS] = {

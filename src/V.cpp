@@ -52,11 +52,11 @@ struct V : Module {
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"Frequency CV 1"
+		"Frequency CV 1",
 		"Audio 1",
-		"Frequency CV 2"
+		"Frequency CV 2",
 		"Audio 2 normalized summing",
-		"Frequency CV 3"
+		"Frequency CV 3",
 		"Audio 3",
 	};
 

@@ -29,6 +29,29 @@ struct G : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Frequency CV",
+		"Side-chain",
+		"Audio",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Frequency CV",
+		"Envelope CV",
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -43,16 +66,17 @@ struct G : Module {
 
 	G() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(ATK, -36.f, -1.f, -9.f, "Attack Time", " dBs");
-		configParam(DCY, -27.f, 1.f, -6.f, "Decay Time", " dBs");
+		configParam(ATK, -36.f, -1.f, -9.f, "Attack time", " dBs");
+		configParam(DCY, -27.f, 1.f, -6.f, "Decay time", " dBs");
 		configParam(THR, -24.f, 6.f, -6.f, "Threshold", " dB");
 		configParam(RTO, 8.f, -4.f, 2.f, "Ratio", " 2^N:1");//256 soft-limiter
 		//default 4:1 compressing
 		configParam(CUT, -8.f, 2.f, 0.f, "Frequency", " Oct");
 		//more for base
 		configParam(Q, -6.f, 12.f, -6.f, "Resonance", " dBQ");
-		configParam(MIX, 0.f, 100.f, 0.f, "Mix Gain", " %");
-		configParam(ENV, -2.f, 2.f, 0.f, "Envelope Amount", " Oct/6dB");
+		configParam(MIX, 0.f, 100.f, 0.f, "Mix gain", " %");
+		configParam(ENV, -2.f, 2.f, 0.f, "Envelope amount", " Oct/6dB");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			bl[i] = bb[i] = b[i] = last[i] = 0;
 		}
@@ -131,7 +155,7 @@ struct G : Module {
 			float in = inputs[IN].getPolyVoltage(p);
 			float sch = inputs[SCH].isConnected() ?
 				inputs[SCH].getPolyVoltage(p) : in;
-			
+
 			sch = abs(sch);//absolute value
 			float tau;
 			//f = 1/2pi-tau
@@ -160,7 +184,7 @@ struct G : Module {
 			setFK2(frq, rez, fs);
 			in = process2(in, p);//cut and rez
 			//make up gain
-			in = (1.f - mix) * in + mix * in * makeUp; 
+			in = (1.f - mix) * in + mix * in * makeUp;
 			// OUTS
 			outputs[OFRQ].setVoltage(cv, p);
 			outputs[OENV].setVoltage(sch, p);

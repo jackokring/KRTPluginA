@@ -20,6 +20,27 @@ struct H : Module {
 		NUM_LIGHTS
 	};
 
+	const char *names[11] = {
+		"16'", "5 1/3'", "8'",
+		"4'", "2 2/3'", "2'",
+		"1 3/5'", "1 1/3'", "1'", "Frequency CV", "Phase modulation"
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, names[i]);//change for specifically H
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -32,14 +53,9 @@ struct H : Module {
 		return poly;
 	}
 
-	const char *names[9] = {
-		"16'", "5 1/3'", "8'",
-		"4'", "2 2/3'", "2'",
-		"1 3/5'", "1 1/3'", "1'"
-	};
-
 	H() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		iol(false);
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				int idx = j + 3 * i;

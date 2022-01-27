@@ -28,7 +28,7 @@ struct E : Module {
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"Modulation bi-polar"
+		"Modulation bi-polar",
 		"Audio",
 	};
 

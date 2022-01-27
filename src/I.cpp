@@ -23,6 +23,31 @@ struct I : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Clock",
+		"Reset",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Down beat",
+		"Beats without down beat",
+		"Divided 1",
+		"Divided 2",
+		"Divided 3",
+		"Exclusive or of all 3 divided outputs",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = inputs[CLK].getChannels();
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
@@ -54,6 +79,7 @@ struct I : Module {
 				outSym[j][i] = false;
 			}
 		}
+		iol(false);
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -68,7 +94,7 @@ struct I : Module {
 		float rst = inputs[RST].getVoltageSum();//signal OR
 		sRst.process(rescale(rst, 0.1f, 2.f, 0.f, 1.f));
 		for(int p = maxPort - 1; p > 0; p--) {//Assume branch into unroll number ...
-			float clk = inputs[CLK].getPolyVoltage(p);			
+			float clk = inputs[CLK].getPolyVoltage(p);
 			bool trigClk = sClk[p].process(rescale(clk, 0.1f, 2.f, 0.f, 1.f));
 			if(trigClk) {
 				for(int i = 0; i < 3; i++) {
@@ -95,7 +121,7 @@ struct I : Module {
 		for(int p = 0; p < maxPort; p++) {
 			// OUTS
 			bool x = false;
-#pragma GCC ivdep			
+#pragma GCC ivdep
 			for(int i = 0; i < 3; i++) {
 				outputs[OUT + i].setVoltage(outSym[p][i] ? 10.f : 0.f, p);
 				x ^= outSym[p][i];
