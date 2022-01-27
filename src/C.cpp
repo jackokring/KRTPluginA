@@ -24,6 +24,30 @@ struct C : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Audio 1",
+		"Audio 2",
+		"Audio 3",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Audio 1 mix bypass",
+		"Audio 2 mix bypass",
+		"Audio 3 mix bypass",
+		"Mixed of unplugged outputs",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+		//no use ...
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -69,6 +93,7 @@ struct C : Module {
 		configParam(F1, -6.f, 6.f, 0.f, "LPF", " Oct");
 		configParam(F2, -6.f, 6.f, 0.f, "LPF", " Oct");
 		configParam(F3, -6.f, 6.f, 0.f, "LPF", " Oct");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			for(int j = 0; j < 3; j++) {
 				b[i][j] = 0;
@@ -86,7 +111,7 @@ struct C : Module {
 		float f1 = log(params[F1].getValue(), dsp::FREQ_C4);
 		float f2 = log(params[F2].getValue(), dsp::FREQ_C4);
 		float f3 = log(params[F3].getValue(), dsp::FREQ_C4);
-		
+
 		int maxPort = maxPoly();
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {

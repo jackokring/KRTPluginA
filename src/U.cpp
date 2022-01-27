@@ -21,6 +21,35 @@ struct U : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Clock 1",
+		"Clock 2",
+		"Clock 3",
+		"Signal 1",
+		"Signal 2",
+		"Signal 3",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Signal 1",
+		"Signal 2",
+		"Signal 3",
+		"Quantized signal 1",
+		"Quantized signal 2",
+		"Quantized signal 3",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+		//no use ...
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -52,7 +81,8 @@ struct U : Module {
 	U() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(QUANTIZE, 1.f, 12.f, 1.f, "Interval", " Semitones");
-		configParam(NOISE, -8.f, 8.f, 0.f, "Noise Filter", " Oct");
+		configParam(NOISE, -8.f, 8.f, 0.f, "Noise filter", " Oct");
+		iol(false);
 		for(int i = 0; i < 3; i++) {
 			sampled[i] = 0.f;
 		}

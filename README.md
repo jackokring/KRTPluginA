@@ -31,8 +31,8 @@ The version number indicates the API build compatibility and feature use. So 1 i
 15. [X](#x) - 1 - [wave](https://github.com/jackokring/KRTPluginADemo/blob/master/wave.vcv)
 16. [M](#m) - 1 - [M](https://github.com/jackokring/KRTPluginADemo/blob/master/M.vcv)
 17. [Q](#q) - 1 - [Q](https://github.com/jackokring/KRTPluginADemo/blob/master/Q.vcv)
-18. [C](#c) - 1 - No demo required
-19. [U](#u) - 1
+18. [C](#c) - 2 - No demo required
+19. [U](#u) - 2
 20. [B](#b) - 2 - I seems to be adding to patch [B](https://github.com/jackokring/KRTPluginADemo/blob/master/B.vcv)
 21. [J](#j) - 1
 22. [K](#k) - 1
