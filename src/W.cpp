@@ -21,6 +21,37 @@ struct W : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Frequency CV",
+		"Semitone 1",
+		"Semitone 2",
+		"Semitone 3",
+		"Semitone 4",
+		"Semitone 5",
+		"Semitone 6",
+		"Semitone 7",
+		"Semitone 8",
+		"Semitone 9",
+		"Semitone 10",
+		"Semitone 11",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Semitones added",
+		"Semitones subtracted",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -35,6 +66,7 @@ struct W : Module {
 
 	W() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		iol(false);
 	}
 
 	int order[11] = {

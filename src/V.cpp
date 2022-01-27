@@ -36,6 +36,41 @@ struct V : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Frequency CV",
+		"Gain modulation",
+		"Envelope time modulation",
+		"Audio 1",
+		"Up 4th",
+		"Up 5th",
+		"Audio 2",
+		"Up 4th",
+		"Up 5th",
+		"Audio 3",
+		"Up 4th",
+		"Up 5th",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Frequency CV 1"
+		"Audio 1",
+		"Frequency CV 2"
+		"Audio 2 normalized summing",
+		"Frequency CV 3"
+		"Audio 3",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -53,8 +88,9 @@ struct V : Module {
 		configParam(HZ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		//perhaps exponetials ... inverse Oct -> Hz to seconds
 		// 1/512th to 8 seconds (default 1/8th)
-		configParam(ATK, -27.f, 9.f, -9.f, "Attack Time", " dBs");
-		configParam(DCY, -27.f, 9.f, -9.f, "Decay Time", " dBs");
+		configParam(ATK, -27.f, 9.f, -9.f, "Attack time", " dBs");
+		configParam(DCY, -27.f, 9.f, -9.f, "Decay time", " dBs");
+		iol(false);
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < PORT_MAX_CHANNELS; j++) {
 				env[i][j] = 0.f;//silence
@@ -111,7 +147,7 @@ struct V : Module {
 
 			// OUTS
 			float normal = 0.f;//normal total
-#pragma GCC ivdep			
+#pragma GCC ivdep
 			for(int i = 0; i < 3; i++) {
 				float tr5 = inputs[t5[i]].getPolyVoltage(p);
 				float tr7 = inputs[t7[i]].getPolyVoltage(p);
@@ -175,7 +211,7 @@ struct VWidget : ModuleWidget {
 
 		addParam(createParamCentered<RoundBlackKnob>(loc(1, 1), module, V::HZ));
 		addParam(createParamCentered<RoundBlackKnob>(loc(2, 1), module, V::ATK));
-		addParam(createParamCentered<RoundBlackKnob>(loc(3, 1), module, V::DCY));	
+		addParam(createParamCentered<RoundBlackKnob>(loc(3, 1), module, V::DCY));
 
 		addInput(createInputCentered<PJ301MPort>(loc(1, 2), module, V::CVHZ));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 2), module, V::CVDB));
@@ -184,7 +220,7 @@ struct VWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(loc(1, 3), module, V::IN1));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 3), module, V::IN2));
 		addInput(createInputCentered<PJ301MPort>(loc(3, 3), module, V::IN3));
-		
+
 		addInput(createInputCentered<PJ301MPort>(loc(1, 4), module, V::T51));
 		addInput(createInputCentered<PJ301MPort>(loc(2, 4), module, V::T52));
 		addInput(createInputCentered<PJ301MPort>(loc(3, 4), module, V::T53));
