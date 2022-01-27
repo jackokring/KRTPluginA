@@ -29,6 +29,31 @@ struct K : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Frequency CV",
+		"Filter CV",
+		"Ratio 1",
+		"Ratio 2",
+		"Modulation depth 1",
+		"Modulation depth 2",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Modulation",
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -45,10 +70,11 @@ struct K : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(LPF, -4.f, 4.f, 0.f, "Filter", " Oct");
-		configParam(RTO1, -12.f, 12.f, 0.f, "Low Ratio", " Semitones");
-		configParam(RTO2, -12.f, 12.f, 0.f, "High Ratio", " Semitones");
-		configParam(MOD1, 0.f, 100.f, 50.f, "Low Modulation", " %");
-		configParam(MOD2, 0.f, 100.f, 50.f, "High Modulation", " %");
+		configParam(RTO1, -12.f, 12.f, 0.f, "Low ratio", " Semitones");
+		configParam(RTO2, -12.f, 12.f, 0.f, "High ratio", " Semitones");
+		configParam(MOD1, 0.f, 100.f, 50.f, "Low modulation", " %");
+		configParam(MOD2, 0.f, 100.f, 50.f, "High modulation", " %");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			b[i] = 0;
 			for(int j = 0; j < 3; j++) {

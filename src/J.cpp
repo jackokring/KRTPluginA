@@ -29,6 +29,31 @@ struct J : Module {
 		NUM_LIGHTS
 	};
 
+	const char *instring[NUM_INPUTS] = {
+		"Frequency CV",
+		"Order modulation",
+		"Band high all modulation",
+		"Wet mix modulation",
+		"LFO frequency CV",
+		"LFO gain level",
+	};
+
+	const char *outstring[NUM_OUTPUTS] = {
+		"Low frequency oscillator",
+		"Audio",
+	};
+
+	const char *lightstring[NUM_LIGHTS] = {
+
+	};
+
+	void iol(bool lights) {
+		for(int i = 0; i < NUM_INPUTS; i++) configInput(i, instring[i]);
+		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
+		if(!lights) return;
+		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
+	}
+
 	int maxPoly() {
 		int poly = 1;
 		for(int i = 0; i < NUM_INPUTS; i++) {
@@ -45,10 +70,11 @@ struct J : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(ODR, 0.f, 8.f, 4.f, "Order");
-		configParam(BHA, -1.f, 1.f, 1.f, "Bypass, High, All");
-		configParam(WET, 0.f, 100.f, 50.f, "Wet Mix", " %");
-		configParam(LFO, -4.f, 4.f, 0.f, "LFO Frequency", " Oct");
-		configParam(LVL, 0.f, 100.f, 0.f, "LFO Level", " %");
+		configParam(BHA, -1.f, 1.f, 1.f, "Bypass, high, all");
+		configParam(WET, 0.f, 100.f, 50.f, "Wet mix", " %");
+		configParam(LFO, -4.f, 4.f, 0.f, "LFO frequency", " Oct");
+		configParam(LVL, 0.f, 100.f, 0.f, "LFO level", " %");
+		iol(false);
 		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
 			wave[i] = 0;
 			for(int j = 0; j < 8; j++) {
@@ -138,7 +164,7 @@ struct J : Module {
 			// OUT
 			int io = (int)iodr;
 			iodr -= io;//frac
-			fout = fout * (1.f - iodr) + gout * iodr;//mix orders 
+			fout = fout * (1.f - iodr) + gout * iodr;//mix orders
 			out = fout * iwet + in * (1.f - iwet);//wet mix
 			outputs[OUT].setVoltage(out, p);
 			outputs[OLFO].setVoltage(5.f * x, p);//10V scaling 20V pk-pk

@@ -34,8 +34,8 @@ The version number indicates the API build compatibility and feature use. So 1 i
 18. [C](#c) - 2 - No demo required
 19. [U](#u) - 2
 20. [B](#b) - 2 - I seems to be adding to patch [B](https://github.com/jackokring/KRTPluginADemo/blob/master/B.vcv)
-21. [J](#j) - 1
-22. [K](#k) - 1
+21. [J](#j) - 2
+22. [K](#k) - 2
 23. [H](#h) - 1
 24. [I](#i) - 1
 25. [G](#g) - 1
