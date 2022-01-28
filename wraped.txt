@@ -1,0 +1,103 @@
+FORMAT AS WRAPPED MIN WIDTH `xed` EDITOR WINDOW
+
+## A 
+
+Plate 18 dB filter. Band pass phased ring mod. Other ins and outs with different order are available. The ring modulation is between a low and high pass for a band pass with harmonics effect.
+
+## Mu
+
+Time dependant caclulus on a summing junction with series truncation distortion. This is complex to explain. Much better to listen and fiddle.
+
+##T
+
+Pitched time stretch and matched trigger sync delay. Spools and then plays back faster such that the overall waveform is produced at two different frequencies.
+
+## L
+
+Synchronized delay with shortening. To synchronize with a buffer but delayed by a bar or some other timed quantity.
+
+## D
+
+Exponential VCA and future estimator with error? A very simple utility.
+
+## R
+
+Simple mixer split. Put a signal on another as an insert.
+
+## Om"
+
+Clock distribution randomizer. Generates a randomish sequence of length 64 and depending on the left-most displayed letter outputs a trigger when the clock is high or low.
+
+## V
+
+Envelope VCA and CV producer. A bit wierd. An experiment in module design.
+
+## F
+
+24 dB morph filter. A 2D interpolation and extrapolation between 4 classic analytic filter responses of Bessel, Butterworth, Linkwitz and Legendre. Includes an interpole distortion effect and morphing to the inverse filter.
+
+## W
+
+Gate transposer. Kind of a tuning plug-board for gate triggers.
+
+## Y
+
+Triple sequencer. Nice but complex to operate. Try the online help.
+
+## O
+
+Triple parabolic skew feedback oscillator. An experimental module.
+
+## S
+
+Clock to CV generator. Needs MIDI clk, cont, stop and start. Produces a time based CV.
+
+## E
+
+Simple AR envelope with VCA. Nice. Gained modulation out.
+
+## X
+
+Oversampled wave-folder. A lot of fizz in such a little module.
+
+## M
+
+Emphisis and de-emphisis filter. Default is RIAA and inverse. This module has large gain. WARNING!
+
+## Q
+
+Quantum gravimitator. Imitates a coupled gravity quantum idea. I really shouldn't explain. Just play.
+
+## C
+
+A set of three attenuverters with mixing. Kind of useful chainable mixer. Includes LPF per channel.
+
+## U
+
+Sample and hold quantizer. Simple.
+
+## B
+
+Crossbar performance switch. Remembers internal routing for performance switching.
+
+## J
+
+All-pass filter and phaser. Has an LFO built-in.
+
+## K
+
+Phase modulation oscillator.
+
+## H
+
+Base gimpathizer. An organ with phase modulation. Bass how low can you go?
+
+## I
+
+Clock divider with downbeat extract.
+
+## G
+
+Compressor with control outs. Has a low pass peaking filter.
+
+

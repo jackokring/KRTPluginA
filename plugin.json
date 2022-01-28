@@ -17,7 +17,7 @@
     {
       "slug": "A",
       "name": "A",
-      "description": "Plate 18 dB filter. Band pass phased ring mod.\nOther ins and outs with different order are available.\nThe ring modulation is between a low and high pass\nfor a band pass with harmonics effect.",
+      "description": "Plate 18 dB filter. Band pass phased ring mod. Other ins\nand outs with different order are available. The ring\nmodulation is between a low and high pass for a band pass\nwith harmonics effect.",
       "tags": [
         "Effect",
         "Filter",
@@ -27,7 +27,7 @@
     {
       "slug": "Mu",
       "name": "\u03bc",
-      "description": "Time dependant caclulus on a summing junction with\nseries truncation distortion. This is complex to explain.\nMuch better to listen and fiddle.",
+      "description": "Time dependant caclulus on a summing junction with series\ntruncation distortion. This is complex to explain. Much\nbetter to listen and fiddle.",
       "tags": [
         "Effect",
         "Waveshaper",
@@ -37,7 +37,7 @@
     {
       "slug": "T",
       "name": "T",
-      "description": "Pitched time stretch and matched trigger sync delay.\nSpools and then plays back faster such that the overall\nwaveform is produced at two different frequencies.",
+      "description": "Pitched time stretch and matched trigger sync delay. Spools\nand then plays back faster such that the overall waveform\nis produced at two different frequencies.",
       "tags": [
         "Effect",
         "Tuner",
@@ -48,7 +48,7 @@
     {
       "slug": "L",
       "name": "L",
-      "description": "Synchronized delay with shortening. To synchronize\n with a buffer but delayed by a bar or some other timed quantity.",
+      "description": "Synchronized delay with shortening. To synchronize with a\nbuffer but delayed by a bar or some other timed quantity.",
       "tags": [
         "Utility",
         "Clock modulator",
@@ -59,7 +59,7 @@
     {
       "slug": "D",
       "name": ";D",
-      "description": "Exponential VCA and future estimator with error? A very simple utility.",
+      "description": "Exponential VCA and future estimator with error? A very\nsimple utility.",
       "tags": [
         "Utility",
         "Attenuator",
@@ -82,7 +82,7 @@
     {
       "slug": "Om",
       "name": "\u03a9",
-      "description": "Clock distribution randomizer. Generates a randomish sequence\nof length 64 and depending on the left-most\ndisplayed letter outputs a trigger when the clock is high or low.",
+      "description": "Clock distribution randomizer. Generates a randomish\nsequence of length 64 and depending on the left-most\ndisplayed letter outputs a trigger when the clock is high\nor low.",
       "tags": [
         "Clock modulator",
         "Polyphonic",
@@ -93,7 +93,7 @@
     {
       "slug": "V",
       "name": "V",
-      "description": "Envelope VCA and CV producer. A bit wierd.\nAn experiment in module design.",
+      "description": "Envelope VCA and CV producer. A bit wierd. An experiment in\nmodule design.",
       "tags": [
         "Envelope generator",
         "Voltage-controlled amplifier",
@@ -103,7 +103,7 @@
     {
       "slug": "F",
       "name": "F",
-      "description": "24 dB morph filter. A 2D interpolation and extrapolation between 4 classic\nanalytic filter responses of Bessel, Butterworth, Linkwitz and Legendre.\nIncludes an interpole distortion effect and morphing to the inverse filter.",
+      "description": "24 dB morph filter. A 2D interpolation and extrapolation\nbetween 4 classic analytic filter responses of Bessel,\nButterworth, Linkwitz and Legendre. Includes an interpole\ndistortion effect and morphing to the inverse filter.",
       "tags": [
         "Filter",
         "Polyphonic"
@@ -112,7 +112,7 @@
     {
       "slug": "W",
       "name": "W",
-      "description": "Gate transposer. Kind of a tuning plug-board for gate triggers.",
+      "description": "Gate transposer. Kind of a tuning plug-board for gate\ntriggers.",
       "tags": [
         "Attenuator",
         "Mixer",
@@ -123,7 +123,7 @@
     {
       "slug": "Y",
       "name": "Y",
-      "description": "Triple sequencer. Nice but complex to operate.\nTry the online help.",
+      "description": "Triple sequencer. Nice but complex to operate. Try the\nonline help.",
       "tags": [
         "Clock generator",
         "Sequencer"
@@ -132,7 +132,7 @@
     {
       "slug": "O",
       "name": "O",
-      "description": "Triple parabolic skew feedback oscillator. An experimental module.",
+      "description": "Triple parabolic skew feedback oscillator. An experimental\nmodule.",
       "tags": [
         "Polyphonic",
         "Oscillator"
@@ -141,7 +141,7 @@
     {
       "slug": "S",
       "name": "S",
-      "description": "Clock to CV generator. Needs MIDI clk, cont, stop and start.\nProduces a time based CV.",
+      "description": "Clock to CV generator. Needs MIDI clk, cont, stop and\nstart. Produces a time based CV.",
       "tags": [
         "MIDI",
         "Clock modulator",
@@ -161,7 +161,7 @@
     {
       "slug": "X",
       "name": "X",
-      "description": "Oversampled wave-folder. A lot of fizz in such a little module.",
+      "description": "Oversampled wave-folder. A lot of fizz in such a little\nmodule.",
       "tags": [
         "Waveshaper",
         "Polyphonic"
@@ -170,7 +170,7 @@
     {
       "slug": "M",
       "name": "M",
-      "description": "Emphisis and de-emphisis filter. Default is RIAA and inverse.\nThis module has large gain. WARNING!",
+      "description": "Emphisis and de-emphisis filter. Default is RIAA and\ninverse. This module has large gain. WARNING!",
       "tags": [
         "Polyphonic",
         "Filter",
@@ -181,7 +181,7 @@
     {
       "slug": "Q",
       "name": "Q",
-      "description": "Quantum gravimitator. Imitates a coupled gravity quantum idea.\nI really shouldn't explain. Just play.",
+      "description": "Quantum gravimitator. Imitates a coupled gravity quantum\nidea. I really shouldn't explain. Just play.",
       "tags": [
         "Polyphonic",
         "Effect",
@@ -192,7 +192,7 @@
     {
       "slug": "C",
       "name": "C",
-      "description": "A set of three attenuverters with mixing.\nKind of useful chainable mixer.\nIncludes LPF per channel.",
+      "description": "A set of three attenuverters with mixing. Kind of useful\nchainable mixer. Includes LPF per channel.",
       "tags": [
         "Attenuator",
         "Mixer",
@@ -214,7 +214,7 @@
     {
       "slug": "B",
       "name": "B",
-      "description": "Crossbar performance switch. Remembers internal routing\nfor performance switching.",
+      "description": "Crossbar performance switch. Remembers internal routing for\nperformance switching.",
       "tags": [
         "Switch",
         "Controller",
@@ -224,7 +224,7 @@
     {
       "slug": "J",
       "name": "J",
-      "description": "All-pass filter. (Phaser) Has an LFO built-in.",
+      "description": "All-pass filter and phaser. Has an LFO built-in.",
       "tags": [
         "Filter",
         "Polyphonic",
@@ -245,7 +245,7 @@
     {
       "slug": "H",
       "name": "H",
-      "description": "Base gimpathizer. An organ with phase modulation.\nBass how low?",
+      "description": "Base gimpathizer. An organ with phase modulation. Bass how\nlow can you go?",
       "tags": [
         "Polyphonic",
         "Oscillator"
