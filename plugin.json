@@ -1,7 +1,7 @@
 {
   "slug": "KRTPluginA",
   "name": "KRTPluginA",
-  "version": "2.25.27",
+  "version": "2.26.27",
   "license": "MIT",
   "brand": "KRT",
   "description": "The free plugin set from KRT.",
@@ -269,6 +269,14 @@
         "Compressor",
         "Limiter",
         "Dynamics"
+      ]
+    },
+    {
+      "slug": "Z",
+      "name": "Z",
+      "description": "",
+      "tags": [
+        "Polyphonic"
       ]
     }
   ]

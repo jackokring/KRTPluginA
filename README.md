@@ -39,6 +39,7 @@ The version number indicates the API build compatibility and feature use. So 1 i
 23. [H](#h) - 2
 24. [I](#i) - 2
 25. [G](#g) - 2
+26. [Z](#z) - 2
 
 [Easy Access Demo Archive](https://github.com/jackokring/KRTPluginADemo/archive/refs/heads/master.zip) includes all the demos above as a **.zip** file for easy downloading and none of that cut, paste, save and rename business.
 
@@ -758,3 +759,8 @@ Outs
 A normal compressor with a side-chain input. The envelope follower can be mixed with the `FRQ` in to produce some pinging harmonics by the output `FRQ` (modified by the envelope), along with a high pass filter which can be tuned down for a `Q` boost and sub-base cut. The `MIX` brings a compressed `OUT` back upto normalized levels like an auto-computed make up gain. The amount of applied compression could more accurately be the envelope applied via the `ENV` control to the `FRQ` chain. This chain also applies to the `CUT` to slide up the corner frequency of the high-pass filter.
 
 The `CUT` filter is perhaps the most interesting bit of the design. The range of the control is slanted towards sun-octaves, while the `Q` has been somewhat limited as it is applied post compression. It makes a nice effect when compression "breathing" is swept using `CUT` and `ENV` controls to balance the style.
+
+Z
+===
+
+*in development*
