@@ -1,7 +1,8 @@
 2.26.27
 ===
 
-* TBC
+* TBC - `Z`
+* default bypass on some modules
 
 2.25.27
 ===
