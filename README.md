@@ -764,3 +764,5 @@ Z
 ===
 
 *in development*
+
+[Prework](https://github.com/jackokring/KRTPluginA/blob/master/Z%20Moonshine%20Elliptical.pdf) almost complete for the basis.
