@@ -1,46 +1,25 @@
 #pragma once
+//some of these not required
 #include <widget/FramebufferWidget.hpp>
 #include <widget/SvgWidget.hpp>
 #include <app/SvgKnob.hpp>
-#include <app/SvgSlider.hpp>
 #include <app/SvgPort.hpp>
 #include <app/ModuleLightWidget.hpp>
 #include <app/SvgSwitch.hpp>
 #include <app/SvgScrew.hpp>
-#include <app/AudioDisplay.hpp>
-#include <app/MidiDisplay.hpp>
 #include <asset.hpp>
 
-
-namespace rack {
-
-/** Library of Rack components: knobs, ports, lights, switches, buttons, etc.
-
-See LICENSE.md for legal details about using Rack component graphics in your Rack plugin.
-*/
-namespace componentlibrary {
-
+namespace krtplugin {
 
 using namespace window;
-
 
 ////////////////////
 // Color scheme
 ////////////////////
 
-static const NVGcolor SCHEME_BLACK_TRANSPARENT = nvgRGBA(0x00, 0x00, 0x00, 0x00);
-static const NVGcolor SCHEME_BLACK = nvgRGB(0x00, 0x00, 0x00);
-static const NVGcolor SCHEME_WHITE = nvgRGB(0xff, 0xff, 0xff);
 static const NVGcolor SCHEME_RED = nvgRGB(0xed, 0x2c, 0x24);
-static const NVGcolor SCHEME_ORANGE = nvgRGB(0xf2, 0xb1, 0x20);
-static const NVGcolor SCHEME_YELLOW = nvgRGB(0xff, 0xd7, 0x14);
 static const NVGcolor SCHEME_GREEN = nvgRGB(0x90, 0xc7, 0x3e);
-static const NVGcolor SCHEME_CYAN = nvgRGB(0x22, 0xe6, 0xef);
 static const NVGcolor SCHEME_BLUE = nvgRGB(0x29, 0xb2, 0xef);
-static const NVGcolor SCHEME_PURPLE = nvgRGB(0xd5, 0x2b, 0xed);
-static const NVGcolor SCHEME_LIGHT_GRAY = nvgRGB(0xe6, 0xe6, 0xe6);
-static const NVGcolor SCHEME_DARK_GRAY = nvgRGB(0x17, 0x17, 0x17);
-
 
 ////////////////////
 // Lights
@@ -100,7 +79,7 @@ using RedGreenBlueLight = TRedGreenBlueLight<>;
 template <typename TBase>
 struct SmallLight : TSvgLight<TBase> {
 	SmallLight() {
-		this->setSvg(Svg::load(asset::system("res/ComponentLibrary/SmallLight.svg")));
+		this->setSvg(Svg::load(asset::plugin(pluginInstance, "res/SmallLight.svg")));
 	}
 };
 
@@ -111,6 +90,7 @@ struct TGreenLight : TBase {
 	}
 };
 using GreenLight = TGreenLight<>;
+
 ////////////////////
 // Knobs
 ////////////////////
@@ -129,8 +109,8 @@ struct RoundKnob : app::SvgKnob {
 
 struct RoundBlackKnob : RoundKnob {
 	RoundBlackKnob() {
-		setSvg(Svg::load(asset::system("res/ComponentLibrary/RoundBlackKnob.svg")));
-		bg->setSvg(Svg::load(asset::system("res/ComponentLibrary/RoundBlackKnob_bg.svg")));
+		setSvg(Svg::load(asset::plugin(pluginInstance, "res/RoundBlackKnob.svg")));
+		bg->setSvg(Svg::load(asset::plugin(pluginInstance, "res/RoundBlackKnob_bg.svg")));
 	}
 };
 
@@ -146,7 +126,7 @@ struct RoundBlackSnapKnob : RoundBlackKnob {
 
 struct PJ301MPort : app::SvgPort {
 	PJ301MPort() {
-		setSvg(Svg::load(asset::system("res/ComponentLibrary/PJ301M.svg")));
+		setSvg(Svg::load(asset::plugin(pluginInstance, "res/PJ301M.svg")));
 	}
 };
 
@@ -158,7 +138,7 @@ struct PJ301MPort : app::SvgPort {
 struct VCVBezel : app::SvgSwitch {
 	VCVBezel() {
 		momentary = true;
-		addFrame(Svg::load(asset::system("res/ComponentLibrary/VCVBezel.svg")));
+		addFrame(Svg::load(asset::plugin(pluginInstance, "res/VCVBezel.svg")));
 	}
 };
 using LEDBezel = VCVBezel;
@@ -187,10 +167,8 @@ using LEDLightBezel = VCVLightBezel<TLightBase>;
 
 struct ScrewSilver : app::SvgScrew {
 	ScrewSilver() {
-		setSvg(Svg::load(asset::system("res/ComponentLibrary/ScrewSilver.svg")));
+		setSvg(Svg::load(asset::plugin(pluginInstance, "res/ScrewSilver.svg")));
 	}
 };
 
-
-} // namespace componentlibrary
-} // namespace rack
+}
