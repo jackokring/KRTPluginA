@@ -9,7 +9,7 @@
 #include <app/SvgScrew.hpp>
 #include <asset.hpp>
 
-namespace krtplugin {
+namespace componentlibrary {
 
 using namespace window;
 
@@ -17,20 +17,20 @@ using namespace window;
 // Color scheme
 ////////////////////
 
-static const NVGcolor SCHEME_RED = nvgRGB(0xed, 0x2c, 0x24);
-static const NVGcolor SCHEME_GREEN = nvgRGB(0x90, 0xc7, 0x3e);
-static const NVGcolor SCHEME_BLUE = nvgRGB(0x29, 0xb2, 0xef);
+//static const NVGcolor SCHEME_RED = nvgRGB(0xed, 0x2c, 0x24);
+//static const NVGcolor SCHEME_GREEN = nvgRGB(0x90, 0xc7, 0x3e);
+//static const NVGcolor SCHEME_BLUE = nvgRGB(0x29, 0xb2, 0xef);
 
 ////////////////////
 // Lights
 ////////////////////
 
 template <typename TBase = app::ModuleLightWidget>
-struct TSvgLight : TBase {
+struct KTSvgLight : TBase {
 	widget::FramebufferWidget* fb;
 	widget::SvgWidget* sw;
 
-	TSvgLight() {
+	KTSvgLight() {
 		fb = new widget::FramebufferWidget;
 		this->addChild(fb);
 
@@ -44,61 +44,61 @@ struct TSvgLight : TBase {
 		this->box.size = sw->box.size;
 	}
 };
-using SvgLight = TSvgLight<>;
+using KSvgLight = KTSvgLight<>;
 
 template <typename TBase = app::ModuleLightWidget>
-struct TGrayModuleLightWidget : TBase {
-	TGrayModuleLightWidget() {
+struct KTGrayModuleLightWidget : TBase {
+	KTGrayModuleLightWidget() {
 		this->bgColor = nvgRGBA(0x33, 0x33, 0x33, 0xff);
 		this->borderColor = nvgRGBA(0, 0, 0, 53);
 	}
 };
-using GrayModuleLightWidget = TGrayModuleLightWidget<>;
+using KGrayModuleLightWidget = KTGrayModuleLightWidget<>;
 
 /** Reads two adjacent lightIds, so `lightId` and `lightId + 1` must be defined */
-template <typename TBase = GrayModuleLightWidget>
-struct TGreenRedLight : TBase {
-	TGreenRedLight() {
+template <typename TBase = KGrayModuleLightWidget>
+struct KTGreenRedLight : TBase {
+	KTGreenRedLight() {
 		this->addBaseColor(SCHEME_GREEN);
 		this->addBaseColor(SCHEME_RED);
 	}
 };
-using GreenRedLight = TGreenRedLight<>;
+using KGreenRedLight = KTGreenRedLight<>;
 
-template <typename TBase = GrayModuleLightWidget>
-struct TRedGreenBlueLight : TBase {
-	TRedGreenBlueLight() {
+template <typename TBase = KGrayModuleLightWidget>
+struct KTRedGreenBlueLight : TBase {
+	KTRedGreenBlueLight() {
 		this->addBaseColor(SCHEME_RED);
 		this->addBaseColor(SCHEME_GREEN);
 		this->addBaseColor(SCHEME_BLUE);
 	}
 };
-using RedGreenBlueLight = TRedGreenBlueLight<>;
+using KRedGreenBlueLight = KTRedGreenBlueLight<>;
 
 /** Based on the size of 2mm LEDs */
 template <typename TBase>
-struct SmallLight : TSvgLight<TBase> {
-	SmallLight() {
+struct KSmallLight : KTSvgLight<TBase> {
+	KSmallLight() {
 		this->setSvg(Svg::load(asset::plugin(pluginInstance, "res/SmallLight.svg")));
 	}
 };
 
-template <typename TBase = GrayModuleLightWidget>
-struct TGreenLight : TBase {
-	TGreenLight() {
+template <typename TBase = KGrayModuleLightWidget>
+struct KTGreenLight : TBase {
+	KTGreenLight() {
 		this->addBaseColor(SCHEME_GREEN);
 	}
 };
-using GreenLight = TGreenLight<>;
+using KGreenLight = KTGreenLight<>;
 
 ////////////////////
 // Knobs
 ////////////////////
 
-struct RoundKnob : app::SvgKnob {
+struct KRoundKnob : app::SvgKnob {
 	widget::SvgWidget* bg;
 
-	RoundKnob() {
+	KRoundKnob() {
 		minAngle = -0.83 * M_PI;
 		maxAngle = 0.83 * M_PI;
 
@@ -107,15 +107,15 @@ struct RoundKnob : app::SvgKnob {
 	}
 };
 
-struct RoundBlackKnob : RoundKnob {
-	RoundBlackKnob() {
+struct KRoundBlackKnob : KRoundKnob {
+	KRoundBlackKnob() {
 		setSvg(Svg::load(asset::plugin(pluginInstance, "res/RoundBlackKnob.svg")));
 		bg->setSvg(Svg::load(asset::plugin(pluginInstance, "res/RoundBlackKnob_bg.svg")));
 	}
 };
 
-struct RoundBlackSnapKnob : RoundBlackKnob {
-	RoundBlackSnapKnob() {
+struct KRoundBlackSnapKnob : KRoundBlackKnob {
+	KRoundBlackSnapKnob() {
 		snap = true;
 	}
 };
@@ -124,8 +124,8 @@ struct RoundBlackSnapKnob : RoundBlackKnob {
 // Ports
 ////////////////////
 
-struct PJ301MPort : app::SvgPort {
-	PJ301MPort() {
+struct KPJ301MPort : app::SvgPort {
+	KPJ301MPort() {
 		setSvg(Svg::load(asset::plugin(pluginInstance, "res/PJ301M.svg")));
 	}
 };
@@ -135,19 +135,19 @@ struct PJ301MPort : app::SvgPort {
 // Switches
 ////////////////////
 
-struct VCVBezel : app::SvgSwitch {
-	VCVBezel() {
+struct KVCVBezel : app::SvgSwitch {
+	KVCVBezel() {
 		momentary = true;
 		addFrame(Svg::load(asset::plugin(pluginInstance, "res/VCVBezel.svg")));
 	}
 };
-using LEDBezel = VCVBezel;
+using KLEDBezel = KVCVBezel;
 
 template <typename TLightBase = WhiteLight>
-struct VCVLightBezel : VCVBezel {
+struct KVCVLightBezel : VCVBezel {
 	app::ModuleLightWidget* light;
 
-	VCVLightBezel() {
+	KVCVLightBezel() {
 		light = new VCVBezelLight<TLightBase>;
 		// Move center of light to center of box
 		light->box.pos = box.size.div(2).minus(light->box.size.div(2));
@@ -159,16 +159,17 @@ struct VCVLightBezel : VCVBezel {
 	}
 };
 template <typename TLightBase = WhiteLight>
-using LEDLightBezel = VCVLightBezel<TLightBase>;
+using KLEDLightBezel = KVCVLightBezel<TLightBase>;
 
 ////////////////////
 // Misc
 ////////////////////
 
-struct ScrewSilver : app::SvgScrew {
-	ScrewSilver() {
+struct KScrewSilver : app::SvgScrew {
+	KScrewSilver() {
 		setSvg(Svg::load(asset::plugin(pluginInstance, "res/ScrewSilver.svg")));
 	}
 };
 
-}
+
+} // namespace componentlibrary
