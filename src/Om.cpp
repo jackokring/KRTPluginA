@@ -265,6 +265,7 @@ struct Om : Module {
 		if((mux & 1023) == 0) {
 			for(int i = 0; i < 8; i++) {
 				char x = getDigit(ptrOffsets + i, seed);
+				if(x == '@') x = ' ';
 				if(flip) {
 					onDisplay1[i] = x;
 				} else {
