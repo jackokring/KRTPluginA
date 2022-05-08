@@ -442,7 +442,8 @@ struct DisplayWidget : LightWidget {//TransparentWidget {
 
 	DisplayWidget() {
 		//maybe will change to default 7 seg font to reduce size??
-		fontPath = std::string(asset::plugin(pluginInstance, "res/fonts/Segment14.ttf"));
+		//std::string(asset::plugin(pluginInstance, "res/fonts/Segment14.ttf"));
+		fontPath = asset::system("res/fonts/DSEG7ClassicMini-Regular.ttf");
 	}
 
 	void set(char **p) {
