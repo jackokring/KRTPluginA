@@ -3,6 +3,7 @@
 
 struct Z : Module {
 	enum ParamIds {
+		TEST,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -65,8 +66,8 @@ struct Z : Module {
 };
 
 //geometry edit
-#define HP 4
-#define LANES 2
+#define HP 13
+#define LANES 6
 #define RUNGS 7
 
 //ok
@@ -92,6 +93,9 @@ struct WWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
+		for(int x = 1; x <= 6; x++)
+			for(int y = 1; y <= 7; y++)
+				addParam(createParamCentered<KRoundBlackKnob>(loc(x, y), module, Z::TEST));
 	}
 };
 

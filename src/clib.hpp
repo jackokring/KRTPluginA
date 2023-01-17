@@ -9,6 +9,8 @@
 #include <app/SvgScrew.hpp>
 #include <asset.hpp>
 
+// unused!!!
+
 namespace componentlibrary {
 
 using namespace window;
@@ -91,45 +93,6 @@ struct KTGreenLight : TBase {
 };
 using KGreenLight = KTGreenLight<>;
 
-////////////////////
-// Knobs
-////////////////////
-
-struct KRoundKnob : app::SvgKnob {
-	widget::SvgWidget* bg;
-
-	KRoundKnob() {
-		minAngle = -0.83 * M_PI;
-		maxAngle = 0.83 * M_PI;
-
-		bg = new widget::SvgWidget;
-		fb->addChildBelow(bg, tw);
-	}
-};
-
-struct KRoundBlackKnob : KRoundKnob {
-	KRoundBlackKnob() {
-		setSvg(Svg::load(asset::plugin(pluginInstance, "res/RoundBlackKnob.svg")));
-		bg->setSvg(Svg::load(asset::plugin(pluginInstance, "res/RoundBlackKnob_bg.svg")));
-	}
-};
-
-struct KRoundBlackSnapKnob : KRoundBlackKnob {
-	KRoundBlackSnapKnob() {
-		snap = true;
-	}
-};
-
-////////////////////
-// Ports
-////////////////////
-
-struct KPJ301MPort : app::SvgPort {
-	KPJ301MPort() {
-		setSvg(Svg::load(asset::plugin(pluginInstance, "res/PJ301M.svg")));
-	}
-};
-
 
 ////////////////////
 // Switches
@@ -161,15 +124,7 @@ struct KVCVLightBezel : VCVBezel {
 template <typename TLightBase = WhiteLight>
 using KLEDLightBezel = KVCVLightBezel<TLightBase>;
 
-////////////////////
-// Misc
-////////////////////
 
-struct KScrewSilver : app::SvgScrew {
-	KScrewSilver() {
-		setSvg(Svg::load(asset::plugin(pluginInstance, "res/ScrewSilver.svg")));
-	}
-};
 
 
 } // namespace componentlibrary

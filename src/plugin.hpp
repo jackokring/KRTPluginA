@@ -5,7 +5,6 @@ using namespace rack;
 
 // Declare the Plugin, defined in plugin.cpp
 extern Plugin* pluginInstance;
-#include "clib.hpp"
 
 // Declare each Model, defined in each module source file
 // extern Model* modelMyModule;
@@ -61,3 +60,40 @@ static inline float tanpif(float f) {
     float f2 = f * f;
     return f * (M_PI_F + f2 * (a + f2 * (b + f2 * (c + f2 * (d + f2 * e)))));
 }
+
+////////////////////
+// Knobs
+////////////////////
+
+struct KRoundBlackKnob : RoundBlackKnob {
+	KRoundBlackKnob() {
+		setSvg(Svg::load(asset::plugin(pluginInstance, "res/RoundBlackKnob.svg")));
+		bg->setSvg(Svg::load(asset::plugin(pluginInstance, "res/RoundBlackKnob_bg.svg")));
+	}
+};
+
+struct KRoundBlackSnapKnob : KRoundBlackKnob {
+	KRoundBlackSnapKnob() {
+		snap = true;
+	}
+};
+
+////////////////////
+// Ports
+////////////////////
+
+struct KPJ301MPort : PJ301MPort {
+	KPJ301MPort() {
+		setSvg(Svg::load(asset::plugin(pluginInstance, "res/PJ301M.svg")));
+	}
+};
+
+////////////////////
+// Misc
+////////////////////
+
+struct KScrewSilver : ScrewSilver {
+	KScrewSilver() {
+		setSvg(Svg::load(asset::plugin(pluginInstance, "res/ScrewSilver.svg")));
+	}
+};
