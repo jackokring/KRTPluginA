@@ -1,7 +1,6 @@
 /build
 /dist
-plugin-arm64.so
-/plugin-x64.so
+/plugin-arm64.so
 /plugin.dylib
 /plugin.dll
 .DS_Store
