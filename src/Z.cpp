@@ -85,6 +85,8 @@ struct Z : Module {
 #define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
 
 struct WWidget : ModuleWidget {
+	LabelWidget *display;
+
 	WWidget(Z* module) {
 		setModule(module);
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Z.svg")));
@@ -94,6 +96,27 @@ struct WWidget : ModuleWidget {
 		addChild(createWidget<KScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<KScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
+		const char *lbl[] = {
+			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
+			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
+			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
+			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
+			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
+			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
+			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST" 
+		};
+
+		const int kind[] = {
+			// -1 = sink, +1 = source
+			-1, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0
+		};
+
 		for(int x = 1; x <= 6; x++) {
 			for(int y = 1; y <= 7; y++) {
 				if(x == 1 && y == 1) {
@@ -101,6 +124,10 @@ struct WWidget : ModuleWidget {
 				} else {
 					addParam(createParamCentered<KRoundBlackKnob>(loc(x, y), module, Z::FRQ));
 				}
+				const int idx = (x - 1) + 6 * (y - 1);
+				display = new LabelWidget(lbl[idx], kind[idx]);
+				display->fixCentre(loc(x, y + 0.5f), strlen(lbl[idx]));//chars
+				addChild(display);
 			}
 		}
 	}

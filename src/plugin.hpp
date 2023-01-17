@@ -98,3 +98,54 @@ struct KScrewSilver : ScrewSilver {
 		setSvg(Svg::load(asset::plugin(pluginInstance, "res/ScrewSilver.svg")));
 	}
 };
+
+#define LABEL 8.0f
+#define SCALE_LBL (LABEL / 18.0f)
+
+struct LabelWidget : LightWidget {//TransparentWidget {
+	const char *what;
+	int kind;
+	const std::string fontPath = asset::system("res/fonts/DSEG7ClassicMini-Regular.ttf");
+
+	LabelWidget(const char *p, const int k) {
+		what = p;
+		kind = k;
+	}
+
+	void drawLayer(const DrawArgs& args, int layer) override {
+		if (layer == 1 /* || layer == 0 */) {
+			drew(args);
+		}
+		Widget::drawLayer(args, layer);
+	}
+
+	void drew(const DrawArgs &args) {//foreground
+		std::shared_ptr<Font> font;
+		if (!(font = APP->window->loadFont(fontPath))) {
+			return;
+		}
+		NVGcolor textColor;
+		switch(kind) {
+			case -1:
+				textColor = SCHEME_GREEN;
+				break;
+			case 0: default:
+				textColor = SCHEME_YELLOW;
+				break;
+			case 1:
+				textColor = SCHEME_RED;
+				break;
+		}
+		nvgFontFaceId(args.vg, font->handle);
+		nvgFontSize(args.vg, LABEL);
+
+		Vec textPos = Vec(4 * SCALE_LBL, 22 * SCALE_LBL);
+		nvgFillColor(args.vg, textColor);
+		nvgText(args.vg, textPos.x, textPos.y, what, NULL);
+	}
+
+	void fixCentre(Vec here, int many) {//locate control
+		box.size = Vec((14.6f * many + 4) * SCALE_LBL, 26 * SCALE_LBL);
+		box.pos = Vec(here.x - box.size.x / 2, here.y - box.size.y / 2);
+	}
+};

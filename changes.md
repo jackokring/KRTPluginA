@@ -1,8 +1,8 @@
-2.26.27
+2.26.28
 ===
 
 * TBC - `Z`
-* default bypass on some modules
+* default bypass on some modules?
 
 2.25.27
 ===

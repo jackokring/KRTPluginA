@@ -16,14 +16,6 @@ namespace componentlibrary {
 using namespace window;
 
 ////////////////////
-// Color scheme
-////////////////////
-
-//static const NVGcolor SCHEME_RED = nvgRGB(0xed, 0x2c, 0x24);
-//static const NVGcolor SCHEME_GREEN = nvgRGB(0x90, 0xc7, 0x3e);
-//static const NVGcolor SCHEME_BLUE = nvgRGB(0x29, 0xb2, 0xef);
-
-////////////////////
 // Lights
 ////////////////////
 
