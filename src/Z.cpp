@@ -88,14 +88,20 @@ struct WWidget : ModuleWidget {
 		setModule(module);
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Z.svg")));
 
-		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<KScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<KScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<KScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<KScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		for(int x = 1; x <= 6; x++)
-			for(int y = 1; y <= 7; y++)
+		for(int x = 1; x <= 6; x++) {
+			for(int y = 1; y <= 7; y++) {
+				if(x == 1 && y == 1) {
+					addInput(createInputCentered<KPJ301MPort>(loc(x, y), module, Z::IN));
+					continue;
+				}
 				addParam(createParamCentered<KRoundBlackKnob>(loc(x, y), module, Z::TEST));
+			}
+		}
 	}
 };
 
