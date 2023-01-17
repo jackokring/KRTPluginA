@@ -85,6 +85,7 @@ struct KRoundBlackSnapKnob : KRoundBlackKnob {
 struct KPJ301MPort : PJ301MPort {
 	KPJ301MPort() {
 		setSvg(Svg::load(asset::plugin(pluginInstance, "res/PJ301M.svg")));
+		shadow->opacity = 0.0f;
 	}
 };
 
