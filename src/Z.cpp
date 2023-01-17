@@ -3,7 +3,7 @@
 
 struct Z : Module {
 	enum ParamIds {
-		TEST,
+		FRQ,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -51,6 +51,7 @@ struct Z : Module {
 
 	Z() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		iol(false);
 	}
 
@@ -97,9 +98,9 @@ struct WWidget : ModuleWidget {
 			for(int y = 1; y <= 7; y++) {
 				if(x == 1 && y == 1) {
 					addInput(createInputCentered<KPJ301MPort>(loc(x, y), module, Z::IN));
-					continue;
+				} else {
+					addParam(createParamCentered<KRoundBlackKnob>(loc(x, y), module, Z::FRQ));
 				}
-				addParam(createParamCentered<KRoundBlackKnob>(loc(x, y), module, Z::TEST));
 			}
 		}
 	}
