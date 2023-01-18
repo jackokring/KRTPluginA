@@ -100,22 +100,22 @@ struct WWidget : ModuleWidget {
 			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
 			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
 			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
-			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
 			// shape and filter
 			"P", "Q", "P0", "Q0", "P1", "Q1",
-			"HPF", "VCA", "FRQ", "RES", "A1", "A3", 
-			"P", "Q", "VOL", "A2", "A4", "A6"
+			"HPF", "FRQ", "RES", "A2", "A4", "A6",
+			"VCA", "A", "R", "VOL", "A1", "A3",
+			"PA", "QA", "PB", "QB", "PC", "QC"
 		};
 
 		const int kind[] = {
 			// -1 = sink, +1 = source
 			-1, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0,			
 			-1, -1, 0, 0, 0, 0,
-			-1, -1, 0, 0, 0, 0,
-			1, 1, 0, 0, 0, 0
+			-1, 0, 0, 0, 0, 0,
+			-1, 0, 0, 0, 0, 0,
+			1, 1, 1, 1, 1, 1
 		};
 
 		for(int x = 1; x <= 6; x++) {
