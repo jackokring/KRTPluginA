@@ -276,7 +276,9 @@
       "name": "Z",
       "description": "",
       "tags": [
-        "Polyphonic"
+        "Polyphonic",
+        "Filter",
+        "Waveshaper"
       ]
     }
   ]

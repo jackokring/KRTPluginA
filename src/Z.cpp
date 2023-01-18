@@ -97,13 +97,14 @@ struct WWidget : ModuleWidget {
 		addChild(createWidget<KScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		const char *lbl[] = {
+			"CV", "TEST", "TEST", "TEST", "TEST", "TEST",
 			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
-			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
-			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
+			// shape and filter modulation
+			"A1M", "A3M", "RESM", "A2M", "A4M", "A6M",
 			// shape and filter
 			"P", "Q", "P0", "Q0", "P1", "Q1",
-			"HPF", "FRQ", "RES", "A2", "A4", "A6",
-			"VCA", "A", "R", "VOL", "A1", "A3",
+			"HP", "FRQ", "RES", "A2", "A4", "A6",
+			"GATE", "A", "R", "EMOD", "A1", "A3",
 			"PA", "QA", "PB", "QB", "PC", "QC"
 		};
 
@@ -111,7 +112,7 @@ struct WWidget : ModuleWidget {
 			// -1 = sink, +1 = source
 			-1, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0,			
+			-1, -1, -1, -1, -1, -1,			
 			-1, -1, 0, 0, 0, 0,
 			-1, 0, 0, 0, 0, 0,
 			-1, 0, 0, 0, 0, 0,
