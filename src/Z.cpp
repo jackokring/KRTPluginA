@@ -102,7 +102,8 @@ struct WWidget : ModuleWidget {
 			// shape and filter modulation
 			"A1M", "A3M", "RESM", "A2M", "A4M", "A6M",
 			// shape and filter
-			"P", "Q", "P0", "Q0", "P1", "Q1",
+			// LFO as class genera invariat makes 5 parameters enough
+			"P", "Q", "PLFO", "QLFO", "FLFO", "WLFO",
 			"HP", "FRQ", "RES", "A2", "A4", "A6",
 			"GATE", "A", "R", "EMOD", "A1", "A3",
 			"PA", "QA", "PB", "QB", "PC", "QC"
