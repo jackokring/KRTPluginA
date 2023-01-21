@@ -96,13 +96,26 @@ struct WWidget : ModuleWidget {
 		addChild(createWidget<KScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<KScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
+		const int ctl[] = {
+			Z::IN, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
+			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
+			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
+			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
+			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
+			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
+			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ
+		};
+
 		const char *lbl[] = {
+			// a nice VCO
 			"CV", "TEST", "TEST", "TEST", "TEST", "TEST",
 			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
 			// shape and filter modulation
 			"A1M", "A3M", "RESM", "A2M", "A4M", "A6M",
 			// shape and filter
 			// LFO as class genera invariat makes 5 parameters enough
+			// y^2 + a1.x.y + a3.y = x^3 + a2.x^2 + a4.x + a6
+			// p + i.q -> y, solve for x 
 			"P", "Q", "PLFO", "QLFO", "FLFO", "WLFO",
 			"HP", "FRQ", "RES", "A2", "A4", "A6",
 			"GATE", "A", "R", "EMOD", "A1", "A3",
