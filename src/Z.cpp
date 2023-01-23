@@ -3,27 +3,52 @@
 
 struct Z : Module {
 	enum ParamIds {
-		FRQ,
+		// shape and filter
+		// LFO as class genera invariat makes 5 parameters enough
+		// y^2 + a1.x.y + a3.y = x^3 + a2.x^2 + a4.x + a6
+		// p + i.q -> y, solve for x 
+		P_PLFO, P_QLFO, P_FLFO, P_WLFO,
+		P_FRQ, P_RES, P_A2, P_A4, P_A6,
+		P_A, P_R, P_EMOD, P_A1, P_A3,
 		NUM_PARAMS
 	};
+
 	enum InputIds {
-		IN,
+		IN_CV,
+		// shape and filter modulation
+		IN_A1M, IN_A3M, IN_RESM, IN_A2M, IN_A4M, IN_A6M,
+		// shape and filter
+		// LFO as class genera invariat makes 5 parameters enough
+		// y^2 + a1.x.y + a3.y = x^3 + a2.x^2 + a4.x + a6
+		// p + i.q -> y, solve for x 
+		IN_P, IN_Q,
+		IN_HP,
+		IN_GATE,
 		NUM_INPUTS
-	};
-	enum OutputIds {
-		OUT,
-		NUM_OUTPUTS
-	};
-	enum LightIds {
-		NUM_LIGHTS
 	};
 
 	const char *instring[NUM_INPUTS] = {
-		"Frequency CV",
+		"",
+		"", "", "", "", "", "",
+		"", "",
+		"",
+		""
+	};
+
+	enum OutputIds {
+		// shape and filter
+		// LFO as class genera invariat makes 5 parameters enough
+		// y^2 + a1.x.y + a3.y = x^3 + a2.x^2 + a4.x + a6
+		// p + i.q -> y, solve for x 
+		OUT_PA, OUT_QA, OUT_PB, OUT_QB, OUT_PC, OUT_QC,
+		NUM_OUTPUTS
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"Semitones added",
+		"",	"", "", "", "", ""
+	};
+	enum LightIds {
+		NUM_LIGHTS
 	};
 
 	const char *lightstring[NUM_LIGHTS] = {
@@ -51,7 +76,7 @@ struct Z : Module {
 
 	Z() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
+		//configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		iol(false);
 	}
 
@@ -97,13 +122,14 @@ struct WWidget : ModuleWidget {
 		addChild(createWidget<KScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		const int ctl[] = {
-			Z::IN, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
-			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
-			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
-			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
-			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
-			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ,
-			Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ, Z::FRQ
+			// -1 is no control and no label
+			Z::IN_CV, -1, -1, -1, -1, -1,
+			-1, -1, -1, -1, -1, -1,
+			Z::IN_A1M, Z::IN_A3M, Z::IN_RESM, Z::IN_A2M, Z::IN_A4M, Z::IN_A6M,
+			Z::IN_P, Z::IN_Q, Z::P_PLFO, Z::P_QLFO, Z::P_FLFO, Z::P_WLFO,
+			Z::IN_HP, Z::P_FRQ, Z::P_RES, Z::P_A2, Z::P_A4, Z::P_A6,
+			Z::IN_GATE, Z::P_A, Z::P_R, Z::P_EMOD, Z::P_A1, Z::P_A3,
+			Z::OUT_PA, Z::OUT_QA, Z::OUT_PB, Z::OUT_QB, Z::OUT_PC, Z::OUT_QC
 		};
 
 		const char *lbl[] = {
@@ -133,17 +159,25 @@ struct WWidget : ModuleWidget {
 			1, 1, 1, 1, 1, 1
 		};
 
-		for(int x = 1; x <= 6; x++) {
-			for(int y = 1; y <= 7; y++) {
-				if(x == 1 && y == 1) {
-					addInput(createInputCentered<KPJ301MPort>(loc(x, y), module, Z::IN));
-				} else {
-					addParam(createParamCentered<KRoundBlackKnob>(loc(x, y), module, Z::FRQ));
-				}
+		for(int x = 1; x <= LANES; x++) {
+			for(int y = 1; y <= RUNGS; y++) {
+				// automatic layout
 				const int idx = (x - 1) + 6 * (y - 1);
+				if(ctl[idx] == -1) continue;
 				display = new LabelWidget(lbl[idx], kind[idx]);
 				display->fixCentre(loc(x, y + 0.5f), strlen(lbl[idx]));//chars
 				addChild(display);
+				switch(kind[idx]) {
+					case -1:
+						addInput(createInputCentered<KPJ301MPort>(loc(x, y), module, ctl[idx]));
+						break;
+					case 0: default:
+						addParam(createParamCentered<KRoundBlackKnob>(loc(x, y), module, ctl[idx]));
+						break;
+					case 1:
+						addOutput(createOutputCentered<KPJ301MPort>(loc(x, y), module, ctl[idx]));
+						break;
+				}
 			}
 		}
 	}
