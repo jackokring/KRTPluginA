@@ -47,6 +47,7 @@ struct Z : Module {
 	const char *outstring[NUM_OUTPUTS] = {
 		"",	"", "", "", "", ""
 	};
+
 	enum LightIds {
 		NUM_LIGHTS
 	};
@@ -76,7 +77,27 @@ struct Z : Module {
 
 	Z() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		//configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
+
+		configParam(P_PLFO, -10.f, 10.f, 0.f, "LFO -> P");
+		configParam(P_QLFO, -10.f, 10.f, 0.f, "LFO -> Q");
+		configParam(P_FLFO, -4.f, 4.f, 0.f, "LFO Frequency", " Oct");
+		configParam(P_WLFO, -1.f, 1.f, 0.f, "LFO Wave");
+
+		configParam(P_FRQ, -4.f, 4.f, 0.f, "LPF Frequency", " Oct");
+		configParam(P_RES, -6.f, 30.f, -6.f, "Resonance", " dBQ");
+		
+		configParam(P_A2, -10.f, 10.f, 0.f, "Elliptic x^2 term");
+		configParam(P_A4, -10.f, 10.f, 0.f, "Elliptic x term");
+		configParam(P_A6, -10.f, 10.f, 0.f, "Elliptic constant term");
+		
+		// E
+		configParam(P_A, -27.f, 9.f, -9.f, "Attack time", " dBs");
+		configParam(P_R, -27.f, 9.f, -9.f, "Release time", " dBs");
+		configParam(P_EMOD, -6.f, 6.f, 0.f, "Modulation level", " Center dB (rel 6)");
+
+		configParam(P_A1, -10.f, 10.f, 0.f, "Elliptic x.y term");
+		configParam(P_A3, -10.f, 10.f, 0.f, "Elliptic y term");
+
 		iol(false);
 	}
 
@@ -162,7 +183,7 @@ struct WWidget : ModuleWidget {
 		for(int x = 1; x <= LANES; x++) {
 			for(int y = 1; y <= RUNGS; y++) {
 				// automatic layout
-				const int idx = (x - 1) + 6 * (y - 1);
+				const int idx = (x - 1) + LANES * (y - 1);
 				if(ctl[idx] == -1) continue;
 				display = new LabelWidget(lbl[idx], kind[idx]);
 				display->fixCentre(loc(x, y + 0.5f), strlen(lbl[idx]));//chars
