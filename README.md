@@ -1,11 +1,17 @@
 KRTPluginA
 ===
 
+![Donate](PaypalDonate.png)
+
+[Donate](https://www.paypal.com/donate/?hosted_button_id=Y94P8UE7PYCJY)
+
+Current development on [Linux ARM](https://drive.google.com/drive/folders/11k81iJwAW_xP3fNGO9ZmNh-XwS2DexbF) Chromebook. 
+
 Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work it could also be quite dangerous. The index is numbered so that `WORKING_MACHINES_COUNT` makes sense given the development ordering of the index.
 
 Current public version: [here](https://library.vcvrack.com/KRTPluginA) achives for older versions of the demos maybe available [here](https://github.com/jackokring/KRTPluginADemo).
 
-Compiled with: `gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0` or later. Any issues due to edge case optimizations of `float` may be corrected if they are problems.
+Compiled with: `gcc (Debian 10.2.1-6) 10.2.1 20210110` or later. Any issues due to edge case optimizations of `float` may be corrected if they are problems.
 
 Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/) for less detail and more of an overview.
 
@@ -108,8 +114,8 @@ Ins
 Outs
 ---
 * Differential `Δ`
-* Signal Pole `1/Δ`
-* Signal Log `LNΔ`
+* Differential `ΔΔ`
+* Differential `ΔΔΔ`
 * Integral Linear `Σ`
 * Integral Pole `1/Σ`
 * Integral Log `LNΣ`

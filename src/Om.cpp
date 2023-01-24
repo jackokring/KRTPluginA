@@ -243,7 +243,7 @@ struct Om : Module {
 		for(int i = 0; i < 64; i++) {
 			saves[i] = offsets[i] + '@';//limit buffer size hack
 		}
-		json_object_set(rootJ, "save", json_stringn(saves, 64));
+		json_object_set_new(rootJ, "save", json_stringn(saves, 64));
 		return rootJ;
 	}
 

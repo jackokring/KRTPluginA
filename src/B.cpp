@@ -90,7 +90,7 @@ struct B : Module {
 				}
 			}
 		}
-		json_object_set(rootJ, "save", json_stringn(saves, sized));
+		json_object_set_new(rootJ, "save", json_stringn(saves, sized));
 		for(int f = 0; f < patches; f++) {
 			for(int i = 0; i < ins; i++) {
 				for(int j = 0; j < outs; j++) {
@@ -99,7 +99,7 @@ struct B : Module {
 				}
 			}
 		}
-		json_object_set(rootJ, "blue", json_stringn(saves, sized));
+		json_object_set_new(rootJ, "blue", json_stringn(saves, sized));
 		return rootJ;
 	}
 

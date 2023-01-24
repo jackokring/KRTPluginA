@@ -134,7 +134,7 @@ struct Y : Module {
 				}
 			}
 		}
-		json_object_set(rootJ, "save", json_stringn(saves, sized));
+		json_object_set_new(rootJ, "save", json_stringn(saves, sized));
 		return rootJ;
 	}
 
