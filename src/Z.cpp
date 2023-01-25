@@ -131,10 +131,10 @@ struct Z : Module {
 //placement macro
 #define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
 
-struct WWidget : ModuleWidget {
+struct ZWidget : ModuleWidget {
 	LabelWidget *display;
 
-	WWidget(Z* module) {
+	ZWidget(Z* module) {
 		setModule(module);
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Z.svg")));
 
@@ -206,4 +206,4 @@ struct WWidget : ModuleWidget {
 };
 
 
-Model* modelZ = createModel<Z, WWidget>("Z");
+Model* modelZ = createModel<Z, ZWidget>("Z");
