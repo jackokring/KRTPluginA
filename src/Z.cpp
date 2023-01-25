@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct Z : Module {
 	enum ParamIds {
 		// shape and filter
@@ -12,6 +11,8 @@ struct Z : Module {
 		P_A, P_R, P_EMOD, P_A1, P_A3,
 		NUM_PARAMS
 	};
+
+	// names in constructor
 
 	enum InputIds {
 		IN_CV,
@@ -28,11 +29,11 @@ struct Z : Module {
 	};
 
 	const char *instring[NUM_INPUTS] = {
-		"",
-		"", "", "", "", "", "",
-		"", "",
-		"",
-		""
+		"Frequency CV",
+		"Modulation x.y", "Modulation y", "Modulation resonance", "Modulation x^2", "Modulation x", "Modulation constant",
+		"Py", "Qy",
+		"HPF Frequency",
+		"Gate"
 	};
 
 	enum OutputIds {
@@ -45,7 +46,7 @@ struct Z : Module {
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"",	"", "", "", "", ""
+		"Px root 1", "Qx root 1", "Px root 2", "Qx root 2", "Px root 3", "Qx root 3"
 	};
 
 	enum LightIds {
@@ -78,12 +79,12 @@ struct Z : Module {
 	Z() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 
-		configParam(P_PLFO, -10.f, 10.f, 0.f, "LFO -> P");
-		configParam(P_QLFO, -10.f, 10.f, 0.f, "LFO -> Q");
+		configParam(P_PLFO, -10.f, 10.f, 0.f, "LFO -> Py");
+		configParam(P_QLFO, -10.f, 10.f, 0.f, "LFO -> Qy");
 		configParam(P_FLFO, -4.f, 4.f, 0.f, "LFO Frequency", " Oct");
 		configParam(P_WLFO, -1.f, 1.f, 0.f, "LFO Wave");
 
-		configParam(P_FRQ, -4.f, 4.f, 0.f, "LPF Frequency", " Oct");
+		configParam(P_FRQ, -4.f, 4.f, 0.f, "HPF Frequency", " Oct");
 		configParam(P_RES, -6.f, 30.f, -6.f, "Resonance", " dBQ");
 		
 		configParam(P_A2, -10.f, 10.f, 0.f, "Elliptic x^2 term");
@@ -93,7 +94,7 @@ struct Z : Module {
 		// E
 		configParam(P_A, -27.f, 9.f, -9.f, "Attack time", " dBs");
 		configParam(P_R, -27.f, 9.f, -9.f, "Release time", " dBs");
-		configParam(P_EMOD, -6.f, 6.f, 0.f, "Modulation level", " Center dB (rel 6)");
+		configParam(P_EMOD, -6.f, 6.f, 0.f, "LPF modulation level", " Center dB (rel 6)");
 
 		configParam(P_A1, -10.f, 10.f, 0.f, "Elliptic x.y term");
 		configParam(P_A3, -10.f, 10.f, 0.f, "Elliptic y term");

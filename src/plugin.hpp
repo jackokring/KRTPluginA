@@ -149,3 +149,27 @@ struct LabelWidget : LightWidget {//TransparentWidget {
 		box.pos = Vec(here.x - box.size.x / 2, here.y - box.size.y / 2);
 	}
 };
+
+struct KLightWidget : ModuleLightWidget {
+	void drawLayer(const DrawArgs& args, int layer) override {
+		if(layer == 1) {
+			if (this->color.a > 0.0) {
+					nvgBeginPath(args.vg);
+					nvgRect(args.vg, 0, 0, this->box.size.x, this->box.size.y);
+					nvgFillColor(args.vg, this->color);
+					nvgFill(args.vg);
+			}
+		}
+		Widget::drawLayer(args, layer);
+	}
+};
+
+struct KGRLightWidget : KLightWidget {
+	KGRLightWidget() {
+		bgColor = SCHEME_BLACK;
+		borderColor = SCHEME_BLACK_TRANSPARENT;
+		addBaseColor(SCHEME_GREEN);
+        addBaseColor(SCHEME_RED);
+		box.size = Vec(14, 14);
+	}
+};
