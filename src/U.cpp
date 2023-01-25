@@ -50,15 +50,10 @@ struct U : Module {
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
 	}
 
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
+	int maxPolySpecial(int i) {
+		int poly = inputs[IN + i].getChannels();
+		outputs[OUT + i].setChannels(poly);
+		outputs[QOUT + i].setChannels(poly);
 		return poly;
 	}
 
@@ -137,18 +132,17 @@ struct U : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
-		int maxPort = maxPoly();
 
 		float q = params[QUANTIZE].getValue() / 12.f;//semitone volts
 		float n = log(params[NOISE].getValue(), dsp::FREQ_C4);
 		n = clamp(n, 0.f, fs * 0.5f);//filter limit
 		//static std::normal_distribution<float> dist(0, 5);
 
-#pragma GCC ivdep
-		for(int p = 0; p < maxPort; p++) {
 
 #pragma GCC ivdep
-			for(int i = 0; i < 3; i++) {
+		for(int i = 0; i < 3; i++) {
+#pragma GCC ivdep
+			for(int p = 0; p < maxPolySpecial(i); p++) {
 				float in = 0.f;
 				if(inputs[IN + i].isConnected()) {
 					in = inputs[IN + i].getPolyVoltage(p);

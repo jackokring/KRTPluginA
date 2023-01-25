@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct M : Module {
 	enum ParamIds {
 		LOW,
@@ -46,18 +45,6 @@ struct M : Module {
 		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
 		if(!lights) return;
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
-	}
-
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
 	}
 
     /* 1P H(s) = 1 / (s + fb) */
@@ -120,7 +107,7 @@ struct M : Module {
 		float high = params[HIGH].getValue();
 		float hgain = dB(params[HGAIN].getValue());
 
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
 			float in = inputs[IN].getPolyVoltage(p);

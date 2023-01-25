@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct J : Module {
 	enum ParamIds {
 		FRQ,
@@ -54,18 +53,6 @@ struct J : Module {
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
 	}
 
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
-	}
-
 	J() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
@@ -116,7 +103,7 @@ struct J : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 
 		float frq = params[FRQ].getValue();
 		float odr = params[ODR].getValue();

@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct D : Module {
 	enum ParamIds {
 		DB,
@@ -41,18 +40,6 @@ struct D : Module {
 			for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
 		}
 
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
-	}
-
 	/* 1P H(s) = 1 / (s + fb) */
     //ONE POLE FILTER
 	float f1, f2, b[PORT_MAX_CHANNELS];
@@ -90,7 +77,7 @@ struct D : Module {
 	}
 
 	void process(const ProcessArgs& args) override {
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 		float fs = args.sampleRate;
 
 		//dBMid(params[G1].getValue()/6.f);

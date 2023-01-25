@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct G : Module {
 	enum ParamIds {
 		ATK,
@@ -50,18 +49,6 @@ struct G : Module {
 		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
 		if(!lights) return;
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
-	}
-
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
 	}
 
 	G() {
@@ -140,7 +127,7 @@ struct G : Module {
 
 		float atk = log(params[ATK].getValue()/3.f, 1.f);
 		float dcy = log(params[DCY].getValue()/3.f, 1.f);
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 		float thr = log(params[THR].getValue()/6.f, 5.f);
 		float rto = log(-params[RTO].getValue(), 1.f);
 		float cut = params[CUT].getValue();

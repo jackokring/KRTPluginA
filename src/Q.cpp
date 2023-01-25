@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct Q : Module {
 	enum ParamIds {
 		OMEGA,//master uncertainty mass frequency
@@ -54,18 +53,6 @@ struct Q : Module {
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
 	}
 
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
-	}
-
 	//obtain mapped control value
     float log(float val, float centre) {
         return powf(2.f, val) * centre;
@@ -96,7 +83,7 @@ struct Q : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 
 		float omega = params[OMEGA].getValue();
 		float hyst = params[SINGULAR_HYSTERISIS].getValue() / 6.f;

@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct I : Module {
 	enum ParamIds {
 		ENUMS(DIV, 3),//divider
@@ -48,7 +47,7 @@ struct I : Module {
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
 	}
 
-	int maxPoly() {
+	int maxPolySpecial() {
 		int poly = inputs[CLK].getChannels();
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
 			outputs[o].setChannels(poly);
@@ -84,7 +83,7 @@ struct I : Module {
 
 	void process(const ProcessArgs& args) override {
 		//float fs = args.sampleRate;
-		int maxPort = maxPoly();
+		int maxPort = maxPolySpecial();
 		for(int i = 0; i < 3; i++) {
 			divs[i] = (int)params[DIV + i].getValue();
 			phase[i] = (int)(params[PHA + i].getValue() * 0.01f * (divs[i] - 1.f));

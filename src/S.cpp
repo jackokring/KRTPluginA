@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct S : Module {
 	enum ParamIds {
 		BPM,

@@ -52,18 +52,6 @@ struct W : Module {
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
 	}
 
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
-	}
-
 	W() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		iol(false);
@@ -78,7 +66,7 @@ struct W : Module {
 	const float semi = 1.f / 12.f;
 
 	void process(const ProcessArgs& args) override {
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep

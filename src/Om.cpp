@@ -84,7 +84,7 @@ struct Om : Module {
 	bool flip = false;
 	char *showNowM = onDisplay1;
 
-	int maxPoly() {
+	int maxPolySpecial() {
 		int poly = inputs[CLK].getChannels();
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
 			outputs[o].setChannels(poly);
@@ -336,7 +336,7 @@ struct Om : Module {
 
 	void process(const ProcessArgs& args) override {
 		//float fs = args.sampleRate;
-		int maxPort = maxPoly();
+		int maxPort = maxPolySpecial();
 		//umm polyphony?
 
 		float bird = params[BIRD].getValue();

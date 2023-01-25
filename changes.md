@@ -3,8 +3,11 @@
 
 * TBC - `Z`
 * default bypass on some modules?
-* `json_object_set` replaced by `json_object_set_new` memory leak fix.
-* PayPal donate as GitHub use a bank which ignores Companies House details.
+* `json_object_set` replaced by `json_object_set_new` memory leak fix
+* PayPal donate as GitHub use a bank which ignores Companies House details
+* Potential vector optimization
+* Fixed `U` independant polyphonic
+* Left `V` as some hackey normaled mess
 
 2.25.27
 ===

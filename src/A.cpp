@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct A : Module {
 	enum ParamIds {
 		FRQ,
@@ -60,18 +59,6 @@ struct A : Module {
 		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
 		if(!lights) return;
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
-	}
-
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
 	}
 
 	A() {
@@ -178,7 +165,7 @@ struct A : Module {
 
 		float res = params[REZ].getValue()/6.f;
 		float plate = dBMid(params[RING].getValue()/6.f);
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 		float modf = params[MOD].getValue();
 		float modo = params[MAM].getValue();
 

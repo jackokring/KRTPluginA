@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct C : Module {
 	enum ParamIds {
 		G1, F1, G2, F2, G3, F3,
@@ -46,18 +45,6 @@ struct C : Module {
 		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
 		if(!lights) return;
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
-	}
-
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
 	}
 
 	//obtain mapped control value
@@ -112,7 +99,7 @@ struct C : Module {
 		float f2 = log(params[F2].getValue(), dsp::FREQ_C4);
 		float f3 = log(params[F3].getValue(), dsp::FREQ_C4);
 
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 #pragma GCC ivdep
 		for(int p = 0; p < maxPort; p++) {
 			float in1 = inputs[IN1].getPolyVoltage(p);

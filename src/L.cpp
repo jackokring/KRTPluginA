@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct L : Module {
 	enum ParamIds {
 		PRE,
@@ -40,18 +39,6 @@ struct L : Module {
 		for(int i = 0; i < NUM_OUTPUTS; i++) configOutput(i, outstring[i]);
 		if(!lights) return;
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
-	}
-
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
 	}
 
 	L() {
@@ -124,7 +111,7 @@ struct L : Module {
 		// voltage (e.g. with Port::getVoltage())
 		// POLY: Port::getPolyVoltage(c)
 		//float fs = args.sampleRate;
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 		maxLen = MAX_BUFFER / maxPort;//share buffer
 		long max = (long) maxLen;
 		maxLen = (float) max;//round down for sample guard

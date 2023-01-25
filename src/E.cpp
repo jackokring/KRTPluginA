@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct E : Module {
 	enum ParamIds {
 		ATK,
@@ -43,18 +42,6 @@ struct E : Module {
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
 	}
 
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
-	}
-
 	E() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(ATK, -27.f, 9.f, -9.f, "Attack time", " dBs");
@@ -82,7 +69,7 @@ struct E : Module {
 
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 
 		float atk = params[ATK].getValue()/3.f;
 		float rel = params[REL].getValue()/3.f;

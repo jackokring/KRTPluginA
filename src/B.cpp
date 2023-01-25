@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct B : Module {
 	enum ParamIds {
 		ENUMS(BUTTON, 6 * 3),
@@ -53,18 +52,6 @@ struct B : Module {
 #define MOD_PASS_G 0
 #define MOD_SELECT_R 1
 #define MOD_FUNC_B 2
-
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
-	}
 
 	const char *names[3][6] = {
 		{ "1A", "2A", "3A", "4A", "5A", "6A" },
@@ -191,7 +178,7 @@ struct B : Module {
 	void process(const ProcessArgs& args) override {
 		float fs = args.sampleRate;
 		setFK1(10.f, fs);//dc stop
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 		int pattern = (int)params[PATTERN].getValue();
 		int mode = (int)params[I_MODE].getValue();
 		if(modeTrig.process(params[MODE].getValue())) {

@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct R : Module {
 	enum ParamIds {
 		ON,
@@ -42,18 +41,6 @@ struct R : Module {
 		for(int i = 0; i < NUM_LIGHTS; i++) configLight(i, lightstring[i]);
 	}
 
-	int maxPoly() {
-		int poly = 1;
-		for(int i = 0; i < NUM_INPUTS; i++) {
-			int chan = inputs[i].getChannels();
-			if(chan > poly) poly = chan;
-		}
-		for(int o = 0; o < NUM_OUTPUTS; o++) {
-			outputs[o].setChannels(poly);
-		}
-		return poly;
-	}
-
 	R() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(ON, -6.f, 6.f, 0.f, "On level", " Center dB (rel 6)");
@@ -72,7 +59,7 @@ struct R : Module {
 		// voltage (e.g. with Port::getVoltage())
 		// POLY: Port::getPolyVoltage(c)
 		//float fs = args.sampleRate;
-		int maxPort = maxPoly();
+		int maxPort = maxPoly(this, NUM_INPUTS, NUM_OUTPUTS);
 
 		//dBMid(params[G1].getValue()/6.f);
 		float on = dBMid(params[ON].getValue()/6.f);

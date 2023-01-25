@@ -155,7 +155,7 @@ struct Y : Module {
 		}
 	}
 
-	void maxPoly() {
+	void maxPolySpecial() {
 #pragma GCC ivdep
 		for(int o = 0; o < NUM_OUTPUTS; o++) {
 			outputs[o].setChannels(1);
@@ -363,7 +363,7 @@ struct Y : Module {
 	void process(const ProcessArgs& args) override {
 		mux++;
 		float fs = args.sampleRate;
-		maxPoly();//1
+		maxPolySpecial();//1
 		double bps = (double)params[TEMPO].getValue() / 15.f;//beat per bar
 		double beatSamp = bps / fs;//beats per sample
 		float pos = inputs[IPOS].getVoltage() / 10.f * 64.f;
