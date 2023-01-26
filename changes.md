@@ -11,6 +11,7 @@
 * Fixed `E` modulation bug
 * Fixed `E`, `V` envelope bug
 * Depricated `V`
+* Fixed `C` missing label crash
 
 2.25.27
 ===

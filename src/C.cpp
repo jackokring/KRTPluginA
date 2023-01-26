@@ -27,13 +27,14 @@ struct C : Module {
 		"Audio 1",
 		"Audio 2",
 		"Audio 3",
+		"Link in"
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
 		"Audio 1 mix bypass",
 		"Audio 2 mix bypass",
 		"Audio 3 mix bypass",
-		"Mixed of unplugged outputs",
+		"Mixed of unplugged outputs and link",
 	};
 
 	const char *lightstring[NUM_LIGHTS] = {
