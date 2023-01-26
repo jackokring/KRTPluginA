@@ -9,6 +9,7 @@
 * Fixed `U` independant polyphonic
 * Left `V` as some hackey normaled mess
 * Fixed `E` modulation bug
+* Fixed `E`, `V` envelope bug
 
 2.25.27
 ===

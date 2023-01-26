@@ -144,14 +144,14 @@ struct V : Module {
 				float expEnv;
 				if(trigger) {
 					envA[i][p] = true;//attack
-					env[i][p] = 1.f;
+					env[i][p] = 1.f - env[i][p];
 				}
 				if(envA[i][p]) {
 					env[i][p] -= a * env[i][p];
 					expEnv = (1.f - env[i][p]);
 					if(expEnv > 0.95f) {//almost
 						envA[i][p] = false;//decay
-						env[i][p] = 1.f;
+						env[i][p] = expEnv;
 					}
 				} else {
 					env[i][p] -= d * env[i][p];
