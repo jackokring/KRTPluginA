@@ -93,6 +93,8 @@ If some controls appear not to operate use `IN1` and `LP12` out, with `CV` for t
 
 *The Gold One - Summation generative additive synthesis*
 
+**SIGNATURE**
+
 Parameters
 ---
 * Master Gain `dB`
@@ -244,6 +246,8 @@ Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy mod
 
 *The 70% Grey One (With A Display) - Clock distribution randomiser*
 
+**SIGNATURE**
+
 Parameters
 ---
 * Bird `BIRD`
@@ -269,6 +273,8 @@ V
 ===
 
 *The 70% Grey One - Envelope VCA and CV producer*
+
+**DEPRICATED**
 
 Parameters
 ---
@@ -298,6 +304,8 @@ F
 ===
 
 *The Blue One - Morph filter*
+
+**SIGNATURE**
 
 Parameters
 ---
@@ -513,6 +521,8 @@ Q
 *A Green One - Quantum gravimitator*
 [The Big Manual?](Q.md)
 
+**SIGNATURE**
+
 Parameters
 ---
 * Omega Frequency `OM`
@@ -550,6 +560,8 @@ C
 ===
 
 *A Purple One - Mixer sixer*
+
+**SIGNATURE**
 
 Parameters
 ---
@@ -686,6 +698,8 @@ H
 
 *Another Grey One - Base Gimpathizer*
 
+**SIGNATURE**
+
 Parameters
 ---
 * 9 Hammond Harminics `16'`, `5 1/3'`, `8'`, `4'`, `2 2/3'`, `2'`, `1 3/5'`, `1 1/3'` and `1'`
@@ -770,5 +784,7 @@ Z
 ===
 
 *in development*
+
+**SIGNATURE**
 
 [Prework](https://github.com/jackokring/KRTPluginA/blob/master/Z%20Moonshine%20Elliptical.pdf) almost complete for the basis.
