@@ -8,6 +8,7 @@
 * Potential vector optimization
 * Fixed `U` independant polyphonic
 * Left `V` as some hackey normaled mess
+* Fixed `E` modulation bug
 
 2.25.27
 ===

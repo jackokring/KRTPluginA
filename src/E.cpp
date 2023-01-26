@@ -73,7 +73,7 @@ struct E : Module {
 
 		float atk = params[ATK].getValue()/3.f;
 		float rel = params[REL].getValue()/3.f;
-		float mod = dBMid(params[REL].getValue()/6.f);
+		float mod = dBMid(params[MOD].getValue()/6.f);
 
 		// PARAMETERS (AND IMPLICIT INS)
 #pragma GCC ivdep
@@ -89,14 +89,14 @@ struct E : Module {
 			float expEnv;
 			if(trigger) {
 				envA[p] = true;//attack
-				env[p] = 1.f;
+				env[p] = 1.f - env[p];
 			}
 			if(envA[p]) {
 				env[p] -= a * env[p];
 				expEnv = (1.f - env[p]);
 				if(expEnv > 0.95f) {//almost
 					envA[p] = false;//decay
-					env[p] = 1.f;
+					env[p] = expEnv;
 				}
 			} else {
 				env[p] -= r * env[p];
