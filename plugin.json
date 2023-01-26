@@ -98,7 +98,8 @@
         "Envelope generator",
         "Voltage-controlled amplifier",
         "Polyphonic"
-      ]
+      ],
+      "deprecated": true
     },
     {
       "slug": "F",
