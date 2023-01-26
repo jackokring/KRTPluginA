@@ -13,7 +13,7 @@ Current public version: [here](https://library.vcvrack.com/KRTPluginA) achives f
 
 Compiled with: `gcc (Debian 10.2.1-6) 10.2.1 20210110` or later. Any issues due to edge case optimizations of `float` may be corrected if they are problems.
 
-Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/) for less detail and more of an overview.
+Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/rocket.html) for less detail and more of an overview.
 
 Index - Version - Demo
 ===
