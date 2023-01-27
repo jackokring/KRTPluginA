@@ -1,6 +1,11 @@
 2.26.29
 ===
 
+* Combine filters to `plugin.cpp`
+* Initialize filter function
+* Macro assign count filters
+* default bypass?
+* Control populator in `plugin.cpp`
 * 
 
 2.26.28
