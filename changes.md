@@ -11,17 +11,17 @@
 * `json_object_set` replaced by `json_object_set_new` memory leak fix
 * PayPal donate as GitHub use a bank which ignores Companies House details
 * Potential vector optimization
-* Fixed `U` independant polyphonic
-* Left `V` as some hackey normaled mess
+* Fixed `U` independent polyphonic
+* Left `V` as some hacky normalized mess
 * Fixed `E` modulation bug
 * Fixed `E`, `V` envelope bug
-* Depricated `V`
+* Deprecated `V`
 * Fixed `C` missing label crash
 
 2.25.27
 ===
 
-* complete V2 migration labellings
+* complete V2 migration labelling
 * improve tool tip documentation
 
 2.25.26
@@ -29,7 +29,7 @@
 
 * made this file link here ?
 * increased SDK V2 (2.25.25) but this file was misdirected
-* started adding some V2 labellings to some things
+* started adding some V2 labelling to some things
 * made `README.md` include version design in index
 * decided to follow lowercase convention for labels
 
@@ -60,7 +60,7 @@
 1.23.23
 ===
 
-* set defualt `J` mix at 50%
+* set default `J` mix at 50%
 * added `H` phase modulable organ
 
 1.22.22
@@ -89,8 +89,8 @@
 1.18.20
 ===
 
-* Fixed `F` damping as sqrt*sqrt gives correct evaluation of damping and also introduces a sample and hold behaviour on high modulation levels in the "full on" corner (slightly breaks patch)
-* Added `M` module for base pre-emphisis or RIAA deck preamp with inverse "cutting metal" filter (many VCO can't reach a 20KHz sine high and matching drifts a little)
+* Fixed `F` damping as sqrt*sqrt gives correct evaluation of damping and also introduces a sample and hold behavior on high modulation levels in the "full on" corner (slightly breaks patch)
+* Added `M` module for base pre-emphasis or RIAA deck preamp with inverse "cutting metal" filter (many VCO can't reach a 20KHz sine high and matching drifts a little)
 * Added `Q` module for some effect of a "quantum gravity following" of a source signal
 * Added `μ` weighted average drift acceleration algorithm
 * Added `C` module for mixing
@@ -98,7 +98,7 @@
 1.15.20
 ===
 
-* Fixed `Y` jazz for negative inputs giving better scratching behaviour
+* Fixed `Y` jazz for negative inputs giving better scratching behavior
 * Fixed `D` to use oversampling
 * Fixed `X` oversampling
 * Calmed some of the high sizzle on `μ` (breaks compatibility in a good way) by a 4th order Linkwitz, seems a 3rd differential need a -24 dB on the top for a net -6 dB
@@ -106,7 +106,7 @@
 1.15.19
 ===
 
-* Added `X` oversampled wave folder
+* Added `X` over-sampled wave folder
 * Deleted `O` **.svg** component layer
 * Alter `A` estimator to 4th order
 
@@ -117,7 +117,7 @@
 * Color lights on `Y`
 * Jazz position input on `Y`
 * Added MIDI `S` and ENV/VCA `E`
-* Altered `μ` differential calculations to 4th order for less susceptability to Gibbs oscillations
+* Altered `μ` differential calculations to 4th order for less susceptibility to Gibbs oscillations
 * Altered `D` estimation calculation to 4th order
 
 1.12.18
@@ -184,7 +184,7 @@
 1.6.9
 ===
 
-* Fixed issues of polypony
+* Fixed issues of polyphony
 * Fixed time length of buffer `float` pointer in `L`
 * Improved documentation
 * Improved [demo repository](https://github.com/jackokring/KRTPluginADemo)

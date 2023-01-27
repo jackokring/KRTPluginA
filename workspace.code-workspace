@@ -59,6 +59,14 @@
 			"cinttypes": "cpp",
 			"typeinfo": "cpp",
 			"bit": "cpp"
-		}
+		},
+		"cSpell.words": [
+			"krewestion",
+			"MFLD",
+			"QOUT",
+			"QUNT",
+			"sixer",
+			"STRT"
+		]
 	}
 }

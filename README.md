@@ -9,7 +9,7 @@ Current development on [Linux ARM](https://drive.google.com/drive/folders/11k81i
 
 Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work it could also be quite dangerous. The index is numbered so that `WORKING_MACHINES_COUNT` makes sense given the development ordering of the index.
 
-Current public version: [here](https://library.vcvrack.com/KRTPluginA) achives for older versions of the demos maybe available [here](https://github.com/jackokring/KRTPluginADemo).
+Current public version: [here](https://library.vcvrack.com/KRTPluginA) archives for older versions of the demos maybe available [here](https://github.com/jackokring/KRTPluginADemo).
 
 Compiled with: `gcc (Debian 10.2.1-6) 10.2.1 20210110` or later. Any issues due to edge case optimizations of `float` may be corrected if they are problems.
 
@@ -52,7 +52,7 @@ The version number indicates the API build compatibility and feature use. So 1 i
 A
 ===
 
-*49% Tranparent Module - Made with sexspex plastique*
+*49% Transparent Module - Made with sexspex plastique*
 
 Parameters
 ---
@@ -132,18 +132,18 @@ The integrals are further processed by 3 point series accelerations (a tiny effe
 
 I mean why a 9th order FIR, and the number 27 of the sporadic simple groups connection? From 2 comes 2 to the power of all N. From 3 comes all odd numbers? This likely explains the choice of cube root to control the range of output voltage.
 
-Blerb (not essential to understanding the module)
+Blurb (not essential to understanding the module)
 ---
 
-He's irisponsible :D https://en.wikipedia.org/wiki/Jacques_Tits ... roll on (Monster Moonshine)[https://en.wikipedia.org/wiki/Monstrous_moonshine] and let's not confuse maths with physics "speculated" on maths. Hope I got all the integration by parts and collection of approximants in limited terms right? (Some 2's, some 3's, some hopeful sporadics on the elliptic). Did I mention the congruants div 3 and the determinants (count 44 (18n+26 (Groupies)[https://en.wikipedia.org/wiki/Sporadic_group])) with Z(p) and alternating groups to a 42 which the circle and ellipse are the alternating or not on the major minor radius?
+He's irresponsible :D https://en.wikipedia.org/wiki/Jacques_Tits ... roll on (Monster Moonshine)[https://en.wikipedia.org/wiki/Monstrous_moonshine] and let's not confuse maths with physics "speculated" on maths. Hope I got all the integration by parts and collection of approximants in limited terms right? (Some 2's, some 3's, some hopeful sporadics on the elliptic). Did I mention the congruants div 3 and the determinants (count 44 (18n+26 (Groupies)[https://en.wikipedia.org/wiki/Sporadic_group])) with Z(p) and alternating groups to a 42 which the circle and ellipse are the alternating or not on the major minor radius?
 
-Initialize the big bang with differential estimates of the future captain, so obivating the definitional requirements at the singularity Captain. Well Gamma Bob, well gamma. A form of precision series truncation crusher, nice! None of that chucking away an abstract precision and getting right in there with truncation of summation generative additive synthesis, for that timbrel union.
+Initialize the big bang with differential estimates of the future captain, so obviating the definitional requirements at the singularity Captain. Well Gamma Bob, well gamma. A form of precision series truncation crusher, nice! None of that chucking away an abstract precision and getting right in there with truncation of summation generative additive synthesis, for that timbrel union.
 
-But isn't it about the singularity context of integration in a set of limits x, x+y where x is unknown but gestimated in a relative context Captain? Yes Bob all error in the calculus should be reported as this module is not about error, and others maybe built.
+But isn't it about the singularity context of integration in a set of limits x, x+y where x is unknown but guesstimated in a relative context Captain? Yes Bob all error in the calculus should be reported as this module is not about error, and others maybe built.
 
-But shouldn't a sine converge to sin(x)? And and truncation of terms provide a controlled deviation from sin(x) for Fauxrier harminics? Exactly Boz, the sweet low power law alias summands.
+But shouldn't a sine converge to sin(x)? And and truncation of terms provide a controlled deviation from sin(x) for Fourier harmonics? Exactly Boz, the sweet low power law alias summands.
 
-"Proxy off a dirty hole of unknown gain? How dare you? Must fix the incomming to be at least plesant." -- Captain of the Exponential.
+"Proxy off a dirty hole of unknown gain? How dare you? Must fix the incoming to be at least pleasant." -- Captain of the Exponential.
 
 T
 ===
@@ -244,7 +244,7 @@ Mix some `ON` into the `IN` making an `OUT` with control of it `AS` for easy mod
 Ω
 ===
 
-*The 70% Grey One (With A Display) - Clock distribution randomiser*
+*The 70% Grey One (With A Display) - Clock distribution randomizer*
 
 **SIGNATURE**
 
@@ -263,7 +263,7 @@ Outs (Bi-phase on clock given current letter)
 ---
 * `AN`, `BO`, `CP`, `DQ`, `ER`, `FS`, `GT`, `HU`, `IV`, `JW`, `KX`, `LY`, `MZ`
 
-`RST` starts a sequence of gate activations, from the beginning, on the outputs `AN` to `MZ` advanced by the `CLK` trigger. The `SEED` controls the initial symbol and some randomness of the following symbols. `RAND` increaes the chaos of randomization from the initial `SEED`. The magic of `BIRD` (the word) applies some modal operator lambda calculus to modify the sequence with the **very** discrete occasional stall in the `MM` Omega bird. This is not the differential calculus of Newton fame, but the one with names such as [Godel](https://en.wikipedia.org/wiki/Kurt_G%C3%B6del) and [Church](https://en.wikipedia.org/wiki/Alonzo_Church).
+`RST` starts a sequence of gate activations, from the beginning, on the outputs `AN` to `MZ` advanced by the `CLK` trigger. The `SEED` controls the initial symbol and some randomness of the following symbols. `RAND` increases the chaos of randomization from the initial `SEED`. The magic of `BIRD` (the word) applies some modal operator lambda calculus to modify the sequence with the **very** discrete occasional stall in the `MM` Omega bird. This is not the differential calculus of Newton fame, but the one with names such as [Godel](https://en.wikipedia.org/wiki/Kurt_G%C3%B6del) and [Church](https://en.wikipedia.org/wiki/Alonzo_Church).
 
 There is a great book on modal logic called [To Mock a Mocking Bird](https://en.wikipedia.org/wiki/To_Mock_a_Mockingbird), itself a follow up to [Forever Undecided](https://en.wikipedia.org/wiki/Raymond_Smullyan). A lay person introduction to the subject.
 
@@ -274,7 +274,7 @@ V
 
 *The 70% Grey One - Envelope VCA and CV producer*
 
-**DEPRICATED**
+**DEPRECATED**
 
 Parameters
 ---
@@ -330,7 +330,7 @@ Outs
 ---
 * Output `OUT`
 
-A filter with some internal gain processing to handle filter k values into self-oscillation. The four corners set by spread and skew form Linkwitz to Butterwork on spread when skew is full off, and Legendre to Bessel when skew is full on. The concept is stabilized by soft clipping.
+A filter with some internal gain processing to handle filter k values into self-oscillation. The four corners set by spread and skew form Linkwitz to Butterworth on spread when skew is full off, and Legendre to Bessel when skew is full on. The concept is stabilized by soft clipping.
 
 W
 ===
@@ -394,12 +394,12 @@ The `C2` to `B5` keyboard MIDI range on `CV` triggered by `GATE` operate the but
 * `C#`, `D#` pair operate function and mode buttons left to right (in pairs).
 * `C`, `D`, `E` operate triple buttons.
 * `F#`, `G#`, `A#` also operate triple buttons for utility.
-* `F`, `G`, `A`, `B` operate quater buttons.
+* `F`, `G`, `A`, `B` operate quarter buttons.
 
 O
 ===
 
-*The Beigish One - Triple parabolic skew feedback oscillator*
+*The Beige-ish One - Triple parabolic skew feedback oscillator*
 
 Parameters
 ---
@@ -483,7 +483,7 @@ Outs
 ---
 * Out `OUT`
 
-An oversampled wave-folder based on Chebychev polynomials and some extras for a bit of a difference.
+An over-sampled wave-folder based on Chebychev polynomials and some extras for a bit of a difference.
 
 M
 ===
@@ -513,7 +513,7 @@ An equalization filter to decrease the effect of non-linear signal processing on
 
 It reduces the non-linear shaping of high frequencies in the send return path from injecting harmonics into the alias band above the sampling Nyquist frequency. So good for base harmonic generation. The headroom of VCV rack should support the +/- 50V peak to peak. But you might need a bit of gain reduction before this module.
 
-**WARNING** The default gain settings are good for RIAA equalization, but could be reduced closer to 0 dB for general use. As the return filter is the opposite, that `HIdB` value can be misleading on what the return filter is doing. Under some circumstances it could **destroy tweeter speakers** just as the send filter could wobble the neighbourhood walls.
+**WARNING** The default gain settings are good for RIAA equalization, but could be reduced closer to 0 dB for general use. As the return filter is the opposite, that `HIdB` value can be misleading on what the return filter is doing. Under some circumstances it could **destroy tweeter speakers** just as the send filter could wobble the neighborhood walls.
 
 Q
 ===
@@ -526,7 +526,7 @@ Q
 Parameters
 ---
 * Omega Frequency `OM`
-* Sigularity Management `SING`
+* Singularity Management `SING`
 * Plank `PLK`
 * Newton `NTN`
 * Mass Ratio `MASS`
@@ -535,7 +535,7 @@ Parameters
 Ins
 ---
 * Omega Frequency Modulation `OM`
-* Sigularity Management Modulation `SING`
+* Singularity Management Modulation `SING`
 * Plank Modulation `PLK`
 * Newton Modulation `NTN`
 * Mass Ratio Modulation `MASS`
@@ -554,7 +554,7 @@ Is dark matter the integral over an average on a non-linear 1/r^2 law of an unce
 
 How to connect your modular to a scanning tunnelling microscope? Contact a physical? Enjoy!
 
-To `H` or not to wage? Das ist da krewestion? Wether it is better to enter into mass statisctic of global endomology or to find yourself under a hierachy of perfection?
+To `H` or not to wage? Das ist da krewestion? Wether it is better to enter into mass statistic of global endomology or to find yourself under a hierarchy of perfection?
 
 C
 ===
@@ -702,11 +702,11 @@ H
 
 Parameters
 ---
-* 9 Hammond Harminics `16'`, `5 1/3'`, `8'`, `4'`, `2 2/3'`, `2'`, `1 3/5'`, `1 1/3'` and `1'`
+* 9 Hammond Harmonics `16'`, `5 1/3'`, `8'`, `4'`, `2 2/3'`, `2'`, `1 3/5'`, `1 1/3'` and `1'`
 
 Ins
 ---
-* 9 Hammond Harminic CV `16'`, `5 1/3'`, `8'`, `4'`, `2 2/3'`, `2'`, `1 3/5'`, `1 1/3'` and `1'`
+* 9 Hammond Harmonic CV `16'`, `5 1/3'`, `8'`, `4'`, `2 2/3'`, `2'`, `1 3/5'`, `1 1/3'` and `1'`
 * Frequency CV `FRQ`
 * Phase Modulation CV `PM`
 
