@@ -6,7 +6,7 @@
 * Macro assign count filters
 * default bypass?
 * Control populator in `plugin.cpp`
-* 
+* Added envelope externals to `Z`
 
 2.26.28
 ===

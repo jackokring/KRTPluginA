@@ -9,6 +9,8 @@ struct Z : Module {
 		P_PLFO, P_QLFO, P_FLFO, P_WLFO,
 		P_FRQ, P_RES, P_A2, P_A4, P_A6,
 		P_A, P_R, P_EMOD, P_A1, P_A3,
+		// external envelope modulators
+		P_SUS, P_EV1, P_EV2,
 		NUM_PARAMS
 	};
 
@@ -42,11 +44,14 @@ struct Z : Module {
 		// y^2 + a1.x.y + a3.y = x^3 + a2.x^2 + a4.x + a6
 		// p + i.q -> y, solve for x 
 		OUT_PA, OUT_QA, OUT_PB, OUT_QB, OUT_PC, OUT_QC,
+		// external envelope modulators
+		OUT_EV1, OUT_EV2,
 		NUM_OUTPUTS
 	};
 
 	const char *outstring[NUM_OUTPUTS] = {
-		"Px root 1", "Qx root 1", "Px root 2", "Qx root 2", "Px root 3", "Qx root 3"
+		"Px root 1", "Qx root 1", "Px root 2", "Qx root 2", "Px root 3", "Qx root 3",
+		"Envelope out 1", "Envelope out 2"
 	};
 
 	enum LightIds {
@@ -86,6 +91,10 @@ struct Z : Module {
 
 		configParam(P_A1, -10.f, 10.f, 0.f, "Elliptic x.y term");
 		configParam(P_A3, -10.f, 10.f, 0.f, "Elliptic y term");
+
+		configParam(P_SUS, 0.f, 10.f, 0.f, "Sustain level", " Volts");
+		configParam(P_EV1, -6.f, 6.f, 0.f, "Envelope out 1 modulation level", " Center dB (rel 6)");
+		configParam(P_EV2, -6.f, 6.f, 0.f, "Envelope out 2 modulation level", " Center dB (rel 6)");
 
 		iol(false);
 	}
@@ -133,7 +142,7 @@ struct ZWidget : ModuleWidget {
 
 		const int ctl[] = {
 			// -1 is no control and no label
-			Z::IN_CV, -1, -1, -1, -1, -1,
+			Z::IN_CV, Z::P_SUS, Z::P_EV1, Z::P_EV2, Z::OUT_EV1, Z::OUT_EV2,
 			-1, -1, -1, -1, -1, -1,
 			Z::IN_A1M, Z::IN_A3M, Z::IN_RESM, Z::IN_A2M, Z::IN_A4M, Z::IN_A6M,
 			Z::IN_P, Z::IN_Q, Z::P_PLFO, Z::P_QLFO, Z::P_FLFO, Z::P_WLFO,
@@ -143,8 +152,8 @@ struct ZWidget : ModuleWidget {
 		};
 
 		const char *lbl[] = {
-			// a nice VCO
-			"CV", "TEST", "TEST", "TEST", "TEST", "TEST",
+			// a nice VCO and envelope modulator outs
+			"CV", "SUS", "ENV1", "ENV2", "ENV1", "ENV2",
 			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
 			// shape and filter modulation
 			"A1M", "A3M", "RESM", "A2M", "A4M", "A6M",
@@ -160,7 +169,7 @@ struct ZWidget : ModuleWidget {
 
 		const int kind[] = {
 			// -1 = sink, +1 = source
-			-1, 0, 0, 0, 0, 0,
+			-1, 0, 0, 0, 1, 1,
 			0, 0, 0, 0, 0, 0,
 			-1, -1, -1, -1, -1, -1,			
 			-1, -1, 0, 0, 0, 0,
