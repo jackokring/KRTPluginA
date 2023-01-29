@@ -226,7 +226,7 @@ struct Y : Module {
 	dsp::SchmittTrigger mode[4];
 	dsp::SchmittTrigger quads[16];
 	dsp::SchmittTrigger trips[12];
-	dsp::SchmittTrigger sGate;
+	dsp::SchmittTrigger sGate[PORT_MAX_CHANNELS];
 
 #define MODE_PAT 0
 #define MODE_SEQ 1
@@ -360,6 +360,30 @@ struct Y : Module {
 		lights[base + 2 * id + 1].setBrightness(r ? 1.f : 0.f);
 	}
 
+	int actionCodes[PORT_MAX_CHANNELS];
+	int codeCount = 0;
+
+	void clearActions() {
+#pragma GCC ivdep
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			actionCodes[i] = 0;
+		}
+		codeCount = 0;
+	}
+
+	void setAction(int action) {
+		actionCodes[codeCount++] = action;
+	}
+
+	bool getAction(int action) {
+		bool out = false;
+#pragma GCC ivdep
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			if(actionCodes[i] == action) out |= true;
+		}
+		return out;
+	}
+
 	void process(const ProcessArgs& args) override {
 		mux++;
 		float fs = args.sampleRate;
@@ -377,16 +401,18 @@ struct Y : Module {
 		bool trigCpy = sCpy.process(cpy);
 		float pst = params[PST].getValue();
 		bool trigPst = sPst.process(pst);
-		float gate = inputs[IGATE_BUT].getVoltage();
-		float cv = inputs[ICV_BUT].getVoltage();
-		bool trigGate = sGate.process(rescale(gate, 0.1f, 2.f, 0.f, 1.f));
-		int actionCode = 0;
-		if(trigGate) {//set action code
-			float tcv = cv * 12.f;
-			tcv += 0.5f + 60.f;
-			int icv = (int)tcv;
-			if(icv >= 0 && icv <= 127) {
-				actionCode = noteProcess[icv];
+#pragma GCC ivdep
+		for(int i = 0; i < PORT_MAX_CHANNELS; i++) {
+			float gate = inputs[IGATE_BUT].getPolyVoltage(i);
+			float cv = inputs[ICV_BUT].getPolyVoltage(i);
+			bool trigGate = sGate[i].process(rescale(gate, 0.1f, 2.f, 0.f, 1.f));
+			if(trigGate) {//set action code
+				float tcv = cv * 12.f;
+				tcv += 0.5f + 60.f;
+				int icv = (int)tcv;
+				if(icv >= 0 && icv <= 127) {
+					setAction(noteProcess[icv]);
+				}
 			}
 		}
 		//jazz (parabolic if free)
@@ -404,25 +430,14 @@ struct Y : Module {
 			if(trigM) {
 				newMode = i;//set new
 			}
-			if(actionCode >= PATA && actionCode <= NOWA) {
-				if(actionCode > SEQA) {
-					if(actionCode == MUTA) {
-						newMode = MODE_MUT;
-					} else {
-						newMode = MODE_NOW;
-					}
-				} else {
-					if(actionCode == PATA) {
-						newMode = MODE_PAT;
-					} else {
-						newMode = MODE_SEQ;
-					}
-				}
-			}
+			if(getAction(SEQA)) newMode = MODE_SEQ;
+			if(getAction(PATA)) newMode = MODE_PAT;
+			if(getAction(MUTA)) newMode = MODE_MUT;
+			if(getAction(NOWA)) newMode = MODE_NOW;
 			if((mux & 1023) == 0) lights[LMODE + i].setBrightness((newMode == i) ? 1.f : 0.f);//radios
 		}
 		params[MODE].setValue(newMode);//change
-		if(trigRst || actionCode == RSTA) {//sanity range before use
+		if(trigRst || getAction(RSTA)) {//sanity range before use
 			beatCounter = 0.f;//beats long
 			beats = 0.f;//faster and sample accurate
 			tBeats = 0.f;
@@ -431,7 +446,7 @@ struct Y : Module {
 		for(int i = 0; i < 16; i++) {
 			float but = params[QUADS + i].getValue();
 			bool trig = quads[i].process(but);
-			if(trig || actionCode == QU(i)) {
+			if(trig || getAction(QU(i))) {
 				button4(beats, i, newMode);
 			}
 			if((mux & 1023) == 1) light4(beats, i, newMode);
@@ -441,20 +456,20 @@ struct Y : Module {
 		for(int i = 0; i < 12; i++) {
 			float but = params[TRIPS + i].getValue();
 			bool trig = trips[i].process(but);
-			if(trig || actionCode == TR(i)) {
+			if(trig || getAction(TR(i))) {
 				button3(beats, i, newMode);
 			}
 			if((mux & 1023) == 2) light3(beats, tBeats, i, newMode);
 		}
-		if(trigRun || actionCode == RUNA) {
+		if(trigRun || getAction(RUNA)) {
 			params[IS_RUN].setValue(1.f - params[IS_RUN].getValue());//ok?
 		}
-		if(trigCpy || actionCode == CPYA) {
+		if(trigCpy || getAction(CPYA)) {
 			params[CPAT].setValue(getPat(beats));
 			params[CCHN].setValue(params[CHAN].getValue());
 		}
 		if((mux & 1023) == 8) lights[LCPY].setBrightness(getPat(beats) == (int)params[CPAT].getValue() ? 1.f : 0.f);
-		if(trigPst || actionCode == PSTA) {
+		if(trigPst || getAction(PSTA)) {
 			int pat = params[CPAT].getValue();
 			int chan = params[CCHN].getValue();
 			int nPat = getPat(beats);

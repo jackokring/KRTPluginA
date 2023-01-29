@@ -7,6 +7,7 @@
 * default bypass?
 * Control populator in `plugin.cpp`
 * Added envelope externals to `Z`
+* Polyphonic `Y` MIDI control
 
 2.26.28
 ===

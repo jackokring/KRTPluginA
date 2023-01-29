@@ -70,7 +70,7 @@ int maxPoly(Module *m, const int numIn, const int numOut) {
 		int chan = m->inputs[i].getChannels();
 		if(chan > poly) poly = chan;
 	}
-	// perhaps an optimization on #pragma ivdep is possible
+	// perhaps an optimization on #pragma GCC ivdep is possible
 	// knowing the ranged 1 .. 16
 	if(poly > PORT_MAX_CHANNELS) poly = PORT_MAX_CHANNELS;
 	for(int o = 0; o < numOut; o++) {
