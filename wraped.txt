@@ -1,103 +1,86 @@
-FORMAT AS WRAPPED MIN WIDTH `xed` EDITOR WINDOW
+// rough expander code needs NP modify idea
+// doesn't quite suit my NNNN... NPPNPNN... PPPP... purpose of layouts
 
-## A
+// forum curtesy of Count Modula on expanders generic howto.
+struct myExpanderMessage {
+	bool somethingToGetFromTheExpander;
+	int someThingToSendToTheExpander;
+};
 
-Plate 18 dB filter. Band pass phased ring mod. Other ins and outs with different order are available. The ring modulation is between a low and high pass for a band pass with harmonics effect.
+struct MyModule : Module {
+	
+	// assuming the expander is on the right
+	myExpanderMessage rightMessages[2][1]; // messages to right module (expander)
+	
+	MyModule() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		// parameter/port config goes here
+		
+		// set the right expander message instances
+		rightExpander.producerMessage = rightMessages[0];
+		rightExpander.consumerMessage = rightMessages[1];
+	}
 
-## Mu
+	void process(const ProcessArgs &args) override {
 
-Time dependant calculus on a summing junction with series truncation distortion. This is complex to explain. Much better to listen and fiddle.
+		// do your processing here
+		
+		// set up details for the expander
+		if (rightExpander.module) {
+			if (rightExpander.module->model == modelMyExpander) {
+				
+				myExpanderMessage *messageToExpander = (myExpanderMessage*)(rightExpander.module->leftExpander.producerMessage);
+				myExpanderMessage *messageFromExpander = (myExpanderMessage*)(rightExpander.module->leftExpander.consumerMessage);
 
-## T
+				messageToExpander->somethingToSendToTheExpander = someModuleValue;
+				
+				someExpanderValue = messageFromExpander->someThingToGetFromTheExpander;
+				
+				rightExpander.module->leftExpander.messageFlipRequested = true;
+			}
+		}
 
-Pitched time stretch and matched trigger sync delay. Spools and then plays back faster such that the overall waveform is produced at two different frequencies.
+	}
+};
 
-## L
+Model *modelMyModule = createModel<MyModule, MyModuleWidget>("MyModule");
 
-Synchronized delay with shortening. To synchronize with a buffer but delayed by a bar or some other timed quantity.
+//AND
 
-## D
+struct MyExpander : Module {
+	
+	// assuming the controller is on the left
+	myExpanderMessage leftMessages[2][1]; // messages from left module (controller module))
+	
+	MyExpander() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
+		
+		// parameter/port config goes here
 
-Exponential VCA and future estimator with error? A very simple utility.
+		// set the left expander message instances
+		leftExpander.producerMessage = leftMessages[0];
+		leftExpander.consumerMessage = leftMessages[1];	
+	}
 
-## R
+	void process(const ProcessArgs &args) override {
 
-Simple mixer split. Put a signal on another as an insert.
+		// do your processing here
+		
+		if (leftExpander.module) {
+			if (leftExpander.module->model == modelMyModule) {
+					
+				myExpanderMessage *messagesFromModule = (myExpanderMessage *)(leftExpander.consumerMessage);
+				myExpanderMessage *messagesToModule = (myExpanderMessage *)(leftExpander.producerMessage);
 
-## Om
+				someValueFromTheModule = messagesFromModule->someThingToSendToTheExpander;
+				
+				messagesToModule->somethingToGetFromTheExpander = someValueForTheModule;
+			}
+		}
 
-Clock distribution randomiser. Generates a random-ish sequence of length 64 and depending on the left-most displayed letter outputs a trigger when the clock is high or low.
+	}
+};
 
-## V
+Model *modelMyExpander = createModel<MyExpander, MyExpanderWidget>("MyExpander");
 
-Envelope VCA and CV producer. A bit weird. An experiment in module design.
-
-## F
-
-24 dB morph filter. A 2D interpolation and extrapolation between 4 classic analytic filter responses of Bessel, Butterworth, Linkwitz and Legendre. Includes an interpole distortion effect and morphing to the inverse filter.
-
-## W
-
-Gate transposer. Kind of a tuning plug-board for gate triggers.
-
-## Y
-
-Triple sequencer. Nice but complex to operate. Try the online help.
-
-## O
-
-Triple parabolic skew feedback oscillator. An experimental module.
-
-## S
-
-Clock to CV generator. Needs MIDI clock, cont, stop and start. Produces a time based CV.
-
-## E
-
-Simple AR envelope with VCA. Nice. Gained modulation out.
-
-## X
-
-Oversampled wave-folder. A lot of fizz in such a little module.
-
-## M
-
-Emphasis and de-emphasis filter. Default is RIAA and inverse. This module has large gain. WARNING!
-
-## Q
-
-Quantum gravimitator. Imitates a coupled gravity quantum idea. I really shouldn't explain. Just play.
-
-## C
-
-A set of three attenuverters with mixing. Kind of useful chainable mixer. Includes LPF per channel.
-
-## U
-
-Sample and hold quantizer. Simple.
-
-## B
-
-Crossbar performance switch. Remembers internal routing for performance switching.
-
-## J
-
-All-pass filter and phaser. Has an LFO built-in.
-
-## K
-
-Phase modulation oscillator.
-
-## H
-
-Base gimpathizer. An organ with phase modulation. Bass how low can you go?
-
-## I
-
-Clock divider with downbeat extract.
-
-## G
-
-Compressor with control outs. Has a low pass peaking filter.
-
-## Z
