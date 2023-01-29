@@ -142,21 +142,20 @@ struct ZWidget : ModuleWidget {
 
 		const int ctl[] = {
 			// -1 is no control and no label
-			Z::IN_CV, Z::P_SUS, Z::P_EV1, Z::P_EV2, Z::OUT_EV1, Z::OUT_EV2,
-			-1, -1, -1, -1, -1, -1,
 			Z::IN_A1M, Z::IN_A3M, Z::IN_RESM, Z::IN_A2M, Z::IN_A4M, Z::IN_A6M,
+			-1, -1, -1, -1, -1, -1,
 			Z::IN_P, Z::IN_Q, Z::P_PLFO, Z::P_QLFO, Z::P_FLFO, Z::P_WLFO,
 			Z::IN_HP, Z::P_FRQ, Z::P_RES, Z::P_A2, Z::P_A4, Z::P_A6,
 			Z::IN_GATE, Z::P_A, Z::P_R, Z::P_EMOD, Z::P_A1, Z::P_A3,
+			Z::IN_CV, Z::P_SUS, Z::P_EV1, Z::P_EV2, Z::OUT_EV1, Z::OUT_EV2,
 			Z::OUT_PA, Z::OUT_QA, Z::OUT_PB, Z::OUT_QB, Z::OUT_PC, Z::OUT_QC
 		};
 
 		const char *lbl[] = {
-			// a nice VCO and envelope modulator outs
-			"CV", "SUS", "ENV1", "ENV2", "ENV1", "ENV2",
-			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
 			// shape and filter modulation
 			"A1M", "A3M", "RESM", "A2M", "A4M", "A6M",
+			// a nice VCO
+			"TEST", "TEST", "TEST", "TEST", "TEST", "TEST",
 			// shape and filter
 			// LFO as class genera invariat makes 5 parameters enough
 			// y^2 + a1.x.y + a3.y = x^3 + a2.x^2 + a4.x + a6
@@ -164,17 +163,18 @@ struct ZWidget : ModuleWidget {
 			"P", "Q", "PLFO", "QLFO", "FLFO", "WLFO",
 			"HP", "FRQ", "RES", "A2", "A4", "A6",
 			"GATE", "A", "R", "EMOD", "A1", "A3",
+			"CV", "SUS", "ENV1", "ENV2", "ENV1", "ENV2",
 			"PA", "QA", "PB", "QB", "PC", "QC"
 		};
 
 		const int kind[] = {
 			// -1 = sink, +1 = source
-			-1, 0, 0, 0, 1, 1,
-			0, 0, 0, 0, 0, 0,
-			-1, -1, -1, -1, -1, -1,			
+			-1, -1, -1, -1, -1, -1,		
+			0, 0, 0, 0, 0, 0,	
 			-1, -1, 0, 0, 0, 0,
 			-1, 0, 0, 0, 0, 0,
 			-1, 0, 0, 0, 0, 0,
+			-1, 0, 0, 0, 1, 1,
 			1, 1, 1, 1, 1, 1
 		};
 
