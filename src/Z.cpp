@@ -115,30 +115,11 @@ struct Z : Module {
 #define LANES 6
 #define RUNGS 7
 
-//ok
-#define HP_UNIT 5.08
-#define WIDTH (HP*HP_UNIT)
-#define X_SPLIT (WIDTH / 2.f / LANES)
-
-#define HEIGHT 128.5
-#define Y_MARGIN 0.05f
-#define R_HEIGHT (HEIGHT*(1-2*Y_MARGIN))
-#define Y_SPLIT (R_HEIGHT / 2.f / RUNGS)
-
-//placement macro
-#define loc(x,y) mm2px(Vec(X_SPLIT*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+Y_SPLIT*(1+2*(y-1))))
-
 struct ZWidget : ModuleWidget {
-	LabelWidget *display;
 
 	ZWidget(Z* module) {
 		setModule(module);
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Z.svg")));
-
-		addChild(createWidget<KScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<KScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<KScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		addChild(createWidget<KScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		const int ctl[] = {
 			// -1 is no control and no label
@@ -178,29 +159,8 @@ struct ZWidget : ModuleWidget {
 			1, 1, 1, 1, 1, 1
 		};
 
-		for(int x = 1; x <= LANES; x++) {
-			for(int y = 1; y <= RUNGS; y++) {
-				// automatic layout
-				const int idx = (x - 1) + LANES * (y - 1);
-				if(ctl[idx] == -1) continue;
-				display = new LabelWidget(lbl[idx], kind[idx]);
-				display->fixCentre(loc(x, y + 0.5f), strlen(lbl[idx]));//chars
-				addChild(display);
-				switch(kind[idx]) {
-					case -1:
-						addInput(createInputCentered<KPJ301MPort>(loc(x, y), module, ctl[idx]));
-						break;
-					case 0: default:
-						addParam(createParamCentered<KRoundBlackKnob>(loc(x, y), module, ctl[idx]));
-						break;
-					case 1:
-						addOutput(createOutputCentered<KPJ301MPort>(loc(x, y), module, ctl[idx]));
-						break;
-				}
-			}
-		}
+		populate(this, HP, LANES, RUNGS, ctl, lbl, kind);
 	}
 };
-
 
 Model* modelZ = createModel<Z, ZWidget>("Z");

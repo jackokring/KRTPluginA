@@ -78,3 +78,41 @@ int maxPoly(Module *m, const int numIn, const int numOut) {
 	}
 	return poly;
 }
+
+// leave filters or close coupling of copies
+
+// placement macro (local)
+#define locl(x,y) mm2px(Vec(((hp*HP_UNIT) / 2.f / lanes)*(1+2*(x-1)), (HEIGHT*Y_MARGIN)+(R_HEIGHT / 2.f / rungs)*(1+2*(y-1))))
+
+// control populator
+void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ctl[],
+							const char *lbl[], const int kind[]) {
+	LabelWidget *display;
+
+	m->addChild(createWidget<KScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
+	m->addChild(createWidget<KScrewSilver>(Vec(m->box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+	m->addChild(createWidget<KScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+	m->addChild(createWidget<KScrewSilver>(Vec(m->box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+
+	for(int x = 1; x <= lanes; x++) {
+		for(int y = 1; y <= rungs; y++) {
+			// automatic layout
+			const int idx = (x - 1) + lanes * (y - 1);
+			if(ctl[idx] == -1) continue;
+			display = new LabelWidget(lbl[idx], kind[idx]);
+			display->fixCentre(locl(x, y + 0.5f), strlen(lbl[idx]));//chars
+			m->addChild(display);
+			switch(kind[idx]) {
+				case -1:
+					m->addInput(createInputCentered<KPJ301MPort>(locl(x, y), m->module, ctl[idx]));
+					break;
+				case 0: default:
+					m->addParam(createParamCentered<KRoundBlackKnob>(locl(x, y), m->module, ctl[idx]));
+					break;
+				case 1:
+					m->addOutput(createOutputCentered<KPJ301MPort>(locl(x, y), m->module, ctl[idx]));
+					break;
+			}
+		}
+	}
+}
