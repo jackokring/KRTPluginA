@@ -3,7 +3,8 @@
         "**/node_modules": true,
         "**/bower_components": true,
         "**/env": true,
-        "**/venv": true
+        "**/venv": true,
+        "../**": true
     },
     "files.watcherExclude": {
         "**/.git/objects/**": true,
@@ -11,6 +12,7 @@
         "**/node_modules/**": true,
         "**/env/**": true,
         "**/venv/**": true,
-        "env-*": true
+        "env-*": true,
+        "../**": true
     }
 }
