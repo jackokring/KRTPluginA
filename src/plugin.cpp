@@ -103,6 +103,10 @@ void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ctl[],
 			display->fixCentre(locl(x, y + 0.5f), strlen(lbl[idx]));//chars
 			m->addChild(display);
 			switch(kind[idx]) {
+				case -2:
+					// snap knob
+					m->addParam(createParamCentered<KRoundBlackSnapKnob>(locl(x, y), m->module, ctl[idx]));
+					break;
 				case -1:
 					m->addInput(createInputCentered<KPJ301MPort>(locl(x, y), m->module, ctl[idx]));
 					break;
@@ -111,6 +115,10 @@ void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ctl[],
 					break;
 				case 1:
 					m->addOutput(createOutputCentered<KPJ301MPort>(locl(x, y), m->module, ctl[idx]));
+					break;
+				case 2:
+					// light
+					m->addChild(createLightCentered<KGRLightWidget>(locl(x, y), m->module, ctl[idx]));
 					break;
 			}
 		}

@@ -136,10 +136,10 @@ struct KLightWidget : ModuleLightWidget {
 	void drawLayer(const DrawArgs& args, int layer) override {
 		if(layer == 1) {
 			if (this->color.a > 0.0) {
-					nvgBeginPath(args.vg);
-					nvgRect(args.vg, 0, 0, this->box.size.x, this->box.size.y);
-					nvgFillColor(args.vg, this->color);
-					nvgFill(args.vg);
+				nvgBeginPath(args.vg);
+				nvgRect(args.vg, 0, 0, this->box.size.x, this->box.size.y);
+				nvgFillColor(args.vg, this->color);
+				nvgFill(args.vg);
 			}
 		}
 		Widget::drawLayer(args, layer);
@@ -172,3 +172,9 @@ extern int maxPoly(Module *m, const int numIn, const int numOut);
 
 extern void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ctl[],
 							const char *lbl[], const int kind[]);
+
+template<typename kind>
+struct plist {
+	std::atomic<plist<kind>*> next;
+	kind item;
+};
