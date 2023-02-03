@@ -124,3 +124,42 @@ void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ctl[],
 		}
 	}
 }
+
+template<typename kind>
+void plist<kind>::insertAfter(plist<kind>* what) {
+	while(!containedAfter(what)) {
+		plist<kind>* here = this.next.load();
+		what->next.store(here);
+		this.next.store(what);
+	}
+}
+
+template<typename kind>
+plist<kind>* plist<kind>::removeAfter(kind* what) {
+	plist<kind>* here;
+	while(containedAfter(what)) {
+		here = &this;
+		plist<kind>* last = NULL;
+		while(last = here, here = here->next.load()) {
+			if(here->item == what) {
+				last->next.store(here->next.load());
+				break;
+			}
+		}
+	}
+	return here;
+}
+
+template<typename kind>
+plist<kind>* plist<kind>::removeFirstAfter() {
+	return removeAfter(this.next.load()->item);
+}
+
+template<typename kind>
+bool plist<kind>::containedAfter(kind* what) {
+	plist<kind>* here = &this;
+	while(here = here->next.load()) {
+		if(here->item == what) return true; 
+	}
+	return false;
+}

@@ -176,5 +176,9 @@ extern void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ct
 template<typename kind>
 struct plist {
 	std::atomic<plist<kind>*> next;
-	kind item;
+	kind* item;
+	void insertAfter(plist<kind>* what);
+	plist<kind>* removeAfter(kind* what);
+	plist<kind>* removeFirstAfter();
+	bool containedAfter(kind* what);
 };
