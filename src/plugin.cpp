@@ -136,7 +136,7 @@ void plist<kind>::insertAfter(plist<kind>* what) {
 
 template<typename kind>
 plist<kind>* plist<kind>::removeAfter(kind* what) {
-	plist<kind>* here;
+	plist<kind>* here = NULL;
 	while(containedAfter(what)) {
 		here = &this;
 		plist<kind>* last = NULL;
@@ -152,7 +152,10 @@ plist<kind>* plist<kind>::removeAfter(kind* what) {
 
 template<typename kind>
 plist<kind>* plist<kind>::removeFirstAfter() {
-	return removeAfter(this.next.load()->item);
+	plist<kind>* here = &this;
+	here = here->next.load();
+	if(here) return removeAfter(here->item);
+	return NULL;
 }
 
 template<typename kind>
