@@ -125,8 +125,9 @@ void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ctl[],
 	}
 }
 
+// atomic parallel list primitives
 template<typename kind>
-void plist<kind>::insertAfter(plist<kind>* what) {
+void plist<kind>::insertOne(plist<kind>* what) {
 	while(!containedAfter(what)) {
 		plist<kind>* here = this.next.load();
 		what->next.store(here);
@@ -141,7 +142,7 @@ plist<kind>* plist<kind>::removeAfter(kind* what) {
 		here = &this;
 		plist<kind>* last = NULL;
 		while(last = here, here = here->next.load()) {
-			if(here->item == what) {
+			if(here->item.load() == what) {
 				last->next.store(here->next.load());
 				break;
 			}
@@ -151,10 +152,10 @@ plist<kind>* plist<kind>::removeAfter(kind* what) {
 }
 
 template<typename kind>
-plist<kind>* plist<kind>::removeFirstAfter() {
+plist<kind>* plist<kind>::removeOneAfter() {
 	plist<kind>* here = &this;
 	here = here->next.load();
-	if(here) return removeAfter(here->item);
+	if(here) return removeAfter(here->item.load());
 	return NULL;
 }
 
@@ -162,7 +163,22 @@ template<typename kind>
 bool plist<kind>::containedAfter(kind* what) {
 	plist<kind>* here = &this;
 	while(here = here->next.load()) {
-		if(here->item == what) return true; 
+		if(here->item.load() == what) return true; 
 	}
 	return false;
+}
+
+template<typename kind>
+plist<kind>* plist<kind>::supply(kind* what) {
+	plist<kind>* here = new plist<kind>;
+	here->next.store(NULL);
+	here->item.store(what); 
+	return here;
+}
+
+template<typename kind>
+kind* plist<kind>::resolve(plist<kind>* what) {
+	kind* here = what->item.load();
+	delete what;
+	return here;
 }

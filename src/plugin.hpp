@@ -173,12 +173,20 @@ extern int maxPoly(Module *m, const int numIn, const int numOut);
 extern void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ctl[],
 							const char *lbl[], const int kind[]);
 
+// atomic forward parallel list
+// item made atomic to prevent non-NULL save before sheduled after
+// any field in item used for sequencing must be atomic (i.e. bool done)
+// to prevent list addition of OoO scheduled writes
+// N.B. there is no LIFO order garauntee
+// this structure is both the element and the pointer to list
 template<typename kind>
 struct plist {
 	std::atomic<plist<kind>*> next;
-	kind* item;
-	void insertAfter(plist<kind>* what);
+	std::atomic<kind*> item;
+	void insertOne(plist<kind>* what);
 	plist<kind>* removeAfter(kind* what);
-	plist<kind>* removeFirstAfter();
+	plist<kind>* removeOneAfter();
 	bool containedAfter(kind* what);
+	plist<kind>* supply(kind* what);
+	kind* resolve(plist<kind>* what);
 };
