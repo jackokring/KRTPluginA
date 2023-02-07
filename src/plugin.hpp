@@ -179,14 +179,28 @@ extern void populate(ModuleWidget *m, int hp, int lanes, int rungs, const int ct
 // to prevent list addition of OoO scheduled writes
 // N.B. there is no LIFO order garauntee
 // this structure is both the element and the pointer to list
+
+// to be safe the reader shouldn't remove or add things but can traverse
+// the list and mark feedback atomics in kind for the writer to remove and update
+// in this way list containment represents read freedom until an atomic
+// withib kind is set to allow updates.
+
+// a reader may clone or merge various kind structures and then use an atomic
+// in kind to get updates, as this would be more efficient than the writer
+// checking containment (although it could do this).
+
+// allowing deletes of things (a type of write) needs some signalling.
+// a read proxy likely needs a plist to track when reclimation can happen.
 template<typename kind>
 struct plist {
 	std::atomic<plist<kind>*> next;
 	std::atomic<kind*> item;
 	void insertOne(plist<kind>* what);
-	plist<kind>* removeAfter(kind* what);
-	plist<kind>* removeOneAfter();
-	bool containedAfter(kind* what);
+	plist<kind>* removeAfter(plist<kind>* what);
+	//plist<kind>* removeOneAfter();//BAD, needs unique reference plist<kind>*
+	bool containedAfter(plist<kind>* what);
+	// malloc from new and delete can lock on heap compaction
+	// use the following to obtain and release unique reference list elements
 	plist<kind>* supply(kind* what);
 	kind* resolve(plist<kind>* what);
 };

@@ -136,34 +136,27 @@ void plist<kind>::insertOne(plist<kind>* what) {
 }
 
 template<typename kind>
-plist<kind>* plist<kind>::removeAfter(kind* what) {
+plist<kind>* plist<kind>::removeAfter(plist<kind>* what) {
 	plist<kind>* here = NULL;
 	while(containedAfter(what)) {
 		here = &this;
 		plist<kind>* last = NULL;
 		while(last = here, here = here->next.load()) {
-			if(here->item.load() == what) {
+			if(here == what) {
 				last->next.store(here->next.load());
 				break;
 			}
 		}
 	}
+	if(here) here->next.store(NULL);// maybe null to remove
 	return here;
 }
 
 template<typename kind>
-plist<kind>* plist<kind>::removeOneAfter() {
-	plist<kind>* here = &this;
-	here = here->next.load();
-	if(here) return removeAfter(here->item.load());
-	return NULL;
-}
-
-template<typename kind>
-bool plist<kind>::containedAfter(kind* what) {
+bool plist<kind>::containedAfter(plist<kind>* what) {
 	plist<kind>* here = &this;
 	while(here = here->next.load()) {
-		if(here->item.load() == what) return true; 
+		if(here == what) return true; 
 	}
 	return false;
 }
