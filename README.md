@@ -1,6 +1,4 @@
-KRTPluginA
-===
-
+# KRTPluginA
 ![Donate](PaypalDonate.png)
 
 [Donate](https://www.paypal.com/donate/?hosted_button_id=Y94P8UE7PYCJY)
@@ -15,8 +13,10 @@ Compiled with: `gcc (Debian 10.2.1-6) 10.2.1 20210110` or later. Any issues due 
 
 Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/rocket.html) for less detail and more of an overview.
 
-Index - Version - Demo
-===
+## Other Plugins (Ideas and Developments)
+[KRTPluginJ](https://github.com/jackokring/jqt-chromebook-arm/tree/libj-wrapper) might be an interesting idea. Itmust be GPL3 however due to licence restrictions.
+
+## Index - Version - Demo
 
 The version number indicates the API build compatibility and feature use. So 1 is VCVRack V1 API. These will be changed as higher API number features are used and adapted to.
 
@@ -787,4 +787,4 @@ Z
 
 **SIGNATURE**
 
-[Prework](https://github.com/jackokring/KRTPluginA/blob/master/Z%20Moonshine%20Elliptical.pdf) almost complete for the basis.
+Currently displaying the GUI design elements with no processing.
