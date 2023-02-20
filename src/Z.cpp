@@ -1,4 +1,18 @@
 #include "plugin.hpp"
+#include <csignal>
+
+float normalised(float x, float (*fn)(float)) {
+	float low = fn(-5.f);
+	float high = fn(5.f);
+	float actual = fn(x);
+	high -= low;
+	actual -= low;
+	return -5.f + 10.f * actual / high;
+}
+
+void fpx_handler(int signal) {
+	// do nothing
+}
 
 struct Z : Module {
 	enum ParamIds {
@@ -97,6 +111,8 @@ struct Z : Module {
 		configParam(P_EV2, -6.f, 6.f, 0.f, "Envelope out 2 modulation level", " Center dB (rel 6)");
 
 		iol(false);
+		// Register floating-point exception handler.
+    	signal(SIGFPE, fpx_handler);
 	}
 
 	void process(const ProcessArgs& args) override {

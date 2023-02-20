@@ -14,7 +14,7 @@ Compiled with: `gcc (Debian 10.2.1-6) 10.2.1 20210110` or later. Any issues due 
 Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/rocket.html) for less detail and more of an overview.
 
 ## Other Plugins (Ideas and Developments)
-[KRTPluginJ](https://github.com/jackokring/jqt-chromebook-arm/tree/libj-wrapper) might be an interesting idea. Itmust be GPL3 however due to licence restrictions.
+[KRTPluginJ](https://github.com/jackokring/jqt-chromebook-arm/tree/libj-wrapper) might be an interesting idea. It must be GPL3 however due to licence restrictions.
 
 ## Index - Version - Demo
 
