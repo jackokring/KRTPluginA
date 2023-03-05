@@ -3,6 +3,8 @@
 
 [Donate](https://www.paypal.com/donate/?hosted_button_id=Y94P8UE7PYCJY)
 
+  * Escape the `[dev-bot]` spam of a watch by a filtered removal of `[dev-bot]`
+
 Current development on [Linux ARM](https://drive.google.com/drive/folders/11k81iJwAW_xP3fNGO9ZmNh-XwS2DexbF) Chromebook. 
 
 Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. Any commit not tagged is not a version for compile, although it may work it could also be quite dangerous. The index is numbered so that `WORKING_MACHINES_COUNT` makes sense given the development ordering of the index.
