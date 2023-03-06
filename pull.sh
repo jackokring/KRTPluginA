@@ -24,7 +24,8 @@ alefsbits Bogaudio CountModula KRTPluginA Edge
 do
 	pushd $f
 	echo "j $f"
-	echo "PLUGIN SLUG: $f\n" >> ~/AUTOBUILD-ERRORS-$datefile.txt
+	# split file of errors as not always possible to see by *.cpp name
+	echo "\nPLUGIN SLUG: $f" >> ~/AUTOBUILD-ERRORS-$datefile.txt
 	git pull
 	make > /dev/null 2> >(tee -a ~/AUTOBUILD-ERRORS-$datefile.txt >&2)
 	if [[ "$1" == "dist" || "$1" == "arch" ]]
@@ -32,7 +33,9 @@ do
 		# A make .PHONY (always done) and action not defered by actaul make entry (.PHONY):(real)\n	(null)
 		# And unfortunately all: $(TARGET) is done, but has no action and $(TARGET): has a rule sort of, and no variables on the left hand side
 		# also resources ... [[]] for shell || form escape to logical form
-		if [[ "$(echo plugin-*)" -nt "$(echo dist/*/plugin-*)" || "$(newest res)" -nt "$(echo dist/*/plugin-*)" ]]
+		# also presets sometimes updated in presets/<module>/*.vcvm
+		plug=$(echo dist/*/plugin-*)
+		if [[ "$(echo plugin-*)" -nt "$plug" || "$(newest res)" -nt "$plug" || $(newest presets) -nt "$plug"  ]]
 		then 
 			make dist
 			# Option to update newer only?
