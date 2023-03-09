@@ -75,7 +75,7 @@ struct U : Module {
 
 	U() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(QUANTIZE, 1.f, 12.f, 1.f, "Interval", " Semitones");
+		configSwitch(QUANTIZE, 1.f, 12.f, 1.f, "Interval");
 		configParam(NOISE, -8.f, 8.f, 0.f, "Noise filter", " Oct");
 		iol(false);
 		for(int i = 0; i < 3; i++) {

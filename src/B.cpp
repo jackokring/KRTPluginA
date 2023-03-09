@@ -150,8 +150,8 @@ struct B : Module {
 			}
 		}
 		configButton(MODE, "Memory (R)/Pass (G)/Function (B)");
-		configParam(I_MODE, 0.f, 2.f, 0.f);//internal mode
-		configParam(PATTERN, 0.f, 18.f, 0.f);//default pattern
+		configSwitch(I_MODE, 0.f, 2.f, 0.f);//internal mode
+		configSwitch(PATTERN, 0.f, 18.f, 0.f);//default pattern
 		iol(false);
 		for(int f = 0; f < patches; f++) {
 			for(int i = 0; i < ins; i++) {

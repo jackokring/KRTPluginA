@@ -57,8 +57,8 @@ struct K : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(FRQ, -4.f, 4.f, 0.f, "Frequency", " Oct");
 		configParam(LPF, -4.f, 4.f, 0.f, "Filter", " Oct");
-		configParam(RTO1, -12.f, 12.f, 0.f, "Low ratio", " Semitones");
-		configParam(RTO2, -12.f, 12.f, 0.f, "High ratio", " Semitones");
+		configSwitch(RTO1, -12.f, 12.f, 0.f, "Low ratio");
+		configSwitch(RTO2, -12.f, 12.f, 0.f, "High ratio");
 		configParam(MOD1, 0.f, 100.f, 50.f, "Low modulation", " %");
 		configParam(MOD2, 0.f, 100.f, 50.f, "High modulation", " %");
 		iol(false);

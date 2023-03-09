@@ -56,7 +56,7 @@ struct S : Module {
 	S() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(BPM, 0.f, 240.f, 120.f, "Estimated Tempo", " bpm");
-		configParam(DIV, 1.f, 16.f, 1.f, "Division Ratio");
+		configSwitch(DIV, 1.f, 16.f, 1.f, "Division Ratio");
 		iol(false);
 	}
 

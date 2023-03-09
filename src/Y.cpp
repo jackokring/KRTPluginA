@@ -196,14 +196,14 @@ struct Y : Module {
 			configButton(MODES + i, mNames[i]);
 		}
 		configParam(IS_RUN, 0.f, 1.f, 0.f);
-		configParam(MODE, 0.f, 3.f, 0.f);
+		configSwitch(MODE, 0.f, 3.f, 0.f);
 		for(int i = 0; i < 16; i++) {
-			configParam(PAT + i, 0.f, patNum - 1.f, 0.f);//default pattern
-			configParam(MUTES + i, 0.f, 1.f, 1.f);
+			configSwitch(PAT + i, 0.f, patNum - 1.f, 0.f);//default pattern
+			configSwitch(MUTES + i, 0.f, 1.f, 1.f);
 		}
 		configButton(CPY, "Copy");
 		configButton(PST, "Paste");
-		configParam(CHAN, 0.f, chanNum - 1.f, 0.f);
+		configSwitch(CHAN, 0.f, chanNum - 1.f, 0.f);
 		for(int p = 0; p < patNum; p++) {
 			for(int s = 0; s < stepsNum; s++) {
 				for(int c = 0; c < chanNum; c++) {
@@ -211,8 +211,8 @@ struct Y : Module {
 				}
 			}
 		}
-		configParam(CPAT, 0.f, 15.f, 0.f);
-		configParam(CCHN, 0.f, 15.f, 0.f);
+		configSwitch(CPAT, 0.f, 15.f, 0.f);
+		configSwitch(CCHN, 0.f, 15.f, 0.f);
 		configParam(JAZZ4, -1.f, 1.f, 0.f, "Quad jazz");
 		configParam(JAZZ3, -1.f, 1.f, 0.f, "Triple jazz");
 		iol(false);//lights thru buttons as RGB *3 overlay happens????

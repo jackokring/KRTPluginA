@@ -72,7 +72,7 @@ struct I : Module {
 	I() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		for(int i = 0; i < 3; i++) {
-			configParam(DIV + i, 1.f, 16.f, 1.f, "Divider");
+			configSwitch(DIV + i, 1.f, 16.f, 1.f, "Divider");
 			configParam(PHA + i, 0.f, 100.f, 0.f, "Phase", " %");
 			for(int j = 0; j < PORT_MAX_CHANNELS; j++) {
 				outSym[j][i] = false;
