@@ -20,7 +20,7 @@ newest() {
 pushd ~/Rack/plugins
 for f in SeasideModular SickoCV StochasticTelegraph Stoermelder-P1 StudioSixPlusOne SubmarineFree Thoms VCV-Prototype Venom voxglitch ZZC \
 dbRackModules Geodesics HetrickCV ImpromptuModular MindMeldModular ModScript monome nullpath Prefabs CosineKitty-Sapphire \
-alefsbits Bogaudio CountModula KRTPluginA Edge Fundemental SIM
+alefsbits Bogaudio CountModula KRTPluginA Edge Fundamental SIM
 do
 	pushd $f
 	echo "j $f"
