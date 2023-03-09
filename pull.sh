@@ -3,7 +3,7 @@ echo "Pull of active repositories VCV automake"
 echo "Use 'pull.sh [dist | arch]' to push dists to drive or make .zip archive"
 export TZ="UTC"
 datefile=$(date +"%Y-%m-%d-%H-%M")
-archive="lin-arm64-2.2.3"
+archive="lin-arm64-2.3.0"
 
 # Published by first
 cp ~/bin/pull.sh /mnt/chromeos/GoogleDrive/MyDrive/VCV
@@ -20,7 +20,7 @@ newest() {
 pushd ~/Rack/plugins
 for f in SeasideModular SickoCV StochasticTelegraph Stoermelder-P1 StudioSixPlusOne SubmarineFree Thoms VCV-Prototype Venom voxglitch ZZC \
 dbRackModules Geodesics HetrickCV ImpromptuModular MindMeldModular ModScript monome nullpath Prefabs CosineKitty-Sapphire \
-alefsbits Bogaudio CountModula KRTPluginA Edge
+alefsbits Bogaudio CountModula KRTPluginA Edge Fundemental SIM
 do
 	pushd $f
 	echo "j $f"
