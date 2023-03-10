@@ -4,7 +4,8 @@
         "**/bower_components": true,
         "**/env": true,
         "**/venv": true,
-        "../**": true
+        "../**": true,
+        "jsource/**": true
     },
     "files.watcherExclude": {
         "**/.git/objects/**": true,
@@ -13,6 +14,10 @@
         "**/env/**": true,
         "**/venv/**": true,
         "env-*": true,
-        "../**": true
+        "../**": true,
+        "jsource/**": true
+    },
+    "files.exclude": {
+        
     }
 }
