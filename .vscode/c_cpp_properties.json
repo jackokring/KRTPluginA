@@ -4,8 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/jackokring/Rack/include",
-                "/home/jackokring/Rack/dep/include"
+                "/home/jackokring/Rack/include/**",
+                "/home/jackokring/Rack/dep/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
