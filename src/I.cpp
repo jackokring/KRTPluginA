@@ -86,7 +86,7 @@ struct I : Module {
 		int maxPort = maxPolySpecial();
 		for(int i = 0; i < 3; i++) {
 			divs[i] = (int)params[DIV + i].getValue();
-			phase[i] = (int)(params[PHA + i].getValue() * 0.01f * (divs[i] - 1.f));
+			phase[i] = (int)(params[PHA + i].getValue() * 0.01f * (divs[i] - 0.5f));
 		}
 
 		// PARAMETERS (AND IMPLICIT INS)

@@ -1,8 +1,12 @@
+2.26.31
+===
+
+* `I` phase range moved for easier max (might break patch)
+
 2.26.30
 ===
 
 * `ConfigSwitch` for some internal state on machines
-
 
 2.26.29
 ===
