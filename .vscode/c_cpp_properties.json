@@ -4,10 +4,15 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/jackokring/Rack/include/**",
-                "/home/jackokring/Rack/dep/include/**"
+                "${workspaceFolder}/../../include/**",
+                "${workspaceFolder}/../../dep/include/**"
             ],
-            "defines": [],
+            "defines": [
+                "ARCH_LIN=1"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            },
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu11",
             "cppStandard": "gnu++11",
