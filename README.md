@@ -11,7 +11,7 @@ Version: `RACK_VERSION.WORKING_MACHINES_COUNT.FIX_INCREMENT` supplied in tags. A
 
 Current public version: [here](https://library.vcvrack.com/KRTPluginA) archives for older versions of the demos maybe available [here](https://github.com/jackokring/KRTPluginADemo).
 
-Compiled with: `gcc (Debian 10.2.1-6) 10.2.1 20210110` or later. Any issues due to edge case optimizations of `float` may be corrected if they are problems.
+Compiled with: `gcc version 12.2.0 (Debian 12.2.0-14)` or later. Any issues due to edge case optimizations of `float` may be corrected if they are problems.
 
 Less technical: [Captain's log](https://jackokring.github.io/KRTPluginADemo/rocket.html) for less detail and more of an overview.
 
