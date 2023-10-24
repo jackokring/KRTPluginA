@@ -1,5 +1,6 @@
 /build
 /dist
+/plugin.so
 /plugin-arm64.so
 /plugin.dylib
 /plugin.dll
